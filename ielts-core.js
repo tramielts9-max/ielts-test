@@ -8,7 +8,7 @@
 // CẤU HÌNH TOÀN CỤC DÙNG CHUNG CHO TẤT CẢ CÁC BÀI TẬP
 const IELTS_CONFIG = {
   // Key API Gemini của bạn
-  GEMINI_API_KEY: "AQ.Ab8RN6LwV10cN4CAoL0C7zUMUKvb8nFfPZ1rWdSp3Dg2x1AMPg",
+  GEMINI_API_KEY: "AQ.Ab8RN6IF5lsAt7MVzwQu1I3fqIZfmxgrggP7QxxH1MSVtXEeYQ",
   
   // Đường link Web App Google Apps Script nhận điểm và xử lý AI của bạn
   GOOGLE_SCRIPT_URL: "https://script.google.com/macros/s/AKfycby7vRFXq_YhjIEq4kN-8NLRFw2sj-7VkVEmTw6IkNkPmidEPnPtxtNkSE-HKfn5mAPfbw/exec"
@@ -247,52 +247,7 @@ async function checkAnswers() {
   }
 }
 
-// BỘ CHUYỂN ĐỔI CHUẨN ĐẸP MẮT (In đậm, Tô xanh từ khóa, Tô vàng bằng chứng, Mũi tên, Tiêu đề)
-function formatMarkdownToHTML(text) {
-  if (!text) return "";
-  
-  var formatted = text;
-
-  // 1. Chuyển đổi mũi tên ->
-  formatted = formatted.split("->").join(" ➔ ");
-  formatted = formatted.split("-->").join(" ➔ ");
-  formatted = formatted.split("$\\rightarrow$").join(" ➔ ");
-  formatted = formatted.split("\\rightarrow").join(" ➔ ");
-
-  // 2. Chuyển đổi Tiêu đề các mục (1. 2. 3. hoặc ### ##)
-  formatted = formatted.replace(/^(###|\d+\.)\s*(.*$)/gim, function(match, p1, p2) {
-    var titleText = (p1.endsWith('.')) ? (p1 + " " + p2) : p2;
-    return '<h4 style="color: #0369a1; margin: 16px 0 8px 0; font-size: 15px; font-weight: 700; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px;">' + titleText + '</h4>';
-  });
-
-  // 3. Chuyển đổi Khung trích dẫn (> Text)
-  formatted = formatted.replace(/^\>\s*(.*$)/gim, '<blockquote style="background: #f8fafc; border-left: 4px solid #0284c7; margin: 8px 0; padding: 8px 12px; font-style: italic; color: #334155; border-radius: 0 4px 4px 0;">$1</blockquote>');
-
-  // 4. Chuyển đổi [kw]từ khóa[/kw] -> Thẻ XANH LÁ CÂY
-  formatted = formatted.replace(/\[kw\](.*?)\[\/kw\]/gi, '<span style="background-color: #bbf7d0; color: #14532d; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 13px; display: inline-block;">$1</span>');
-
-  // 5. Chuyển đổi ==bằng chứng== -> Thẻ TÔ VÀNG
-  formatted = formatted.replace(/==(.*?)==/gi, '<mark style="background-color: #fef08a; color: #854d0e; padding: 2px 6px; border-radius: 4px; font-weight: 600; font-size: 13px; display: inline-block;">$1</mark>');
-
-  // 6. Chuyển đổi `cấu trúc` -> Thẻ XÁM NHẸ
-  formatted = formatted.replace(/`([^`]+)`/gi, '<code style="background: #e2e8f0; color: #0f172a; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 13px;">$1</code>');
-
-  // 7. Chuyển đổi **in đậm** -> Thẻ IN ĐẬM
-  formatted = formatted.replace(/\*\*(.*?)\*\*/gi, '<strong style="color: #0f172a; font-weight: 700;">$1</strong>');
-
-  // 8. Chuyển đổi đường kẻ ngang ---
-  formatted = formatted.replace(/^---$/gim, '<hr style="border: none; border-top: 1px solid #e2e8f0; margin: 14px 0;">');
-
-  // 9. Chuyển đổi gạch đầu dòng (* item hoặc - item)
-  formatted = formatted.replace(/^\s*[\-\*]\s+(.*)$/gim, '<div style="margin-left: 8px; margin-bottom: 4px; line-height: 1.5;">• $1</div>');
-
-  // 10. Chuyển đổi xuống dòng <br>
-  formatted = formatted.replace(/\n{2,}/g, '<br><br>').replace(/\n/g, '<br>');
-
-  return formatted;
-}
-
-// AI Trợ giảng IELTS (Hiển thị Format Đẹp mắt như hình mẫu)
+// AI Trợ giảng IELTS (Có Timeout tự động 15 giây & tránh lỗi CORS Preflight)
 async function askGeminiAI(qId) {
   const inputEl = document.getElementById(`ai_ask_${qId}`);
   const responseBox = document.getElementById(`ai_response_${qId}`);
@@ -310,60 +265,51 @@ async function askGeminiAI(qId) {
   const qDiv = document.getElementById(qId);
   const questionContent = qDiv ? qDiv.innerText : "";
 
-  const prompt = `Bạn là một giáo viên dạy IELTS Reading kỳ cựu, tận tâm và chuyên nghiệp.
-Nhiệm vụ: Giải thích thắc mắc của học viên theo BỐ CỤC 3 PHẦN CHUẨN ĐẸP như sau:
+  const prompt = `Bạn là giáo viên dạy IELTS Reading kỳ cựu và tận tâm.
+Nhiệm vụ: Giải thích thắc mắc của học viên một cách ngắn gọn, súc tích, dễ hiểu bằng tiếng Việt.
+Chỉ ra vì sao đáp án đúng dựa trên bài đọc.
 
-Chào em, thầy/cô giải thích chi tiết lý do tại sao đáp án lại là **từ_đáp_án** nhé!
-
----
-
-1. Phân tích ngữ pháp & Ngữ cảnh câu hỏi
-- Câu hỏi: > [câu_hỏi]
-- Dịch nghĩa: [dịch_nghĩa]
-- Cấu trúc ngữ pháp: `[cấu_trúc]`
-
----
-
-2. Đối chiếu với bài đọc (Evidence)
-Trong bài đọc, đoạn văn chứa thông tin như sau:
-> ==[đoạn_bằng_chứng_trong_bài]==
-
----
-
-3. Bảng đối chiếu từ đồng nghĩa (Paraphrasing)
-Em hãy nhìn vào cách bài đọc biến đổi từ ngữ [kw]paraphrase[/kw] nhé:
-- [kw]từ_cụm_từ_câu_hỏi[/kw] -> ==từ_cụm_từ_bài_đọc== (giải thích nghĩa)
-
----
-
-💡 Tóm lại:
-[Lời khuyên ngắn gọn hoặc mẹo rút ra]
-
-[CÂU HỎI & ĐÁP ÁN CỦA HỌC VIÊN]:
+[THÔNG TIN CÂU HỎI]:
 ${questionContent}
 
 [THẮC MẮC CỦA HỌC VIÊN]:
 "${userQuestion}"`;
 
+  // Thiết lập ngắt kết nối tự động sau 15 giây nếu server chưa phản hồi
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 15000);
+
   try {
     const res = await fetch(IELTS_CONFIG.GOOGLE_SCRIPT_URL, {
       method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      signal: controller.signal,
       body: JSON.stringify({
         action: "ask_ai",
-        prompt: prompt,
-        apiKey: IELTS_CONFIG.GEMINI_API_KEY
+        prompt: prompt
       })
     });
 
+    clearTimeout(timeoutId);
     const data = await res.json();
+
     if (data && data.reply) {
-      const htmlFormatted = formatMarkdownToHTML(data.reply);
-      responseBox.innerHTML = `<div style="line-height: 1.6; color: #334155;"><b style="color: #0284c7; font-size: 14px;">🤖 Trợ giảng AI:</b><br><br>${htmlFormatted}</div>`;
+      // Xử lý format văn bản: Xuống dòng + In đậm Markdown (**text**)
+      let formattedReply = data.reply
+        .replace(/\n/g, "<br>")
+        .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+
+      responseBox.innerHTML = `<b>🤖 Trợ giảng AI:</b><br>${formattedReply}`;
     } else {
-      responseBox.innerHTML = `⚠️ <b>Trợ giảng AI:</b> Phản hồi từ máy chủ: ${data.error || "Trống"}`;
+      responseBox.innerHTML = `⚠️ <b>Trợ giảng AI:</b> Phản hồi trống, em thử gửi lại nhé!`;
     }
   } catch (err) {
-    console.warn("Lỗi kết nối:", err);
-    responseBox.innerHTML = `⚠️ <b>Trợ giảng AI:</b> Lỗi kết nối đến Google Apps Script. Vui lòng thử lại!`;
+    clearTimeout(timeoutId);
+    if (err.name === 'AbortError') {
+      responseBox.innerHTML = `⚠️ <b>Trợ giảng AI:</b> Kết nối quá thời gian cho phép (Timeout 15s). Vui lòng bấm gửi lại!`;
+    } else {
+      console.error("Lỗi gọi Apps Script:", err);
+      responseBox.innerHTML = `⚠️ <b>Trợ giảng AI:</b> Lỗi kết nối đến server. Em bấm thử lại lần nữa nhé!`;
+    }
   }
 }
