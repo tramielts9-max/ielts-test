@@ -247,7 +247,7 @@ async function checkAnswers() {
   }
 }
 
-// AI Trợ giảng IELTS (Gọi qua Apps Script Bảo mật 100%)
+// AI Trợ giảng IELTS (Hỗ trợ định dạng In đậm + Tô Vàng ==dấu== + Tô Xanh [kw]từ khóa[/kw])
 async function askGeminiAI(qId) {
   const inputEl = document.getElementById(`ai_ask_${qId}`);
   const responseBox = document.getElementById(`ai_response_${qId}`);
@@ -267,7 +267,11 @@ async function askGeminiAI(qId) {
 
   const prompt = `Bạn là giáo viên dạy IELTS Reading kỳ cựu và tận tâm.
 Nhiệm vụ: Giải thích thắc mắc của học viên một cách ngắn gọn, súc tích, dễ hiểu bằng tiếng Việt.
-Chỉ ra vì sao đáp án đúng dựa trên bài đọc.
+
+YÊU CẦU ĐỊNH DẠNG:
+- Dùng **từ khóa** để IN ĐẬM các từ quan trọng.
+- Dùng ==bằng chứng== để TÔ VÀNG đoạn thông tin cốt lõi trong bài đọc.
+- Dùng [kw]từ khóa[/kw] để TÔ XANH LÁ CÂY các từ đồng nghĩa (paraphrase).
 
 [THÔNG TIN CÂU HỎI]:
 ${questionContent}
@@ -293,9 +297,15 @@ ${questionContent}
     const data = await res.json();
 
     if (data && data.reply) {
+      // Xử lý format văn bản:
+      // 1. **text** -> In đậm
+      // 2. ==text== -> Tô Vàng nổi bật
+      // 3. [kw]text[/kw] -> Tô Xanh lá cây
       let formattedReply = data.reply
         .replace(/\n/g, "<br>")
-        .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+        .replace(/\*\*(.*?)\*\*/g, "<strong style='color: #0f172a;'>$1</strong>")
+        .replace(/==(.*?)==/g, "<mark style='background-color: #fef08a; color: #854d0e; padding: 2px 5px; border-radius: 4px; font-weight: 600;'>$1</mark>")
+        .replace(/\[kw\](.*?)\[\/kw\]/g, "<span style='background-color: #bbf7d0; color: #14532d; padding: 2px 6px; border-radius: 4px; font-weight: 700;'>$1</span>");
 
       responseBox.innerHTML = `<b>🤖 Trợ giảng AI:</b><br>${formattedReply}`;
     } else {
