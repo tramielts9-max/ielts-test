@@ -7,11 +7,11 @@
 
 // CẤU HÌNH TOÀN CỤC DÙNG CHUNG CHO TẤT CẢ CÁC BÀI TẬP
 const IELTS_CONFIG = {
-  // KHÔNG dán key trực tiếp vào đây nữa để tránh lộ key trên Web (Đã bảo mật 100% qua Script Properties)
+  // KHÔNG dán key trực tiếp vào đây nữa để tránh lộ key trên Web (Bảo mật 100% qua Script Properties)
   GEMINI_API_KEY: "", 
   
-  // Đường link Web App Google Apps Script MỚI của bạn
-  GOOGLE_SCRIPT_URL: "https://script.google.com/macros/s/AKfycby95M2g_KyoH4D_5KSRWER1sSL1gTrtFXsc_fALkHLKdH3AeQ1d0b9J39ROWFd5EFIEdQ/exec"
+  // Đường link Web App Google Apps Script PHIÊN BẢN 24 MỚI NHẤT CỦA BẠN
+  GOOGLE_SCRIPT_URL: "https://script.google.com/macros/s/AKfycby7vRFXq_YhjIEq4kN-8NLRFw2sj-7VkVEmTw6IkNkPmidEPnPtxtNkSE-HKfn5mAPfbw/exec"
 };
 
 // Quản lý đồng hồ bấm giờ
