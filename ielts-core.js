@@ -247,11 +247,10 @@ async function checkAnswers() {
   }
 }
 
-// BỘ LỌC TỪ BỎ VĂN BẢN SUY NGHĨ NỘI BỘ (Meta Thoughts Cleaner)
+// BỘ LỌC TỪ BỎ VĂN BẢN SUY NGHĨ NỘI BỘ VÀ LẶP LẠI (Cleaner)
 function cleanMetaThoughts(text) {
   if (!text) return "";
   let clean = text;
-  // Loại bỏ các đoạn suy nghĩ kiểm tra quy tắc tiếng Anh nếu có
   if (clean.includes("Check constraints:") || clean.includes("Self-Correction")) {
     const parts = clean.split(/(Check constraints:|Self-Correction|Proceeds|Output Generation)/i);
     clean = parts[0].trim();
@@ -259,7 +258,7 @@ function cleanMetaThoughts(text) {
   return clean.trim();
 }
 
-// AI TRỢ GIẢNG (Tự động cuộn mượt xuống ô câu hỏi đang hỏi + Lọc suy nghĩ nội bộ)
+// AI TRỢ GIẢNG (Tự động lọc văn bản câu hỏi thuần túy, tránh bị lặp lại)
 async function askGeminiAI(qId) {
   const inputEl = document.getElementById(`ai_ask_${qId}`);
   const responseBox = document.getElementById(`ai_response_${qId}`);
@@ -274,7 +273,7 @@ async function askGeminiAI(qId) {
   // Mở khung phản hồi
   responseBox.style.display = "block";
 
-  // Thêm ô thắc mắc mới vào duy nhất 1 lần
+  // Thêm ô thắc mắc mới vào bên dưới
   const tempId = "temp_" + Date.now();
   const tempDiv = document.createElement('div');
   tempDiv.id = tempId;
@@ -284,30 +283,31 @@ async function askGeminiAI(qId) {
   tempDiv.innerHTML = `<div style="color: #0369a1; font-weight: bold; margin-bottom: 4px;">💬 Thắc mắc: "${userQuestion.replace(/</g, "&lt;").replace(/>/g, "&gt;")}"</div><i style="color: #64748b;">⏳ AI đang đọc bài và trả lời...</i>`;
   
   responseBox.appendChild(tempDiv);
-
-  // TỰ ĐỘNG CUỘN MƯỢT XUỐNG VỊ TRÍ CÂU HỎI ĐANG HỎI
   tempDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
-  // Xóa sạch ô nhập để sẵn sàng cho câu tiếp theo
+  // Xóa sạch ô nhập
   inputEl.value = "";
 
+  // BẢO VỆ PROMPT: Chỉ lấy thuần túy câu hỏi, LỌC BỎ toàn bộ các câu trả lời cũ của AI để tránh lặp vô tận!
   const qDiv = document.getElementById(qId);
-  const questionContent = qDiv ? qDiv.innerText : "";
+  let questionTextOnly = "";
+  if (qDiv) {
+    let cloneDiv = qDiv.cloneNode(true);
+    cloneDiv.querySelectorAll('.explanation, .thought-box, .ai-assistant-box, .result').forEach(el => el.remove());
+    questionTextOnly = cloneDiv.innerText.trim();
+  }
 
   const prompt = `Bạn là một giáo viên dạy IELTS Reading kỳ cựu, tận tâm và chuyên nghiệp.
-Nhiệm vụ: Giải thích ngắn gọn, trực tiếp thắc mắc của học viên bằng tiếng Việt.
+Nhiệm vụ: Giải thích ngắn gọn, trực tiếp thắc mắc của học viên bằng tiếng Việt trong TỐI ĐA 3-4 ĐOẠN VĂN.
 
-BẮT BUỘC (QUAN TRỌNG):
-- CHỈ xuất ra nội dung giải thích bằng tiếng Việt.
-- KHÔNG xuất ra bất kỳ suy nghĩ nội bộ, nhật ký kiểm tra quy tắc hay câu văn tiếng Anh nào (NO META THOUGHTS, NO SYSTEM LOGS).
-
-YÊU CẦU ĐỊNH DẠNG:
+BẮT BUỘC:
+- Trả lời trực tiếp vào vấn đề. KHÔNG LẶP LẠI CÂU HỎI NHIỀU LẦN. KHÔNG TẠO VÒNG LẶP VÔ TẬN.
 - Dùng **từ khóa** để IN ĐẬM các từ quan trọng.
 - Dùng ==bằng chứng== để TÔ VÀNG đoạn thông tin cốt lõi trong bài đọc.
 - Dùng [kw]từ khóa[/kw] để TÔ XANH LÁ CÂY các từ đồng nghĩa (paraphrase).
 
-[THÔNG TIN CÂU HỎI & ĐÁP ÁN]:
-${questionContent}
+[THÔNG TIN CÂU HỎI]:
+${questionTextOnly}
 
 [THẮC MẮC CỦA HỌC VIÊN]:
 "${userQuestion}"`;
