@@ -2,7 +2,6 @@
  * ==========================================================================
  * IELTS PRACTICE TEST CORE ENGINE (ielts-core.js)
  * Tự động hóa toàn bộ: Bấm giờ, Bôi đen Highlight, Chấm điểm, AI Trợ giảng, Gửi điểm
- * Hỗ trợ Khung Chat Nhiều Lượt (Multi-turn Chat Stream) cho từng câu hỏi
  * ==========================================================================
  */
 
@@ -121,14 +120,6 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     }
   }
-
-  // Lắng nghe sự kiện phím Enter trong các ô hỏi AI
-  document.body.addEventListener('keypress', function(e) {
-    if (e.key === 'Enter' && e.target && e.target.id && e.target.id.startsWith('ai_ask_')) {
-      const qId = e.target.id.replace('ai_ask_', '');
-      askGeminiAI(qId);
-    }
-  });
 
   // Tự động bật timer khi tương tác
   document.body.addEventListener('click', function() {
@@ -256,11 +247,11 @@ async function checkAnswers() {
   }
 }
 
-// AI TRỢ GIẢNG NHIỀU LƯỢT CHAT (Multi-turn Chat Stream per question)
+// AI TRỢ GIẢNG ĐƠN GIẢN (Nối tiếp các câu trả lời bên dưới mà không xóa câu cũ)
 async function askGeminiAI(qId) {
   const inputEl = document.getElementById(`ai_ask_${qId}`);
-  const qDiv = document.getElementById(qId);
-  if (!inputEl || !qDiv) return;
+  const responseBox = document.getElementById(`ai_response_${qId}`);
+  if (!inputEl || !responseBox) return;
 
   const userQuestion = inputEl.value.trim();
   if (!userQuestion) {
@@ -268,39 +259,25 @@ async function askGeminiAI(qId) {
     return;
   }
 
-  const aiBox = qDiv.querySelector('.ai-assistant-box');
-  if (!aiBox) return;
+  // Mở khung phản hồi
+  responseBox.style.display = "block";
 
-  // Lấy hoặc tạo khung chứa Lịch sử Chat cho câu hỏi này
-  let chatHistory = aiBox.querySelector('.ai-chat-history');
-  if (!chatHistory) {
-    chatHistory = document.createElement('div');
-    chatHistory.className = 'ai-chat-history';
-    aiBox.appendChild(chatHistory);
-  }
+  // Thêm ô chờ xử lý nối tiếp vào bên dưới
+  const tempId = "temp_" + Date.now();
+  const tempDiv = document.createElement('div');
+  tempDiv.id = tempId;
+  tempDiv.style.marginTop = "10px";
+  tempDiv.innerHTML = `<div style="color: #0369a1; font-weight: bold; margin-bottom: 3px;">💬 Thắc mắc: "${userQuestion}"</div><i>⏳ AI đang đọc bài và trả lời...</i>`;
+  responseBox.appendChild(tempDiv);
 
-  // 1. Thêm bong bóng Chat của Học sinh
-  const userBubble = document.createElement('div');
-  userBubble.className = 'chat-msg chat-user';
-  userBubble.innerHTML = `💬 <b>Em:</b> ${userQuestion.replace(/</g, "&lt;").replace(/>/g, "&gt;")}`;
-  chatHistory.appendChild(userBubble);
-
-  // 2. Thêm bong bóng Chat chờ của AI
-  const msgId = "ai_msg_" + Date.now();
-  const aiBubble = document.createElement('div');
-  aiBubble.className = 'chat-msg chat-ai';
-  aiBubble.id = msgId;
-  aiBubble.innerHTML = `🤖 <i>Trợ giảng AI đang đọc bài và soạn lời giải thích...</i>`;
-  chatHistory.appendChild(aiBubble);
-
-  // Xóa sạch ô nhập liệu để học sinh chuẩn bị hỏi câu tiếp theo
+  // Xóa sạch ô nhập để học sinh chuẩn bị gõ câu tiếp theo
   inputEl.value = "";
-  chatHistory.scrollTop = chatHistory.scrollHeight;
 
-  const questionContent = qDiv.innerText;
+  const qDiv = document.getElementById(qId);
+  const questionContent = qDiv ? qDiv.innerText : "";
 
   const prompt = `Bạn là giáo viên dạy IELTS Reading kỳ cựu và tận tâm.
-Nhiệm vụ: Trả lời thắc mắc của học viên một cách ngắn gọn, súc tích, dễ hiểu bằng tiếng Việt.
+Nhiệm vụ: Giải thích thắc mắc của học viên một cách ngắn gọn, súc tích, dễ hiểu bằng tiếng Việt.
 
 YÊU CẦU ĐỊNH DẠNG:
 - Dùng **từ khóa** để IN ĐẬM các từ quan trọng.
@@ -329,29 +306,31 @@ ${questionContent}
 
     clearTimeout(timeoutId);
     const data = await res.json();
-    const targetAiMsg = document.getElementById(msgId);
+    const targetEl = document.getElementById(tempId);
 
-    if (data && data.reply && targetAiMsg) {
+    if (data && data.reply && targetEl) {
       let formattedReply = data.reply
         .replace(/\n/g, "<br>")
         .replace(/\*\*(.*?)\*\*/g, "<strong style='color: #0f172a;'>$1</strong>")
         .replace(/==(.*?)==/g, "<mark style='background-color: #fef08a; color: #854d0e; padding: 2px 5px; border-radius: 4px; font-weight: 600;'>$1</mark>")
         .replace(/\[kw\](.*?)\[\/kw\]/g, "<span style='background-color: #bbf7d0; color: #14532d; padding: 2px 6px; border-radius: 4px; font-weight: 700;'>$1</span>");
 
-      targetAiMsg.innerHTML = `<b>🤖 Trợ giảng AI:</b><br>${formattedReply}`;
-      chatHistory.scrollTop = chatHistory.scrollHeight;
-    } else if (targetAiMsg) {
-      targetAiMsg.innerHTML = `⚠️ <b>Trợ giảng AI:</b> Phản hồi trống, em thử gửi lại nhé!`;
+      targetEl.innerHTML = `<div style="border-top: 1px dashed #cbd5e1; padding-top: 8px; margin-top: 8px;">
+        <div style="color: #0369a1; font-weight: bold; margin-bottom: 4px;">💬 Thắc mắc: "${userQuestion}"</div>
+        <b>🤖 Trợ giảng AI:</b><br>${formattedReply}
+      </div>`;
+    } else if (targetEl) {
+      targetEl.innerHTML = `⚠️ <b>Trợ giảng AI:</b> Phản hồi trống, em thử gửi lại nhé!`;
     }
   } catch (err) {
     clearTimeout(timeoutId);
-    const targetAiMsg = document.getElementById(msgId);
-    if (targetAiMsg) {
+    const targetEl = document.getElementById(tempId);
+    if (targetEl) {
       if (err.name === 'AbortError') {
-        targetAiMsg.innerHTML = `⚠️ <b>Trợ giảng AI:</b> Kết nối quá thời gian cho phép (Timeout 15s). Vui lòng bấm gửi lại!`;
+        targetEl.innerHTML = `⚠️ <b>Trợ giảng AI:</b> Kết nối quá thời gian cho phép (Timeout 15s). Vui lòng bấm gửi lại!`;
       } else {
         console.error("Lỗi gọi Apps Script:", err);
-        targetAiMsg.innerHTML = `⚠️ <b>Trợ giảng AI:</b> Lỗi kết nối đến server. Em bấm thử lại lần nữa nhé!`;
+        targetEl.innerHTML = `⚠️ <b>Trợ giảng AI:</b> Lỗi kết nối đến server. Em bấm thử lại lần nữa nhé!`;
       }
     }
   }
