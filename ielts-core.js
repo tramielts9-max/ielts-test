@@ -247,7 +247,7 @@ async function checkAnswers() {
   }
 }
 
-// AI TRỢ GIẢNG ĐƠN GIẢN (Nối tiếp các câu trả lời bên dưới mà không xóa câu cũ)
+// AI TRỢ GIẢNG (Nối tiếp câu hỏi mới + Tự động Cuộn màn hình + Thông báo đang xử lý rõ ràng)
 async function askGeminiAI(qId) {
   const inputEl = document.getElementById(`ai_ask_${qId}`);
   const responseBox = document.getElementById(`ai_response_${qId}`);
@@ -259,18 +259,23 @@ async function askGeminiAI(qId) {
     return;
   }
 
-  // Mở khung phản hồi
   responseBox.style.display = "block";
 
-  // Thêm ô chờ xử lý nối tiếp vào bên dưới
+  // Thêm ô thắc mắc mới và thông báo chờ vào bên dưới
   const tempId = "temp_" + Date.now();
   const tempDiv = document.createElement('div');
   tempDiv.id = tempId;
+  tempDiv.style.borderTop = "1px dashed #cbd5e1";
+  tempDiv.style.paddingTop = "10px";
   tempDiv.style.marginTop = "10px";
-  tempDiv.innerHTML = `<div style="color: #0369a1; font-weight: bold; margin-bottom: 3px;">💬 Thắc mắc: "${userQuestion}"</div><i>⏳ AI đang đọc bài và trả lời...</i>`;
+  tempDiv.innerHTML = `<div style="color: #0369a1; font-weight: bold; margin-bottom: 4px;">💬 Thắc mắc: "${userQuestion.replace(/</g, "&lt;").replace(/>/g, "&gt;")}"</div><i style="color: #64748b;">⏳ AI đang đọc bài và trả lời...</i>`;
+  
   responseBox.appendChild(tempDiv);
 
-  // Xóa sạch ô nhập để học sinh chuẩn bị gõ câu tiếp theo
+  // TỰ ĐỘNG CUỘN XUỐNG để người dùng thấy ngay thông báo đang trả lời
+  tempDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+  // Xóa sạch ô nhập để sẵn sàng cho câu tiếp theo
   inputEl.value = "";
 
   const qDiv = document.getElementById(qId);
@@ -315,10 +320,11 @@ ${questionContent}
         .replace(/==(.*?)==/g, "<mark style='background-color: #fef08a; color: #854d0e; padding: 2px 5px; border-radius: 4px; font-weight: 600;'>$1</mark>")
         .replace(/\[kw\](.*?)\[\/kw\]/g, "<span style='background-color: #bbf7d0; color: #14532d; padding: 2px 6px; border-radius: 4px; font-weight: 700;'>$1</span>");
 
-      targetEl.innerHTML = `<div style="border-top: 1px dashed #cbd5e1; padding-top: 8px; margin-top: 8px;">
-        <div style="color: #0369a1; font-weight: bold; margin-bottom: 4px;">💬 Thắc mắc: "${userQuestion}"</div>
-        <b>🤖 Trợ giảng AI:</b><br>${formattedReply}
-      </div>`;
+      targetEl.innerHTML = `
+        <div style="color: #0369a1; font-weight: bold; margin-bottom: 4px;">💬 Thắc mắc: "${userQuestion.replace(/</g, "&lt;").replace(/>/g, "&gt;")}"</div>
+        <b style="color: #0284c7;">🤖 Trợ giảng AI:</b><br>${formattedReply}
+      `;
+      targetEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     } else if (targetEl) {
       targetEl.innerHTML = `⚠️ <b>Trợ giảng AI:</b> Phản hồi trống, em thử gửi lại nhé!`;
     }
