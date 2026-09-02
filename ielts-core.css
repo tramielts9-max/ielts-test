@@ -1,0 +1,581 @@
+/* ==========================================================================
+   IELTS PRACTICE TEST CORE STYLESHEET
+   ========================================================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+  margin: 0;
+  padding: 15px;
+  background-color: #f1f5f9;
+  color: #1e293b;
+}
+
+/* User Info Bar */
+.user-info-box {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  padding: 12px 18px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  align-items: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.user-info-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 260px;
+}
+
+.user-info-field label {
+  font-weight: 600;
+  color: #0369a1;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.user-info-field input {
+  padding: 8px 12px;
+  font-size: 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.user-info-field input:focus {
+  border-color: #0284c7;
+  box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.15);
+}
+
+/* Header Bar */
+.header-bar {
+  background: #0f172a;
+  color: #ffffff;
+  padding: 14px 20px;
+  border-radius: 8px;
+  margin-bottom: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.header-bar h1 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.header-nav {
+  display: flex;
+  gap: 8px;
+}
+
+.nav-link {
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 13px;
+  padding: 5px 10px;
+  border-radius: 4px;
+  background: rgba(255,255,255,0.08);
+  transition: all 0.2s;
+}
+
+.nav-link:hover, .nav-link.active {
+  color: #ffffff;
+  background: #2563eb;
+}
+
+.timer-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255,255,255,0.08);
+  padding: 6px 14px;
+  border-radius: 30px;
+}
+
+.timer-display {
+  font-size: 17px;
+  font-weight: bold;
+  font-family: 'Courier New', Courier, monospace;
+  color: #38bdf8;
+  background: #020617;
+  padding: 4px 10px;
+  border-radius: 4px;
+  min-width: 65px;
+  text-align: center;
+}
+
+.timer-overtime {
+  color: #f87171 !important;
+  border: 1px solid #ef4444;
+}
+
+.btn-timer {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-timer:hover {
+  background: #1d4ed8;
+}
+
+.score-badge {
+  background: #16a34a;
+  color: white;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 15px;
+  display: none;
+}
+
+/* Layout 2 Cột */
+.container {
+  display: flex;
+  gap: 16px;
+  max-width: 1550px;
+  margin: auto;
+  height: calc(100vh - 165px);
+  min-height: 550px;
+  position: relative;
+}
+
+.passage-box, .question-box {
+  flex: 1;
+  background: #ffffff;
+  padding: 24px;
+  border-radius: 8px;
+  overflow-y: auto;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  border: 1px solid #e2e8f0;
+}
+
+/* Typography Bài đọc */
+h2 {
+  color: #0f172a;
+  margin-top: 0;
+  border-bottom: 2px solid #0284c7;
+  padding-bottom: 8px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+h3 {
+  color: #0369a1;
+  margin-top: 10px;
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+.passage-box p {
+  line-height: 1.7;
+  text-align: justify;
+  font-size: 15px;
+  margin-bottom: 14px;
+  color: #334155;
+}
+
+/* Practice Task Demo Box */
+.practice-container {
+  background-color: #fffbeb;
+  border: 1.5px dashed #f59e0b;
+  border-radius: 8px;
+  padding: 14px;
+  margin-bottom: 20px;
+}
+
+.practice-title {
+  color: #d97706;
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+/* Section Title Câu hỏi */
+.section-title {
+  font-weight: 700;
+  background: #e0f2fe;
+  color: #0369a1;
+  padding: 10px 14px;
+  border-left: 4px solid #0284c7;
+  margin: 24px 0 14px 0;
+  border-radius: 0 6px 6px 0;
+  font-size: 15px;
+}
+
+/* Box Câu hỏi */
+.question {
+  margin-bottom: 18px;
+  padding: 16px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  background-color: #f8fafc;
+  transition: all 0.25s ease;
+}
+
+.question p {
+  margin-top: 0;
+  text-align: left;
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: #1e293b;
+}
+
+.question.correct-border {
+  border-color: #22c55e !important;
+  background-color: #f0fdf4 !important;
+}
+
+.question.incorrect-border {
+  border-color: #ef4444 !important;
+  background-color: #fef2f2 !important;
+}
+
+/* Options Lựa chọn */
+.options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 10px 0;
+}
+
+.options label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  background: #ffffff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  transition: all 0.15s;
+}
+
+.options label:hover {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+}
+
+.options-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.options-vertical label {
+  display: flex;
+  align-items: flex-start;
+  padding: 8px 12px;
+}
+
+/* Input điền từ */
+input[type="text"].fill-input,
+.question input[type="text"] {
+  padding: 6px 10px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 4px;
+  min-width: 120px;
+  font-size: 14px;
+  outline: none;
+  font-weight: 500;
+}
+
+input[type="text"].fill-input:focus,
+.question input[type="text"]:focus {
+  border-color: #0284c7;
+  background: #f0f9ff;
+}
+
+/* Summary Box Từ vựng (A-J) */
+.summary-word-bank {
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  padding: 12px;
+  border-radius: 6px;
+  margin: 12px 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 6px 12px;
+  font-size: 13.5px;
+}
+
+.word-item {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+/* Thought Box (Mạch suy nghĩ) */
+.thought-box {
+  margin-top: 12px;
+}
+
+.thought-box label {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #64748b;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.thought-box textarea {
+  width: 100%;
+  height: 52px;
+  padding: 8px 10px;
+  font-size: 13px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  resize: vertical;
+  font-family: inherit;
+  outline: none;
+}
+
+.thought-box textarea:focus {
+  border-color: #0284c7;
+}
+
+/* Nút Submit */
+.btn-submit {
+  background-color: #0284c7;
+  color: white;
+  border: none;
+  padding: 14px 20px;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 18px;
+  transition: background 0.2s;
+  box-shadow: 0 2px 4px rgba(2, 132, 199, 0.2);
+}
+
+.btn-submit:hover {
+  background-color: #0369a1;
+}
+
+/* Kết quả & Giải thích */
+.result {
+  margin-top: 10px;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.correct-text { color: #16a34a; }
+.incorrect-text { color: #dc2626; }
+
+.explanation {
+  font-size: 13px;
+  color: #334155;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-left: 4px solid #0284c7;
+  padding: 12px 14px;
+  margin-top: 12px;
+  border-radius: 6px;
+  display: none;
+  line-height: 1.6;
+}
+
+.explanation h4 {
+  margin: 0 0 6px 0;
+  color: #0f172a;
+  font-size: 13.5px;
+}
+
+.exp-step {
+  margin-bottom: 5px;
+}
+
+.kw-exp {
+  background-color: #bbf7d0;
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-weight: 700;
+  color: #14532d;
+}
+
+/* AI Assistant Box */
+.ai-assistant-box {
+  margin-top: 12px;
+  padding: 10px;
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 6px;
+}
+
+.ai-assistant-box label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #0369a1;
+  display: block;
+}
+
+.ai-input-group {
+  display: flex;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.ai-input-group input {
+  flex: 1;
+  padding: 6px 10px;
+  font-size: 12.5px;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  outline: none;
+}
+
+.ai-btn {
+  background: #0284c7;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.ai-btn:hover { background: #0369a1; }
+
+.ai-response {
+  font-size: 12.5px;
+  color: #1e293b;
+  margin-top: 8px;
+  display: none;
+  background: white;
+  padding: 10px;
+  border-radius: 6px;
+  border-left: 3px solid #0284c7;
+  line-height: 1.5;
+}
+
+/* Highlighting Logic */
+.user-highlight {
+  background-color: #fecdd3 !important;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.hl-popup {
+  position: absolute;
+  display: none;
+  z-index: 1000;
+  background: #0f172a;
+  color: white;
+  border-radius: 6px;
+  padding: 4px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+
+.hl-popup button {
+  background: transparent;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.hl-popup button:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+.submitted .hl, .always-hl {
+  background-color: #fef08a;
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-weight: 500;
+  position: relative;
+}
+
+.submitted .hl-active {
+  background-color: #fde047 !important;
+  outline: 2px solid #ca8a04;
+  box-shadow: 0 0 10px rgba(202, 138, 4, 0.4);
+}
+
+.submitted .kw, .always-kw {
+  background-color: #86efac !important;
+  font-weight: 700;
+  padding: 1px 4px;
+  border-radius: 3px;
+  color: #14532d;
+}
+
+.submitted .hl::before, .always-hl::before {
+  content: attr(data-q);
+  background-color: #d97706;
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 3px;
+  margin-right: 4px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.btn-locate {
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  padding: 5px 10px;
+  font-size: 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 6px;
+  color: #334155;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.btn-locate:hover {
+  background: #e2e8f0;
+  border-color: #94a3b8;
+}
+
+/* Flowchart representation */
+.flowchart-step {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin-bottom: 8px;
+}
+
+.flowchart-arrow {
+  text-align: center;
+  font-size: 16px;
+  color: #64748b;
+  margin: 4px 0;
+}

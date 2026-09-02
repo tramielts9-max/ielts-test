@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>IELTS 21 Test 4 - Passage 3: The Globemakers</title>
+  <link rel="stylesheet" href="ielts-core.css">
+</head>
+<body>
+
+<div class="user-info-box">
+  <div class="user-info-field">
+    <label for="studentNameInput">👤 Họ và Tên:</label>
+    <input type="text" id="studentNameInput" placeholder="Nhập họ và tên học viên...">
+  </div>
+  <div class="user-info-field">
+    <label for="studentEmailInput">✉️ Email Google:</label>
+    <input type="email" id="studentEmailInput" placeholder="Nhập Email để lưu kết quả...">
+  </div>
+</div>
+
+<div class="header-bar">
+  <h1>IELTS Academic 21 - Test 4 - Passage 3</h1>
+  
+  <div class="header-nav">
+    <a href="cam21-test4-p1.html" class="nav-link">Passage 1</a>
+    <a href="cam21-test4-p2.html" class="nav-link">Passage 2</a>
+    <a href="cam21-test4-p3.html" class="nav-link active">Passage 3</a>
+  </div>
+
+  <div class="timer-container">
+    <span>⏱️ Thời gian:</span>
+    <span class="timer-display" id="timerDisplay">00:00</span>
+    <button class="btn-timer" onclick="startTimer()">▶️ Bắt đầu</button>
+    <button class="btn-timer" onclick="pauseTimer()">⏸️ Tạm dừng</button>
+  </div>
+
+  <div class="score-badge" id="scoreBadge">Điểm số: <span id="scoreText">0/14</span></div>
+</div>
+
+<div id="hlPopup" class="hl-popup"><button id="btnDoHighlight">🖍️ Highlight</button></div>
+<div id="removeHlPopup" class="hl-popup"><button id="btnRemoveHighlight">❌ Xóa Highlight</button></div>
+
+<div class="container">
+  <!-- CỘT BÀI ĐỌC -->
+  <div class="passage-box" id="passageBox">
+    <h2>READING PASSAGE 3</h2>
+    <h3>The Globemakers: The Curious Story of an Ancient Craft</h3>
+    <p><i>A review of Peter Bellerby's book The Globemakers</i></p>
+    
+    <p>In 2008, Peter Bellerby, who lived in London, wanted to give his father a model globe for his eightieth birthday. <span class="hl" id="hl-q27" data-q="[Q27]">What seemed simple enough to start with <span class="kw">triggered an almost obsessive, decade-long journey, marked by a series of obstacles</span> that would have deterred anyone less determined</span>. It ended with his establishing the world's only bespoke globemaking company.</p>
+    
+    <p><span class="hl" id="hl-q29" data-q="[Q29]">The first surprise in The Globemakers, Bellerby's account of this impulsive enterprise, is that <span class="kw">obtaining such a globe was not simply a matter of a quick online order and a repressed sigh at the shipping costs</span></span>. <span class="hl" id="hl-q33" data-q="[Q33]">After all, <span class="kw">contrary to stubbornly held popular views of our ancestors' geographical ignorance, we have known that the world is spherical since at least the 6th century BCE</span></span>. <span class="hl" id="hl-q34" data-q="[Q34-NG]">The ancient Greek philosopher Plato in his work Phaedo likened it to a leather ball</span>, while <span class="hl" id="hl-q35" data-q="[Q35-NG]">the accolade of producing the first recorded globe goes to the ancient Greek philosopher Crates of Mallus, who is said to have made one in around 150 BCE</span>. <span class="hl" id="hl-q36" data-q="[Q36]">Surely, Bellerby reasoned, <span class="kw">a good-quality globe wouldn't be difficult to find</span></span>.</p>
+    
+    <p>Nearly two millennia later, however, it seemed that the art of globemaking had been largely forgotten. <span class="hl" id="hl-q30-31" data-q="[Q30-31]">Bellerby came across <span class="kw">shoddy commercial versions</span> designed for <span class="kw">school classrooms</span></span> and genuine antiques in auction houses that would have bust his budget. <span class="hl" id="hl-q32" data-q="[Q32]">Even his trips to Morocco and India, where <span class="kw">surely the knowledge of artisan cartographers* had been preserved</span>, drew a blank</span>.</p>
+    
+    <p>Not one to be easily thwarted, Bellerby decided to make his own good-quality globe. <span class="hl" id="hl-q28" data-q="[Q28]">In the process, <span class="kw">almost everything that could possibly go wrong did so</span></span>. Even the shape of the Earth posed a problem, as it is not quite a perfect sphere, but oblate (slightly flattened at the poles). Having decided to compromise and opt for two half-spherical pieces that could be fitted together, he was unable to discover anyone capable of casting moulds with sufficient accuracy to ensure that he would not be left with two half-spheres that were not quite the same circumference. Even after he eventually resolved this issue, extracting these from the moulds resulted in piles of cracked plaster of Paris** and clouds of choking dust in the workshop he had set up at the rear of his house.</p>
+    
+    <p>This series of abortive experiments taught Bellerby a lot about the challenges of making globes, which he communicates here to the reader. Finding just the right way to prise the globes from the mould - a high-end air compressor finally did the trick - and locating the right paper and inks with which to make the gores (the sections of flat sheet mapping that are pasted onto the spherical globe) without the ink seeping out to create a mushy, unreadable mess took months and an alarming chunk out of his bank balance. <span class="hl" id="hl-q37" data-q="[Q37]">Bellerby's frustration at the painstaking process of attaching the gores to the globe surface - after having found a glue with precisely the right adhesive qualities - is palpable. <span class="kw">Right at the end of the process, he learnt that the paper had stretched slightly and so the final one overlapped the first by a centimetre</span></span> (which may not seem a great deal, but when that represents 2 per cent of the Earth's diameter, it's equivalent to obliterating the Himalayas or wiping out Chile).</p>
+    
+    <p>Bellerby's account of the technical challenges of globe production is interspersed with a series of interludes on great globemakers of the past and cartographic history in general. Purists might wish for more map-making details, but <span class="hl" id="hl-q38" data-q="[Q38]">Bellerby clearly found a <span class="kw">kindred spirit in Martin Behaim</span>. He was the Nuremberg entrepreneur who in 1492 created the Erdapfel... Something of Bellerby's unflinching ambition is reflected in the even more <span class="kw">heroic efforts of the Italian cartographer Vincenzo Coronelli</span></span>, who, in the seventeenth century, created two globes for Louis XIV of France. It took him twenty years to complete the monstrous pair, whose vast bulk - each with a diameter of around four metres - can still be admired in the National Library of France in Paris.</p>
+    
+    <p><span class="hl" id="hl-q39" data-q="[Q39]">Although a celebration of the revival of an ancient craft, <span class="kw">Bellerby's book is also a lament for the fading away of centuries-old traditions</span>. When he embarked on his globemaking odyssey, he struggled to find artisans with the skills to make the right moulds for the globes or foundries that could shape the meridians in just the right way</span>. Although he finally located the right craftsmen, some simply dropping in, serendipitously, to his workshop (by now in more suitable premises than his back room), many of these have now retired or passed away.</p>
+    
+    <p>Bellerby's father finally did receive his eightieth birthday present, albeit two years late. Bellerby went on to found a company which now turns out over six hundred globes a year for customers who can have their own tiny village marked or more unusual requests fulfilled. <span class="hl" id="hl-q40" data-q="[Q40]">His book, beautifully illustrated with photographs of the various stages of his venture and a few illustrations of historic globes and maps, <span class="kw">is hardly a blueprint for commercial success</span></span>. But it is more than enough to stir up admiration for the craftsmanship of the great mapmakers of the past and the obsessive determination of a modern successor who revived their almost moribund art.</p>
+  </div>
+
+  <!-- CỘT CÂU HỎI -->
+  <div class="question-box">
+    <div class="section-title">Questions 27-32: Summary Completion</div>
+    <p><i>Complete the summary using the list of words, <b>A-J</b>, below. Type the correct letter (A-J) in each box.</i></p>
+
+    <div class="summary-word-bank">
+      <div class="word-item"><b>A.</b> educational use</div>
+      <div class="word-item"><b>B.</b> rare materials</div>
+      <div class="word-item"><b>C.</b> inferior makes</div>
+      <div class="word-item"><b>D.</b> product exchange markets</div>
+      <div class="word-item"><b>E.</b> necessary skills</div>
+      <div class="word-item"><b>F.</b> international</div>
+      <div class="word-item"><b>G.</b> challenging task</div>
+      <div class="word-item"><b>H.</b> memorable object</div>
+      <div class="word-item"><b>I.</b> internet purchase</div>
+      <div class="word-item"><b>J.</b> numerous problems</div>
+    </div>
+
+    <div class="question" id="q27">
+      <p>Peter Bellerby's plan to give his father a globe for his birthday was an unexpectedly <b>27.</b> <input type="text" id="q27_input" class="fill-input" maxlength="2" placeholder="Letter">...</p>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q27_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• Đáp án: <span class="kw-exp">G</span> (challenging task)</div>
+        <button class="btn-locate" onclick="highlightText('hl-q27')">🔍 Xem vị trí trong bài đọc</button>
+        <div class="ai-assistant-box">
+          <div class="ai-input-group"><input type="text" id="ai_ask_q27" placeholder="Hỏi AI về câu này..."><button class="ai-btn" onclick="askGeminiAI('q27')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q27"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" id="q28">
+      <p>...for which he had to overcome <b>28.</b> <input type="text" id="q28_input" class="fill-input" maxlength="2" placeholder="Letter">.</p>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q28_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• Đáp án: <span class="kw-exp">J</span> (numerous problems)</div>
+        <button class="btn-locate" onclick="highlightText('hl-q28')">🔍 Xem vị trí trong bài đọc</button>
+        <div class="ai-assistant-box">
+          <div class="ai-input-group"><input type="text" id="ai_ask_q28" placeholder="Hỏi AI về câu này..."><button class="ai-btn" onclick="askGeminiAI('q28')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q28"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" id="q29">
+      <p>He soon learnt that a straightforward <b>29.</b> <input type="text" id="q29_input" class="fill-input" maxlength="2" placeholder="Letter"> would not be possible.</p>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q29_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• Đáp án: <span class="kw-exp">I</span> (internet purchase)</div>
+        <button class="btn-locate" onclick="highlightText('hl-q29')">🔍 Xem vị trí trong bài đọc</button>
+        <div class="ai-assistant-box">
+          <div class="ai-input-group"><input type="text" id="ai_ask_q29" placeholder="Hỏi AI về câu này..."><button class="ai-btn" onclick="askGeminiAI('q29')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q29"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" id="q30">
+      <p>Some <b>30.</b> <input type="text" id="q30_input" class="fill-input" maxlength="2" placeholder="Letter">...</p>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q30_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• Đáp án: <span class="kw-exp">C</span> (inferior makes)</div>
+        <button class="btn-locate" onclick="highlightText('hl-q30-31')">🔍 Xem vị trí trong bài đọc</button>
+        <div class="ai-assistant-box">
+          <div class="ai-input-group"><input type="text" id="ai_ask_q30" placeholder="Hỏi AI về câu này..."><button class="ai-btn" onclick="askGeminiAI('q30')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q30"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" id="q31">
+      <p>...that had been intended for <b>31.</b> <input type="text" id="q31_input" class="fill-input" maxlength="2" placeholder="Letter"> were available, as were some expensive antique globes...</p>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q31_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• Đáp án: <span class="kw-exp">A</span> (educational use)</div>
+        <button class="btn-locate" onclick="highlightText('hl-q30-31')">🔍 Xem vị trí trong bài đọc</button>
+        <div class="ai-assistant-box">
+          <div class="ai-input-group"><input type="text" id="ai_ask_q31" placeholder="Hỏi AI về câu này..."><button class="ai-btn" onclick="askGeminiAI('q31')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q31"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" id="q32">
+      <p>He even travelled to places where people might still have the <b>32.</b> <input type="text" id="q32_input" class="fill-input" maxlength="2" placeholder="Letter">, but Bellerby could not find what he wanted.</p>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q32_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• Đáp án: <span class="kw-exp">E</span> (necessary skills)</div>
+        <button class="btn-locate" onclick="highlightText('hl-q32')">🔍 Xem vị trí trong bài đọc</button>
+        <div class="ai-assistant-box">
+          <div class="ai-input-group"><input type="text" id="ai_ask_q32" placeholder="Hỏi AI về câu này..."><button class="ai-btn" onclick="askGeminiAI('q32')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q32"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">Questions 33-36: YES / NO / NOT GIVEN</div>
+    <p><i>Do the following statements agree with the claims of the writer in Reading Passage 3?</i></p>
+
+    <div class="question" id="q33">
+      <p><b>33.</b> The assumption today that people in the past knew very little about geography is correct.</p>
+      <div class="options">
+        <label><input type="radio" name="q33" value="YES"> YES</label>
+        <label><input type="radio" name="q33" value="NO"> NO</label>
+        <label><input type="radio" name="q33" value="NOT GIVEN"> NOT GIVEN</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q33_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• Đáp án: <span class="kw-exp">NO</span></div>
+        <button class="btn-locate" onclick="highlightText('hl-q33')">🔍 Xem vị trí trong bài đọc</button>
+        <div class="ai-assistant-box">
+          <div class="ai-input-group"><input type="text" id="ai_ask_q33" placeholder="Hỏi AI về câu này..."><button class="ai-btn" onclick="askGeminiAI('q33')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q33"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" id="q34">
+      <p><b>34.</b> Plato was criticised for saying the world was shaped like a leather ball.</p>
+      <div class="options">
+        <label><input type="radio" name="q34" value="YES"> YES</label>
+        <label><input type="radio" name="q34" value="NO"> NO</label>
+        <label><input type="radio" name="q34" value="NOT GIVEN"> NOT GIVEN</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q34_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• Đáp án: <span class="kw-exp">NOT GIVEN</span></div>
+        <button class="btn-locate" onclick="highlightText('hl-q34')">🔍 Xem vị trí trong bài đọc</button>
+        <div class="ai-assistant-box">
+          <div class="ai-input-group"><input type="text" id="ai_ask_q34" placeholder="Hỏi AI về câu này..."><button class="ai-btn" onclick="askGeminiAI('q34')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q34"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" id="q35">
+      <p><b>35.</b> The globe made by Crates of Mallus was an accurate representation of the known world.</p>
+      <div class="options">
+        <label><input type="radio" name="q35" value="YES"> YES</label>
+        <label><input type="radio" name="q35" value="NO"> NO</label>
+        <label><input type="radio" name="q35" value="NOT GIVEN"> NOT GIVEN</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q35_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• Đáp án: <span class="kw-exp">NOT GIVEN</span></div>
+        <button class="btn-locate" onclick="highlightText('hl-q35')">🔍 Xem vị trí trong bài đọc</button>
+        <div class="ai-assistant-box">
+          <div class="ai-input-group"><input type="text" id="ai_ask_q35" placeholder="Hỏi AI về câu này..."><button class="ai-btn" onclick="askGeminiAI('q35')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q35"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" id="q36">
+      <p><b>36.</b> Bellerby assumed he would have few problems locating a well-made globe.</p>
+      <div class="options">
+        <label><input type="radio" name="q36" value="YES"> YES</label>
+        <label><input type="radio" name="q36" value="NO"> NO</label>
+        <label><input type="radio" name="q36" value="NOT GIVEN"> NOT GIVEN</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q36_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• Đáp án: <span class="kw-exp">YES</span></div>
+        <button class="btn-locate" onclick="highlightText('hl-q36')">🔍 Xem vị trí trong bài đọc</button>
+        <div class="ai-assistant-box">
+          <div class="ai-input-group"><input type="text" id="ai_ask_q36" placeholder="Hỏi AI về câu này..."><button class="ai-btn" onclick="askGeminiAI('q36')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q36"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">Questions 37-40: Multiple Choice</div>
+    <p><i>Choose the correct letter, <b>A, B, C</b> or <b>D</b>.</i></p>
+
+    <div class="question" id="q37">
+      <p><b>37.</b> When Bellerby had to attach the gores to the globe surface,</p>
+      <div class="options options-vertical">
+        <label><input type="radio" name="q37" value="A"> <b>A.</b> he decided it was best to work quickly.</label>
+        <label><input type="radio" name="q37" value="B"> <b>B.</b> he became aware of an unexpected issue.</label>
+        <label><input type="radio" name="q37" value="C"> <b>C.</b> he was worried about the quality of his materials.</label>
+        <label><input type="radio" name="q37" value="D"> <b>D.</b> he nearly gave up the whole project.</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q37_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• Đáp án: <span class="kw-exp">B</span></div>
+        <button class="btn-locate" onclick="highlightText('hl-q37')">🔍 Xem vị trí trong bài đọc</button>
+        <div class="ai-assistant-box">
+          <div class="ai-input-group"><input type="text" id="ai_ask_q37" placeholder="Hỏi AI về câu này..."><button class="ai-btn" onclick="askGeminiAI('q37')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q37"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" id="q38">
+      <p><b>38.</b> The reviewer mentions other globe makers of the past because</p>
+      <div class="options options-vertical">
+        <label><input type="radio" name="q38" value="A"> <b>A.</b> Bellerby was particularly inspired by them.</label>
+        <label><input type="radio" name="q38" value="B"> <b>B.</b> their achievements are not widely known.</label>
+        <label><input type="radio" name="q38" value="C"> <b>C.</b> Bellerby had something in common with each of them.</label>
+        <label><input type="radio" name="q38" value="D"> <b>D.</b> their difficulties could have been avoided.</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q38_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• Đáp án: <span class="kw-exp">C</span></div>
+        <button class="btn-locate" onclick="highlightText('hl-q38')">🔍 Xem vị trí trong bài đọc</button>
+        <div class="ai-assistant-box">
+          <div class="ai-input-group"><input type="text" id="ai_ask_q38" placeholder="Hỏi AI về câu này..."><button class="ai-btn" onclick="askGeminiAI('q38')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q38"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" id="q39">
+      <p><b>39.</b> What point is made about Bellerby in the seventh paragraph?</p>
+      <div class="options options-vertical">
+        <label><input type="radio" name="q39" value="A"> <b>A.</b> He had long working relationships with numerous craftsmen.</label>
+        <label><input type="radio" name="q39" value="B"> <b>B.</b> He understands the lack of interest in traditional crafts.</label>
+        <label><input type="radio" name="q39" value="C"> <b>C.</b> He appreciates the importance of careful planning.</label>
+        <label><input type="radio" name="q39" value="D"> <b>D.</b> He regrets the loss of many globe-making skills.</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q39_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• Đáp án: <span class="kw-exp">D</span></div>
+        <button class="btn-locate" onclick="highlightText('hl-q39')">🔍 Xem vị trí trong bài đọc</button>
+        <div class="ai-assistant-box">
+          <div class="ai-input-group"><input type="text" id="ai_ask_q39" placeholder="Hỏi AI về câu này..."><button class="ai-btn" onclick="askGeminiAI('q39')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q39"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" id="q40">
+      <p><b>40.</b> What does the reviewer say about Bellerby's book in the final paragraph?</p>
+      <div class="options options-vertical">
+        <label><input type="radio" name="q40" value="A"> <b>A.</b> It does not tell you how to create a profitable business.</label>
+        <label><input type="radio" name="q40" value="B"> <b>B.</b> It overlooks some important mapmakers.</label>
+        <label><input type="radio" name="q40" value="C"> <b>C.</b> It fails to discuss the future of globe-making.</label>
+        <label><input type="radio" name="q40" value="D"> <b>D.</b> It does not give enough details about individual customers.</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q40_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• Đáp án: <span class="kw-exp">A</span></div>
+        <button class="btn-locate" onclick="highlightText('hl-q40')">🔍 Xem vị trí trong bài đọc</button>
+        <div class="ai-assistant-box">
+          <div class="ai-input-group"><input type="text" id="ai_ask_q40" placeholder="Hỏi AI về câu này..."><button class="ai-btn" onclick="askGeminiAI('q40')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q40"></div>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn-submit" onclick="checkAnswers()">CHẤM BÀI VÀ XEM ĐÁP ÁN</button>
+  </div>
+</div>
+
+<script>
+  window.TEST_DATA = {
+    title: "Cambridge 21 Test 4 - Passage 3",
+    answers: {
+      q27: "G",
+      q28: "J",
+      q29: "I",
+      q30: "C",
+      q31: "A",
+      q32: "E",
+      q33: "NO",
+      q34: "NOT GIVEN",
+      q35: "NOT GIVEN",
+      q36: "YES",
+      q37: "B",
+      q38: "C",
+      q39: "D",
+      q40: "A"
+    }
+  };
+</script>
+<script src="ielts-core.js"></script>
+
+</body>
+</html>
