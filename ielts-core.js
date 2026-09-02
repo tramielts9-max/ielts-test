@@ -247,7 +247,19 @@ async function checkAnswers() {
   }
 }
 
-// AI TRỢ GIẢNG (Nối tiếp câu hỏi mới + Tự động Cuộn màn hình + Thông báo đang xử lý rõ ràng)
+// BỘ LỌC TỪ BỎ VĂN BẢN SUY NGHĨ NỘI BỘ (Meta Thoughts Cleaner)
+function cleanMetaThoughts(text) {
+  if (!text) return "";
+  let clean = text;
+  // Loại bỏ các đoạn suy nghĩ kiểm tra quy tắc tiếng Anh nếu có
+  if (clean.includes("Check constraints:") || clean.includes("Self-Correction")) {
+    const parts = clean.split(/(Check constraints:|Self-Correction|Proceeds|Output Generation)/i);
+    clean = parts[0].trim();
+  }
+  return clean.trim();
+}
+
+// AI TRỢ GIẢNG (Tự động cuộn mượt xuống ô câu hỏi đang hỏi + Lọc suy nghĩ nội bộ)
 async function askGeminiAI(qId) {
   const inputEl = document.getElementById(`ai_ask_${qId}`);
   const responseBox = document.getElementById(`ai_response_${qId}`);
@@ -259,9 +271,10 @@ async function askGeminiAI(qId) {
     return;
   }
 
+  // Mở khung phản hồi
   responseBox.style.display = "block";
 
-  // Thêm ô thắc mắc mới và thông báo chờ vào bên dưới
+  // Thêm ô thắc mắc mới vào duy nhất 1 lần
   const tempId = "temp_" + Date.now();
   const tempDiv = document.createElement('div');
   tempDiv.id = tempId;
@@ -272,7 +285,7 @@ async function askGeminiAI(qId) {
   
   responseBox.appendChild(tempDiv);
 
-  // TỰ ĐỘNG CUỘN XUỐNG để người dùng thấy ngay thông báo đang trả lời
+  // TỰ ĐỘNG CUỘN MƯỢT XUỐNG VỊ TRÍ CÂU HỎI ĐANG HỎI
   tempDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
   // Xóa sạch ô nhập để sẵn sàng cho câu tiếp theo
@@ -281,15 +294,19 @@ async function askGeminiAI(qId) {
   const qDiv = document.getElementById(qId);
   const questionContent = qDiv ? qDiv.innerText : "";
 
-  const prompt = `Bạn là giáo viên dạy IELTS Reading kỳ cựu và tận tâm.
-Nhiệm vụ: Giải thích thắc mắc của học viên một cách ngắn gọn, súc tích, dễ hiểu bằng tiếng Việt.
+  const prompt = `Bạn là một giáo viên dạy IELTS Reading kỳ cựu, tận tâm và chuyên nghiệp.
+Nhiệm vụ: Giải thích ngắn gọn, trực tiếp thắc mắc của học viên bằng tiếng Việt.
+
+BẮT BUỘC (QUAN TRỌNG):
+- CHỈ xuất ra nội dung giải thích bằng tiếng Việt.
+- KHÔNG xuất ra bất kỳ suy nghĩ nội bộ, nhật ký kiểm tra quy tắc hay câu văn tiếng Anh nào (NO META THOUGHTS, NO SYSTEM LOGS).
 
 YÊU CẦU ĐỊNH DẠNG:
 - Dùng **từ khóa** để IN ĐẬM các từ quan trọng.
 - Dùng ==bằng chứng== để TÔ VÀNG đoạn thông tin cốt lõi trong bài đọc.
 - Dùng [kw]từ khóa[/kw] để TÔ XANH LÁ CÂY các từ đồng nghĩa (paraphrase).
 
-[THÔNG TIN CÂU HỎI]:
+[THÔNG TIN CÂU HỎI & ĐÁP ÁN]:
 ${questionContent}
 
 [THẮC MẮC CỦA HỌC VIÊN]:
@@ -314,7 +331,9 @@ ${questionContent}
     const targetEl = document.getElementById(tempId);
 
     if (data && data.reply && targetEl) {
-      let formattedReply = data.reply
+      let cleanedReply = cleanMetaThoughts(data.reply);
+      
+      let formattedReply = cleanedReply
         .replace(/\n/g, "<br>")
         .replace(/\*\*(.*?)\*\*/g, "<strong style='color: #0f172a;'>$1</strong>")
         .replace(/==(.*?)==/g, "<mark style='background-color: #fef08a; color: #854d0e; padding: 2px 5px; border-radius: 4px; font-weight: 600;'>$1</mark>")
