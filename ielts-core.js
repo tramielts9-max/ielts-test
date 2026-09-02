@@ -7,11 +7,11 @@
 
 // CẤU HÌNH TOÀN CỤC DÙNG CHUNG CHO TẤT CẢ CÁC BÀI TẬP
 const IELTS_CONFIG = {
-  // Key API Gemini của bạn
-  GEMINI_API_KEY: "AQ.Ab8RN6IF5lsAt7MVzwQu1I3fqIZfmxgrggP7QxxH1MSVtXEeYQ",
+  // KHÔNG dán key trực tiếp vào đây nữa để tránh lộ key trên Web (Đã bảo mật 100% qua Script Properties)
+  GEMINI_API_KEY: "", 
   
-  // Đường link Web App Google Apps Script nhận điểm và xử lý AI của bạn
-  GOOGLE_SCRIPT_URL: "https://script.google.com/macros/s/AKfycby7vRFXq_YhjIEq4kN-8NLRFw2sj-7VkVEmTw6IkNkPmidEPnPtxtNkSE-HKfn5mAPfbw/exec"
+  // Đường link Web App Google Apps Script MỚI của bạn
+  GOOGLE_SCRIPT_URL: "https://script.google.com/macros/s/AKfycby95M2g_KyoH4D_5KSRWER1sSL1gTrtFXsc_fALkHLKdH3AeQ1d0b9J39ROWFd5EFIEdQ/exec"
 };
 
 // Quản lý đồng hồ bấm giờ
@@ -247,7 +247,7 @@ async function checkAnswers() {
   }
 }
 
-// AI Trợ giảng IELTS (Có Timeout tự động 15 giây & tránh lỗi CORS Preflight)
+// AI Trợ giảng IELTS (Gọi qua Apps Script Bảo mật 100%)
 async function askGeminiAI(qId) {
   const inputEl = document.getElementById(`ai_ask_${qId}`);
   const responseBox = document.getElementById(`ai_response_${qId}`);
@@ -275,7 +275,6 @@ ${questionContent}
 [THẮC MẮC CỦA HỌC VIÊN]:
 "${userQuestion}"`;
 
-  // Thiết lập ngắt kết nối tự động sau 15 giây nếu server chưa phản hồi
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 15000);
 
@@ -294,7 +293,6 @@ ${questionContent}
     const data = await res.json();
 
     if (data && data.reply) {
-      // Xử lý format văn bản: Xuống dòng + In đậm Markdown (**text**)
       let formattedReply = data.reply
         .replace(/\n/g, "<br>")
         .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
