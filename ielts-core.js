@@ -10,7 +10,7 @@ const IELTS_CONFIG = {
   // KHÔNG dán key trực tiếp vào đây để tránh lộ key trên Web (Bảo mật 100% qua Script Properties)
   GEMINI_API_KEY: "", 
   
-  // Đường link Web App Google Apps Script PHIÊN BẢN 24 MỚI NHẤT CỦA BẠN
+  // Đường link Web App Google Apps Script PHIÊN BẢN MỚI NHẤT CỦA BẠN
   GOOGLE_SCRIPT_URL: "https://script.google.com/macros/s/AKfycby7vRFXq_YhjIEq4kN-8NLRFw2sj-7VkVEmTw6IkNkPmidEPnPtxtNkSE-HKfn5mAPfbw/exec"
 };
 
@@ -252,7 +252,6 @@ function cleanMetaThoughts(text) {
   if (!text) return "";
   let clean = text;
   
-  // Loại bỏ các thẻ Prompt nhặt nhạnh bị lọt ra
   clean = clean.replace(/\[THẮC MẮC CỦA HỌC VIÊN\]:\s*".*?"/gi, "");
   clean = clean.replace(/\[THÔNG TIN CÂU HỎI\]:.*/gi, "");
   clean = clean.replace(/💬 Trả lời:/gi, "");
@@ -264,7 +263,7 @@ function cleanMetaThoughts(text) {
   return clean.trim();
 }
 
-// AI TRỢ GIẢNG (Cỡ chữ 15px chuẩn bài đọc, Thắc mắc to 16px nổi bật, Lọc sạch nhãn thừa)
+// AI TRỢ GIẢNG (Cấu hình Timeout 30 giây để ngắt chờ an toàn)
 async function askGeminiAI(qId) {
   const inputEl = document.getElementById(`ai_ask_${qId}`);
   const responseBox = document.getElementById(`ai_response_${qId}`);
@@ -328,8 +327,9 @@ ${questionTextOnly}
 [HỌC VIÊN HỎI]:
 ${userQuestion}`;
 
+  // THỜI GIAN CHỜ TIMEOUT NÂNG LÊN 30 GIÂY (30000ms)
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 15000);
+  const timeoutId = setTimeout(() => controller.abort(), 30000);
 
   try {
     const res = await fetch(IELTS_CONFIG.GOOGLE_SCRIPT_URL, {
@@ -355,7 +355,6 @@ ${userQuestion}`;
         .replace(/==(.*?)==/g, "<mark style='background-color: #fef08a; color: #854d0e; padding: 2px 5px; border-radius: 4px; font-weight: 600;'>$1</mark>")
         .replace(/\[kw\](.*?)\[\/kw\]/g, "<span style='background-color: #bbf7d0; color: #14532d; padding: 2px 6px; border-radius: 4px; font-weight: 700;'>$1</span>");
 
-      // Cỡ chữ phần trả lời bằng đúng cỡ chữ bài đọc (15px, line-height 1.7)
       targetEl.innerHTML = `
         <div style="color: #0369a1; font-weight: 700; font-size: 16px; margin-bottom: 8px; background: #e0f2fe; padding: 6px 12px; border-radius: 6px; border-left: 4px solid #0284c7;">
           💬 Thắc mắc: "${safeQuestionText}"
@@ -373,7 +372,7 @@ ${userQuestion}`;
     const targetEl = document.getElementById(tempId);
     if (targetEl) {
       if (err.name === 'AbortError') {
-        targetEl.innerHTML = `⚠️ <b>Trợ giảng AI:</b> Kết nối quá thời gian cho phép (Timeout 15s). Vui lòng bấm gửi lại!`;
+        targetEl.innerHTML = `⚠️ <b>Trợ giảng AI:</b> Kết nối quá thời gian cho phép (Timeout 30s). Vui lòng bấm gửi lại!`;
       } else {
         console.error("Lỗi gọi Apps Script:", err);
         targetEl.innerHTML = `⚠️ <b>Trợ giảng AI:</b> Lỗi kết nối đến server. Em bấm thử lại lần nữa nhé!`;
