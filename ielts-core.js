@@ -247,18 +247,24 @@ async function checkAnswers() {
   }
 }
 
-// BỘ LỌC TỪ BỎ VĂN BẢN SUY NGHĨ NỘI BỘ VÀ LẶP LẠI (Cleaner)
+// BỘ LỌC TẬN GỐC CÁC THẺ NHÃN VÀ THẮC MẮC LẶP LẠI
 function cleanMetaThoughts(text) {
   if (!text) return "";
   let clean = text;
+  
+  // Loại bỏ các thẻ Prompt nhặt nhạnh bị lọt ra
+  clean = clean.replace(/\[THẮC MẮC CỦA HỌC VIÊN\]:\s*".*?"/gi, "");
+  clean = clean.replace(/\[THÔNG TIN CÂU HỎI\]:.*/gi, "");
+  clean = clean.replace(/💬 Trả lời:/gi, "");
+  
   if (clean.includes("Check constraints:") || clean.includes("Self-Correction")) {
     const parts = clean.split(/(Check constraints:|Self-Correction|Proceeds|Output Generation)/i);
-    clean = parts[0].trim();
+    clean = parts[0];
   }
   return clean.trim();
 }
 
-// AI TRỢ GIẢNG (Tự động lọc văn bản câu hỏi thuần túy, tránh bị lặp lại)
+// AI TRỢ GIẢNG (Cỡ chữ 15px chuẩn bài đọc, Thắc mắc to 16px nổi bật, Lọc sạch nhãn thừa)
 async function askGeminiAI(qId) {
   const inputEl = document.getElementById(`ai_ask_${qId}`);
   const responseBox = document.getElementById(`ai_response_${qId}`);
@@ -273,14 +279,21 @@ async function askGeminiAI(qId) {
   // Mở khung phản hồi
   responseBox.style.display = "block";
 
-  // Thêm ô thắc mắc mới vào bên dưới
+  const safeQuestionText = userQuestion.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+  // Thêm ô thắc mắc mới (Cỡ chữ to 16px, Font đậm nổi bật)
   const tempId = "temp_" + Date.now();
   const tempDiv = document.createElement('div');
   tempDiv.id = tempId;
   tempDiv.style.borderTop = "1px dashed #cbd5e1";
-  tempDiv.style.paddingTop = "10px";
-  tempDiv.style.marginTop = "10px";
-  tempDiv.innerHTML = `<div style="color: #0369a1; font-weight: bold; margin-bottom: 4px;">💬 Thắc mắc: "${userQuestion.replace(/</g, "&lt;").replace(/>/g, "&gt;")}"</div><i style="color: #64748b;">⏳ AI đang đọc bài và trả lời...</i>`;
+  tempDiv.style.paddingTop = "12px";
+  tempDiv.style.marginTop = "12px";
+  tempDiv.innerHTML = `
+    <div style="color: #0369a1; font-weight: 700; font-size: 16px; margin-bottom: 6px; background: #e0f2fe; padding: 6px 12px; border-radius: 6px; border-left: 4px solid #0284c7;">
+      💬 Thắc mắc: "${safeQuestionText}"
+    </div>
+    <i style="color: #64748b; font-size: 14px;">⏳ AI đang đọc bài và soạn lời giải thích...</i>
+  `;
   
   responseBox.appendChild(tempDiv);
   tempDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -288,7 +301,7 @@ async function askGeminiAI(qId) {
   // Xóa sạch ô nhập
   inputEl.value = "";
 
-  // BẢO VỆ PROMPT: Chỉ lấy thuần túy câu hỏi, LỌC BỎ toàn bộ các câu trả lời cũ của AI để tránh lặp vô tận!
+  // BẢO VỆ PROMPT: Chỉ lấy nội dung câu hỏi IELTS thuần túy
   const qDiv = document.getElementById(qId);
   let questionTextOnly = "";
   if (qDiv) {
@@ -297,20 +310,23 @@ async function askGeminiAI(qId) {
     questionTextOnly = cloneDiv.innerText.trim();
   }
 
-  const prompt = `Bạn là một giáo viên dạy IELTS Reading kỳ cựu, tận tâm và chuyên nghiệp.
-Nhiệm vụ: Giải thích ngắn gọn, trực tiếp thắc mắc của học viên bằng tiếng Việt trong TỐI ĐA 3-4 ĐOẠN VĂN.
+  const prompt = `Bạn là một giáo viên dạy IELTS Reading kỳ cựu và tận tâm.
+Nhiệm vụ: Giải thích trực tiếp, chính xác thắc mắc của học viên.
 
-BẮT BUỘC:
-- Trả lời trực tiếp vào vấn đề. KHÔNG LẶP LẠI CÂU HỎI NHIỀU LẦN. KHÔNG TẠO VÒNG LẶP VÔ TẬN.
+BẮT BUỘC (QUAN TRỌNG):
+- CHỈ xuất ra câu trả lời giải thích bằng tiếng Việt.
+- KHÔNG lặp lại dòng "[THẮC MẮC CỦA HỌC VIÊN]". KHÔNG lặp lại prompt. KHÔNG lặp lại câu hỏi nhiều lần.
+
+YÊU CẦU ĐỊNH DẠNG:
 - Dùng **từ khóa** để IN ĐẬM các từ quan trọng.
 - Dùng ==bằng chứng== để TÔ VÀNG đoạn thông tin cốt lõi trong bài đọc.
 - Dùng [kw]từ khóa[/kw] để TÔ XANH LÁ CÂY các từ đồng nghĩa (paraphrase).
 
-[THÔNG TIN CÂU HỎI]:
+[CÂU HỎI IELTS]:
 ${questionTextOnly}
 
-[THẮC MẮC CỦA HỌC VIÊN]:
-"${userQuestion}"`;
+[HỌC VIÊN HỎI]:
+${userQuestion}`;
 
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 15000);
@@ -339,9 +355,14 @@ ${questionTextOnly}
         .replace(/==(.*?)==/g, "<mark style='background-color: #fef08a; color: #854d0e; padding: 2px 5px; border-radius: 4px; font-weight: 600;'>$1</mark>")
         .replace(/\[kw\](.*?)\[\/kw\]/g, "<span style='background-color: #bbf7d0; color: #14532d; padding: 2px 6px; border-radius: 4px; font-weight: 700;'>$1</span>");
 
+      // Cỡ chữ phần trả lời bằng đúng cỡ chữ bài đọc (15px, line-height 1.7)
       targetEl.innerHTML = `
-        <div style="color: #0369a1; font-weight: bold; margin-bottom: 4px;">💬 Thắc mắc: "${userQuestion.replace(/</g, "&lt;").replace(/>/g, "&gt;")}"</div>
-        <b style="color: #0284c7;">🤖 Trợ giảng AI:</b><br>${formattedReply}
+        <div style="color: #0369a1; font-weight: 700; font-size: 16px; margin-bottom: 8px; background: #e0f2fe; padding: 6px 12px; border-radius: 6px; border-left: 4px solid #0284c7;">
+          💬 Thắc mắc: "${safeQuestionText}"
+        </div>
+        <div style="font-size: 15px; line-height: 1.7; color: #1e293b;">
+          <b style="color: #0284c7; font-size: 15px;">🤖 Trợ giảng AI:</b><br>${formattedReply}
+        </div>
       `;
       targetEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     } else if (targetEl) {
