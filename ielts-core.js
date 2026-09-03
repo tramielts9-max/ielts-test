@@ -2,10 +2,10 @@
  * ==========================================================================
  * IELTS PRACTICE TEST CORE ENGINE (ielts-core.js)
  * Tự động hóa toàn bộ: Bấm giờ, Bôi đen Highlight, Chấm điểm, AI Trợ giảng, Gửi điểm
- * NÂNG CẤP HỆ THỐNG:
- * 1. Tự động lưu ngầm thời gian thực (Auto-save & State Retention qua localStorage)
- * 2. Khôi phục nguyên trạng lịch sử làm bài (Full Snapshot Restoration)
- * 3. Nút Xuất Báo Cáo Bài Làm (Export Document / Printable Report)
+ * NÂNG CẤP BẢO VỆ DỮ LIỆU CỰC KỲ MẠNH MẼ:
+ * 1. Lưu Profile Học Viên Toàn Hệ Thống (Nhập 1 lần dùng cho mọi Passage)
+ * 2. Lưu ngầm 100% Trạng thái (Answers, Thoughts, Highlights, Timer, AI Chats)
+ * 3. Khôi phục nguyên trạng 100% khi chuyển trang hoặc quay lại bài cũ
  * ==========================================================================
  */
 
@@ -15,21 +15,22 @@ const IELTS_CONFIG = {
   GOOGLE_SCRIPT_URL: "https://script.google.com/macros/s/AKfycby7vRFXq_YhjIEq4kN-8NLRFw2sj-7VkVEmTw6IkNkPmidEPnPtxtNkSE-HKfn5mAPfbw/exec"
 };
 
-// Quản lý đồng hồ bấm giờ & Cỡ chữ
 let seconds = 0;
 let timerInterval = null;
 let isTimerRunning = false;
 let userFinalScore = 0;
 let currentFontSize = 15;
 
-// Lấy ID bài làm duy nhất làm Key lưu vào Storage
+// Lấy Key lưu trữ riêng cho từng bài (tránh đè bài này lên bài khác)
 function getTestStorageKey() {
-  const pagePath = window.location.pathname.split('/').pop().replace('.html', '') || 'default_test';
-  return `IELTS_PRACTICE_STATE_${pagePath}`;
+  const path = window.location.pathname;
+  let pageName = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+  if (!pageName) pageName = 'cam21-test4-p1';
+  return `IELTS_STATE_${pageName}`;
 }
 
 // --------------------------------------------------------------------------
-// 1. CƠ CHẾ TỰ ĐỘNG LƯU NGẦM THỜI GIAN THỰC (AUTO-SAVE TO LOCALSTORAGE)
+// 1. TỰ ĐỘNG LƯU TOÀN BỘ TRẠNG THÁI (AUTO-SAVE)
 // --------------------------------------------------------------------------
 function saveStateToStorage() {
   const key = getTestStorageKey();
@@ -38,9 +39,21 @@ function saveStateToStorage() {
   const scoreBadge = document.getElementById('scoreBadge');
   const scoreText = document.getElementById('scoreText');
 
+  const nameVal = studentNameInput ? studentNameInput.value.trim() : "";
+  const emailVal = studentEmailInput ? studentEmailInput.value.trim() : "";
+
+  // 1.1 Lưu Profile toàn hệ thống (Dùng chung cho tất cả các Passage)
+  if (nameVal || emailVal) {
+    localStorage.setItem('IELTS_USER_PROFILE', JSON.stringify({
+      studentName: nameVal,
+      studentEmail: emailVal
+    }));
+  }
+
+  // 1.2 Dọn dẹp & Lưu dữ liệu riêng của bài làm hiện tại
   const state = {
-    studentName: studentNameInput ? studentNameInput.value : "",
-    studentEmail: studentEmailInput ? studentEmailInput.value : "",
+    studentName: nameVal,
+    studentEmail: emailVal,
     seconds: seconds,
     isSubmitted: document.getElementById('passageBox') ? document.getElementById('passageBox').classList.contains('submitted') : false,
     scoreText: scoreText ? scoreText.innerText : "",
@@ -50,38 +63,51 @@ function saveStateToStorage() {
     aiResponses: {}
   };
 
-  // Lưu các câu trả lời
-  if (window.TEST_DATA && window.TEST_DATA.answers) {
-    for (const qKey in window.TEST_DATA.answers) {
-      const radioSelected = document.querySelector(`input[name="${qKey}"]:checked`);
-      const textInput = document.getElementById(`${qKey}_input`);
-      if (radioSelected) {
-        state.answers[qKey] = radioSelected.value;
-      } else if (textInput) {
-        state.answers[qKey] = textInput.value;
-      }
+  // Quét và lưu toàn bộ câu trả lời của tất cả các câu hỏi
+  const allQuestions = document.querySelectorAll('.question');
+  allQuestions.forEach(qDiv => {
+    const qKey = qDiv.id;
+    if (!qKey) return;
 
-      // Lưu mạch suy nghĩ
-      const thoughtInput = document.getElementById(`${qKey}_thought`);
-      if (thoughtInput) {
-        state.thoughts[`${qKey}_thought`] = thoughtInput.value;
-      }
-
-      // Lưu nội dung phản hồi từ AI
-      const aiResponseBox = document.getElementById(`ai_response_${qKey}`);
-      if (aiResponseBox && aiResponseBox.innerHTML.trim().length > 0) {
-        state.aiResponses[qKey] = aiResponseBox.innerHTML;
-      }
+    const radioSelected = qDiv.querySelector(`input[type="radio"]:checked`);
+    const textInput = document.getElementById(`${qKey}_input`);
+    if (radioSelected) {
+      state.answers[qKey] = radioSelected.value;
+    } else if (textInput) {
+      state.answers[qKey] = textInput.value;
     }
-  }
+
+    const thoughtInput = document.getElementById(`${qKey}_thought`);
+    if (thoughtInput && thoughtInput.value) {
+      state.thoughts[`${qKey}_thought`] = thoughtInput.value;
+    }
+
+    const aiResponseBox = document.getElementById(`ai_response_${qKey}`);
+    if (aiResponseBox && aiResponseBox.innerHTML.trim().length > 0) {
+      state.aiResponses[qKey] = aiResponseBox.innerHTML;
+    }
+  });
 
   localStorage.setItem(key, JSON.stringify(state));
 }
 
 // --------------------------------------------------------------------------
-// 2. KHÔI PHỤC NGUYÊN TRẠNG KHI MỞ LẠI BÀI (FULL SNAPSHOT RESTORATION)
+// 2. KHÔI PHỤC NGUYÊN TRẠNG 100% (RESTORE STATE)
 // --------------------------------------------------------------------------
 function restoreStateFromStorage() {
+  // 2.1 Tự động điền Họ tên & Email từ Profile dùng chung
+  const profileData = localStorage.getItem('IELTS_USER_PROFILE');
+  if (profileData) {
+    try {
+      const profile = JSON.parse(profileData);
+      const studentNameInput = document.getElementById('studentNameInput');
+      const studentEmailInput = document.getElementById('studentEmailInput');
+      if (studentNameInput && profile.studentName) studentNameInput.value = profile.studentName;
+      if (studentEmailInput && profile.studentEmail) studentEmailInput.value = profile.studentEmail;
+    } catch (e) {}
+  }
+
+  // 2.2 Khôi phục chi tiết bài làm của trang này
   const key = getTestStorageKey();
   const savedData = localStorage.getItem(key);
   if (!savedData) return;
@@ -89,19 +115,13 @@ function restoreStateFromStorage() {
   try {
     const state = JSON.parse(savedData);
 
-    // Điền lại Họ tên & Email
-    const studentNameInput = document.getElementById('studentNameInput');
-    const studentEmailInput = document.getElementById('studentEmailInput');
-    if (studentNameInput && state.studentName) studentNameInput.value = state.studentName;
-    if (studentEmailInput && state.studentEmail) studentEmailInput.value = state.studentEmail;
-
     // Khôi phục đồng hồ
     if (state.seconds) {
       seconds = state.seconds;
       updateTimerDisplay();
     }
 
-    // Điền lại các đáp án đã khoanh / điền
+    // Khôi phục các đáp án đã chọn / điền
     if (state.answers) {
       for (const qKey in state.answers) {
         const val = state.answers[qKey];
@@ -112,7 +132,7 @@ function restoreStateFromStorage() {
       }
     }
 
-    // Điền lại mạch suy nghĩ
+    // Khôi phục suy nghĩ cá nhân
     if (state.thoughts) {
       for (const tKey in state.thoughts) {
         const thoughtInput = document.getElementById(tKey);
@@ -120,7 +140,7 @@ function restoreStateFromStorage() {
       }
     }
 
-    // Điền lại các câu trả lời của AI
+    // Khôi phục toàn bộ các câu trả lời AI
     if (state.aiResponses) {
       for (const qKey in state.aiResponses) {
         const aiResponseBox = document.getElementById(`ai_response_${qKey}`);
@@ -131,16 +151,16 @@ function restoreStateFromStorage() {
       }
     }
 
-    // Khôi phục giao diện đã chấm bài (nếu đã nộp bài trước đó)
+    // Nếu bài này đã từng bấm Chấm bài trước đó -> Khôi phục giao diện đã chấm bài ngay lập tức
     if (state.isSubmitted) {
       renderSubmittedUI(state.scoreText);
     }
   } catch (e) {
-    console.warn("Lỗi khôi phục dữ liệu từ localStorage:", e);
+    console.warn("Lỗi khôi phục dữ liệu:", e);
   }
 }
 
-// Hiển thị lại giao diện kết quả UI mà không gửi lại điểm sang Google Sheets
+// Hiển thị lại giao diện kết quả mà KHÔNG gửi lại điểm sang Google Sheets
 function renderSubmittedUI(scoreStr) {
   if (!window.TEST_DATA || !window.TEST_DATA.answers) return;
 
@@ -195,9 +215,10 @@ function renderSubmittedUI(scoreStr) {
 }
 
 // --------------------------------------------------------------------------
-// 3. XUẤT BÁO CÁO BÀI LÀM TRÍCH XUẤT ĐẦY ĐỦ (EXPORT REPORT / PRINT DOCUMENT)
+// 3. XUẤT BÁO CÁO BÀI LÀM (EXPORT REPORT)
 // --------------------------------------------------------------------------
 function exportStudentReport() {
+  saveStateToStorage();
   const studentName = document.getElementById('studentNameInput') ? document.getElementById('studentNameInput').value.trim() || 'Học viên' : 'Học viên';
   const studentEmail = document.getElementById('studentEmailInput') ? document.getElementById('studentEmailInput').value.trim() || 'N/A' : 'N/A';
   const testTitle = window.TEST_DATA ? (window.TEST_DATA.title || document.title) : document.title;
@@ -242,7 +263,7 @@ function exportStudentReport() {
         <div class="info-item"><b>📅 Ngày xuất báo cáo:</b> ${new Date().toLocaleString('vi-VN')}</div>
       </div>
 
-      <h2>📝 CHI TIẾT TỪNG CÂU HỎI VÀ LỜI GIẢI:</h2>
+      <h2>📝 CHI TIẾT TƯỜNG CÂU HỎI VÀ LỜI GIẢI:</h2>
   `;
 
   if (window.TEST_DATA && window.TEST_DATA.answers) {
@@ -261,7 +282,6 @@ function exportStudentReport() {
 
       const expDiv = qDiv.querySelector('.explanation');
       let expContent = expDiv ? expDiv.innerHTML : "";
-      // Dọn dẹp nút bấm và ô hỏi AI trong bản in
       expContent = expContent.replace(/<button.*?>.*?<\/button>/gi, "").replace(/<div class="ai-assistant-box">.*?<\/div>/gis, "");
 
       const aiResponseBox = document.getElementById(`ai_response_${qKey}`);
@@ -289,7 +309,6 @@ function exportStudentReport() {
   reportWindow.document.close();
 }
 
-// Thay đổi Cỡ chữ To/Nhỏ toàn trang
 function changeFontSize(delta) {
   currentFontSize += delta;
   if (currentFontSize < 12) currentFontSize = 12;
@@ -297,7 +316,6 @@ function changeFontSize(delta) {
   document.documentElement.style.setProperty('--font-size-base', currentFontSize + 'px');
 }
 
-// Bật/Tắt Chế độ Tối (Dark Mode)
 function toggleTheme() {
   document.body.classList.toggle('dark-theme');
   const btnTheme = document.getElementById('btnThemeToggle');
@@ -311,7 +329,7 @@ function toggleTheme() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  // 1. Tự động chèn Nút Control & Nút Xuất Báo Cáo vào Header
+  // 1. Tự động chèn Nút Control vào Header
   const headerBar = document.querySelector('.header-bar');
   if (headerBar && !document.getElementById('btnExportReport')) {
     const controlsDiv = document.createElement('div');
@@ -325,7 +343,7 @@ document.addEventListener('DOMContentLoaded', function() {
     headerBar.appendChild(controlsDiv);
   }
 
-  // 2. Tự động chèn Thanh kéo Kích thước 2 cột (Resizable Drag Bar)
+  // 2. Tự động chèn Thanh kéo Kích thước 2 cột
   const container = document.querySelector('.container');
   const passageBox = document.getElementById('passageBox');
   const questionBox = document.querySelector('.question-box');
@@ -370,10 +388,10 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // 3. Tự động khôi phục dữ liệu đã lưu từ trước (State Restoration)
+  // 3. Khôi phục nguyên trạng 100% ngay khi vừa tải trang xong
   restoreStateFromStorage();
 
-  // 4. Lắng nghe các sự kiện thay đổi để lưu ngầm thời gian thực (Real-time Auto-save)
+  // 4. Lắng nghe các sự kiện để tự động lưu ngầm thời gian thực
   document.body.addEventListener('input', function(e) {
     saveStateToStorage();
   });
@@ -381,7 +399,12 @@ document.addEventListener('DOMContentLoaded', function() {
     saveStateToStorage();
   });
 
-  // 5. Xử lý Popup bôi đen
+  // 5. Lưu khi chuẩn bị rồi trang (Chuyển Passage)
+  window.addEventListener('beforeunload', function() {
+    saveStateToStorage();
+  });
+
+  // 6. Xử lý Bôi đen
   const hlPopup = document.getElementById('hlPopup');
   const removeHlPopup = document.getElementById('removeHlPopup');
 
@@ -548,7 +571,7 @@ async function checkAnswers() {
   if (scoreText) scoreText.innerText = `${score}/${totalQuestions}`;
   if (scoreBadge) scoreBadge.style.display = 'block';
 
-  // Lưu trạng thái đã nộp bài vào Storage
+  // Lưu trạng thái đã nộp bài vào Storage ngay lập tức
   saveStateToStorage();
 
   // Gửi kết quả về Google Sheets
