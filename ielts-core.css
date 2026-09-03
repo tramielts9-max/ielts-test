@@ -1,6 +1,31 @@
 /* ==========================================================================
    IELTS PRACTICE TEST CORE STYLESHEET
+   Features: Resizable Divider, Dark Mode, Font Size Controls, Uniform 15px Text
    ========================================================================== */
+
+:root {
+  --font-size-base: 15px;
+  --bg-body: #f1f5f9;
+  --bg-card: #ffffff;
+  --bg-subcard: #f8fafc;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --border-color: #cbd5e1;
+  --primary-blue: #0284c7;
+  --primary-dark: #0f172a;
+}
+
+/* Dark Mode Theme Variables */
+body.dark-theme {
+  --bg-body: #0f172a;
+  --bg-card: #1e293b;
+  --bg-subcard: #0f172a;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --border-color: #334155;
+  --primary-blue: #38bdf8;
+  --primary-dark: #020617;
+}
 
 * {
   box-sizing: border-box;
@@ -10,14 +35,17 @@ body {
   font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
   margin: 0;
   padding: 15px;
-  background-color: #f1f5f9;
-  color: #1e293b;
+  background-color: var(--bg-body);
+  color: var(--text-main);
+  font-size: var(--font-size-base);
+  line-height: 1.7;
+  transition: background-color 0.2s, color 0.2s;
 }
 
 /* User Info Bar */
 .user-info-box {
-  background: #ffffff;
-  border: 1px solid #cbd5e1;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   padding: 12px 18px;
   border-radius: 8px;
   margin-bottom: 12px;
@@ -38,7 +66,7 @@ body {
 
 .user-info-field label {
   font-weight: 600;
-  color: #0369a1;
+  color: var(--primary-blue);
   font-size: 14px;
   white-space: nowrap;
 }
@@ -46,21 +74,17 @@ body {
 .user-info-field input {
   padding: 8px 12px;
   font-size: 14px;
-  border: 1px solid #cbd5e1;
+  border: 1px solid var(--border-color);
+  background: var(--bg-subcard);
+  color: var(--text-main);
   border-radius: 6px;
   width: 100%;
   outline: none;
-  transition: border-color 0.2s;
 }
 
-.user-info-field input:focus {
-  border-color: #0284c7;
-  box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.15);
-}
-
-/* Header Bar */
+/* Header Bar & Control Buttons */
 .header-bar {
-  background: #0f172a;
+  background: var(--primary-dark);
   color: #ffffff;
   padding: 14px 20px;
   border-radius: 8px;
@@ -77,22 +101,37 @@ body {
   margin: 0;
   font-size: 18px;
   font-weight: 700;
-  letter-spacing: -0.02em;
 }
 
-.header-nav {
+.header-controls {
   display: flex;
-  gap: 8px;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-header {
+  background: rgba(255,255,255,0.12);
+  color: #ffffff;
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-header:hover {
+  background: rgba(255,255,255,0.25);
 }
 
 .nav-link {
   color: #94a3b8;
   text-decoration: none;
   font-size: 13px;
-  padding: 5px 10px;
-  border-radius: 4px;
+  padding: 6px 12px;
+  border-radius: 6px;
   background: rgba(255,255,255,0.08);
-  transition: all 0.2s;
 }
 
 .nav-link:hover, .nav-link.active {
@@ -103,43 +142,20 @@ body {
 .timer-container {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   background: rgba(255,255,255,0.08);
-  padding: 6px 14px;
-  border-radius: 30px;
+  padding: 4px 12px;
+  border-radius: 20px;
 }
 
 .timer-display {
-  font-size: 17px;
+  font-size: 16px;
   font-weight: bold;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: monospace;
   color: #38bdf8;
   background: #020617;
-  padding: 4px 10px;
+  padding: 3px 8px;
   border-radius: 4px;
-  min-width: 65px;
-  text-align: center;
-}
-
-.timer-overtime {
-  color: #f87171 !important;
-  border: 1px solid #ef4444;
-}
-
-.btn-timer {
-  background: #2563eb;
-  color: white;
-  border: none;
-  padding: 5px 12px;
-  font-size: 12px;
-  font-weight: 600;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.btn-timer:hover {
-  background: #1d4ed8;
 }
 
 .score-badge {
@@ -152,66 +168,87 @@ body {
   display: none;
 }
 
-/* Layout 2 Cột */
+/* Layout 2 Cột & Resizable Drag Bar */
 .container {
   display: flex;
-  gap: 16px;
-  max-width: 1550px;
+  gap: 0;
+  max-width: 100%;
   margin: auto;
   height: calc(100vh - 165px);
   min-height: 550px;
   position: relative;
+  overflow: hidden;
 }
 
-.passage-box, .question-box {
-  flex: 1;
-  background: #ffffff;
+.passage-box {
+  width: 50%;
+  background: var(--bg-card);
   padding: 24px;
-  border-radius: 8px;
+  border-radius: 8px 0 0 8px;
   overflow-y: auto;
   box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--border-color);
+  font-size: var(--font-size-base);
+  line-height: 1.7;
 }
 
-/* Typography Bài đọc */
+.resizer {
+  width: 10px;
+  background: var(--border-color);
+  cursor: col-resize;
+  position: relative;
+  z-index: 10;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.resizer:hover, .resizer.resizing {
+  background: var(--primary-blue);
+}
+
+.resizer::after {
+  content: '⋮';
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.question-box {
+  flex: 1;
+  width: 50%;
+  background: var(--bg-card);
+  padding: 24px;
+  border-radius: 0 8px 8px 0;
+  overflow-y: auto;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  border: 1px solid var(--border-color);
+  border-left: none;
+  font-size: var(--font-size-base);
+  line-height: 1.7;
+}
+
+/* Typography Bài đọc & Cột Phải */
 h2 {
-  color: #0f172a;
+  color: var(--text-main);
   margin-top: 0;
-  border-bottom: 2px solid #0284c7;
+  border-bottom: 2px solid var(--primary-blue);
   padding-bottom: 8px;
-  font-size: 18px;
+  font-size: 1.25em;
   font-weight: 700;
 }
 
 h3 {
-  color: #0369a1;
+  color: var(--primary-blue);
   margin-top: 10px;
-  font-size: 16px;
+  font-size: 1.1em;
   line-height: 1.4;
 }
 
 .passage-box p {
-  line-height: 1.7;
-  text-align: justify;
-  font-size: 15px;
   margin-bottom: 14px;
-  color: #334155;
-}
-
-/* Practice Task Demo Box */
-.practice-container {
-  background-color: #fffbeb;
-  border: 1.5px dashed #f59e0b;
-  border-radius: 8px;
-  padding: 14px;
-  margin-bottom: 20px;
-}
-
-.practice-title {
-  color: #d97706;
-  font-weight: 700;
-  font-size: 14px;
-  margin-bottom: 8px;
+  text-align: justify;
 }
 
 /* Section Title Câu hỏi */
@@ -220,38 +257,42 @@ h3 {
   background: #e0f2fe;
   color: #0369a1;
   padding: 10px 14px;
-  border-left: 4px solid #0284c7;
-  margin: 24px 0 14px 0;
+  border-left: 4px solid var(--primary-blue);
+  margin: 20px 0 14px 0;
   border-radius: 0 6px 6px 0;
-  font-size: 15px;
+  font-size: 1.05em;
 }
 
-/* Box Câu hỏi */
+body.dark-theme .section-title {
+  background: #0369a1;
+  color: #ffffff;
+}
+
+/* Box Câu hỏi (Cùng cỡ chữ 15px như bài đọc) */
 .question {
-  margin-bottom: 18px;
-  padding: 16px;
-  border: 1.5px solid #e2e8f0;
+  margin-bottom: 22px;
+  padding: 18px;
+  border: 1.5px solid var(--border-color);
   border-radius: 8px;
-  background-color: #f8fafc;
-  transition: all 0.25s ease;
+  background-color: var(--bg-subcard);
+  font-size: var(--font-size-base);
+  line-height: 1.7;
 }
 
 .question p {
   margin-top: 0;
-  text-align: left;
-  font-size: 14.5px;
-  line-height: 1.5;
-  color: #1e293b;
+  font-size: 1em;
+  line-height: 1.7;
 }
 
 .question.correct-border {
   border-color: #22c55e !important;
-  background-color: #f0fdf4 !important;
+  background-color: rgba(34, 197, 94, 0.08) !important;
 }
 
 .question.incorrect-border {
   border-color: #ef4444 !important;
-  background-color: #fef2f2 !important;
+  background-color: rgba(239, 68, 68, 0.08) !important;
 }
 
 /* Options Lựa chọn */
@@ -259,7 +300,7 @@ h3 {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  margin: 10px 0;
+  margin: 12px 0;
 }
 
 .options label {
@@ -267,17 +308,11 @@ h3 {
   align-items: center;
   gap: 6px;
   cursor: pointer;
-  font-size: 14px;
-  background: #ffffff;
-  padding: 6px 12px;
+  font-size: 1em;
+  background: var(--bg-card);
+  padding: 8px 14px;
   border-radius: 6px;
-  border: 1px solid #cbd5e1;
-  transition: all 0.15s;
-}
-
-.options label:hover {
-  background: #f1f5f9;
-  border-color: #94a3b8;
+  border: 1px solid var(--border-color);
 }
 
 .options-vertical {
@@ -289,190 +324,165 @@ h3 {
 .options-vertical label {
   display: flex;
   align-items: flex-start;
-  padding: 8px 12px;
+  padding: 10px 14px;
+}
+
+/* Summary Word Bank */
+.summary-word-bank {
+  background: var(--bg-subcard);
+  border: 1px solid var(--border-color);
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 8px;
+  font-size: 0.95em;
 }
 
 /* Input điền từ */
 input[type="text"].fill-input,
 .question input[type="text"] {
-  padding: 6px 10px;
-  border: 1.5px solid #cbd5e1;
+  padding: 6px 12px;
+  border: 1.5px solid var(--border-color);
+  background: var(--bg-card);
+  color: var(--text-main);
   border-radius: 4px;
   min-width: 120px;
-  font-size: 14px;
+  font-size: 0.95em;
   outline: none;
-  font-weight: 500;
-}
-
-input[type="text"].fill-input:focus,
-.question input[type="text"]:focus {
-  border-color: #0284c7;
-  background: #f0f9ff;
-}
-
-/* Summary Box Từ vựng (A-J) */
-.summary-word-bank {
-  background: #f1f5f9;
-  border: 1px solid #cbd5e1;
-  padding: 12px;
-  border-radius: 6px;
-  margin: 12px 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 6px 12px;
-  font-size: 13.5px;
-}
-
-.word-item {
   font-weight: 600;
-  color: #1e293b;
 }
 
-/* Thought Box (Mạch suy nghĩ) */
+/* Thought Box */
 .thought-box {
   margin-top: 12px;
 }
 
 .thought-box label {
-  font-size: 12.5px;
+  font-size: 0.85em;
   font-weight: 600;
-  color: #64748b;
+  color: var(--text-muted);
   display: block;
   margin-bottom: 4px;
 }
 
 .thought-box textarea {
   width: 100%;
-  height: 52px;
+  height: 55px;
   padding: 8px 10px;
-  font-size: 13px;
-  border: 1px solid #cbd5e1;
+  font-size: 0.9em;
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  color: var(--text-main);
   border-radius: 6px;
   resize: vertical;
   font-family: inherit;
   outline: none;
 }
 
-.thought-box textarea:focus {
-  border-color: #0284c7;
-}
-
 /* Nút Submit */
 .btn-submit {
-  background-color: #0284c7;
+  background-color: var(--primary-blue);
   color: white;
   border: none;
   padding: 14px 20px;
-  font-size: 16px;
+  font-size: 1.1em;
   font-weight: 700;
   border-radius: 8px;
   cursor: pointer;
   width: 100%;
-  margin-top: 18px;
-  transition: background 0.2s;
+  margin-top: 20px;
   box-shadow: 0 2px 4px rgba(2, 132, 199, 0.2);
 }
 
 .btn-submit:hover {
-  background-color: #0369a1;
+  filter: brightness(0.9);
 }
 
-/* Kết quả & Giải thích */
+/* Kết quả & Khung Lời giải chi tiết */
 .result {
   margin-top: 10px;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 1em;
 }
 
 .correct-text { color: #16a34a; }
 .incorrect-text { color: #dc2626; }
 
 .explanation {
-  font-size: 13px;
-  color: #334155;
-  background: #ffffff;
-  border: 1px solid #cbd5e1;
-  border-left: 4px solid #0284c7;
-  padding: 12px 14px;
-  margin-top: 12px;
+  font-size: 1em;
+  line-height: 1.7;
+  color: var(--text-main);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-left: 4px solid var(--primary-blue);
+  padding: 16px;
+  margin-top: 14px;
   border-radius: 6px;
   display: none;
-  line-height: 1.6;
-}
-
-.explanation h4 {
-  margin: 0 0 6px 0;
-  color: #0f172a;
-  font-size: 13.5px;
 }
 
 .exp-step {
-  margin-bottom: 5px;
+  margin-bottom: 8px;
+  font-size: 0.98em;
 }
 
 .kw-exp {
   background-color: #bbf7d0;
-  padding: 1px 5px;
+  color: #14532d;
+  padding: 2px 6px;
   border-radius: 4px;
   font-weight: 700;
-  color: #14532d;
+}
+
+body.dark-theme .kw-exp {
+  background-color: #14532d;
+  color: #86efac;
 }
 
 /* AI Assistant Box */
 .ai-assistant-box {
-  margin-top: 12px;
-  padding: 10px;
-  background: #f0f9ff;
-  border: 1px solid #bae6fd;
-  border-radius: 6px;
+  margin-top: 14px;
+  padding: 14px;
+  background: var(--bg-subcard);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
 }
 
 .ai-assistant-box label {
-  font-size: 12px;
-  font-weight: 600;
-  color: #0369a1;
+  font-size: 0.9em;
+  font-weight: 700;
+  color: var(--primary-blue);
   display: block;
 }
 
 .ai-input-group {
   display: flex;
-  gap: 6px;
-  margin-top: 6px;
+  gap: 8px;
+  margin-top: 8px;
 }
 
 .ai-input-group input {
   flex: 1;
-  padding: 6px 10px;
-  font-size: 12.5px;
-  border: 1px solid #cbd5e1;
-  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 0.9em;
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  color: var(--text-main);
+  border-radius: 6px;
   outline: none;
 }
 
 .ai-btn {
-  background: #0284c7;
+  background: var(--primary-blue);
   color: white;
   border: none;
-  padding: 6px 12px;
-  font-size: 12px;
-  font-weight: 600;
-  border-radius: 4px;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.ai-btn:hover { background: #0369a1; }
-
-.ai-response {
-  font-size: 12.5px;
-  color: #1e293b;
-  margin-top: 8px;
-  display: none;
-  background: white;
-  padding: 10px;
+  padding: 8px 16px;
+  font-size: 0.9em;
+  font-weight: 700;
   border-radius: 6px;
-  border-left: 3px solid #0284c7;
-  line-height: 1.5;
+  cursor: pointer;
 }
 
 /* Highlighting Logic */
@@ -490,7 +500,6 @@ input[type="text"].fill-input:focus,
   color: white;
   border-radius: 6px;
   padding: 4px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
 }
 
 .hl-popup button {
@@ -501,28 +510,27 @@ input[type="text"].fill-input:focus,
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
-  border-radius: 4px;
 }
 
-.hl-popup button:hover {
-  background: rgba(255,255,255,0.2);
-}
-
-.submitted .hl, .always-hl {
+.submitted .hl {
   background-color: #fef08a;
   padding: 2px 4px;
   border-radius: 3px;
-  font-weight: 500;
-  position: relative;
+  color: #1e293b;
+}
+
+body.dark-theme .submitted .hl {
+  background-color: #854d0e;
+  color: #fef08a;
 }
 
 .submitted .hl-active {
   background-color: #fde047 !important;
   outline: 2px solid #ca8a04;
-  box-shadow: 0 0 10px rgba(202, 138, 4, 0.4);
+  color: #1e293b !important;
 }
 
-.submitted .kw, .always-kw {
+.submitted .kw {
   background-color: #86efac !important;
   font-weight: 700;
   padding: 1px 4px;
@@ -530,7 +538,7 @@ input[type="text"].fill-input:focus,
   color: #14532d;
 }
 
-.submitted .hl::before, .always-hl::before {
+.submitted .hl::before {
   content: attr(data-q);
   background-color: #d97706;
   color: white;
@@ -539,43 +547,16 @@ input[type="text"].fill-input:focus,
   padding: 1px 5px;
   border-radius: 3px;
   margin-right: 4px;
-  display: inline-block;
-  vertical-align: middle;
 }
 
 .btn-locate {
-  background: #f1f5f9;
-  border: 1px solid #cbd5e1;
-  padding: 5px 10px;
-  font-size: 12px;
+  background: var(--bg-subcard);
+  border: 1px solid var(--border-color);
+  padding: 6px 12px;
+  font-size: 0.9em;
   border-radius: 4px;
   cursor: pointer;
-  margin-top: 6px;
-  color: #334155;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
+  margin-top: 8px;
+  color: var(--text-main);
   font-weight: 600;
-  transition: all 0.2s;
-}
-
-.btn-locate:hover {
-  background: #e2e8f0;
-  border-color: #94a3b8;
-}
-
-/* Flowchart representation */
-.flowchart-step {
-  background: #ffffff;
-  border: 1px solid #cbd5e1;
-  border-radius: 6px;
-  padding: 10px 14px;
-  margin-bottom: 8px;
-}
-
-.flowchart-arrow {
-  text-align: center;
-  font-size: 16px;
-  color: #64748b;
-  margin: 4px 0;
 }

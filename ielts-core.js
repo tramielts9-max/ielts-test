@@ -2,23 +2,43 @@
  * ==========================================================================
  * IELTS PRACTICE TEST CORE ENGINE (ielts-core.js)
  * Tự động hóa toàn bộ: Bấm giờ, Bôi đen Highlight, Chấm điểm, AI Trợ giảng, Gửi điểm
+ * Nâng cấp: Thanh kéo thay đổi kích thước 2 cột, Chế độ Tối/Sáng, Tăng/Giảm Cỡ Chữ
  * ==========================================================================
  */
 
 // CẤU HÌNH TOÀN CỤC DÙNG CHUNG CHO TẤT CẢ CÁC BÀI TẬP
 const IELTS_CONFIG = {
-  // KHÔNG dán key trực tiếp vào đây để tránh lộ key trên Web (Bảo mật 100% qua Script Properties)
   GEMINI_API_KEY: "", 
-  
-  // Đường link Web App Google Apps Script PHIÊN BẢN MỚI NHẤT CỦA BẠN
   GOOGLE_SCRIPT_URL: "https://script.google.com/macros/s/AKfycby7vRFXq_YhjIEq4kN-8NLRFw2sj-7VkVEmTw6IkNkPmidEPnPtxtNkSE-HKfn5mAPfbw/exec"
 };
 
-// Quản lý đồng hồ bấm giờ
+// Quản lý đồng hồ bấm giờ & Cỡ chữ
 let seconds = 0;
 let timerInterval = null;
 let isTimerRunning = false;
 let userFinalScore = 0;
+let currentFontSize = 15;
+
+// Thay đổi Cỡ chữ To/Nhỏ toàn trang
+function changeFontSize(delta) {
+  currentFontSize += delta;
+  if (currentFontSize < 12) currentFontSize = 12;
+  if (currentFontSize > 22) currentFontSize = 22;
+  document.documentElement.style.setProperty('--font-size-base', currentFontSize + 'px');
+}
+
+// Bật/Tắt Chế độ Tối (Dark Mode)
+function toggleTheme() {
+  document.body.classList.toggle('dark-theme');
+  const btnTheme = document.getElementById('btnThemeToggle');
+  if (btnTheme) {
+    if (document.body.classList.contains('dark-theme')) {
+      btnTheme.innerText = "☀️ Chế độ sáng";
+    } else {
+      btnTheme.innerText = "🌙 Chế độ tối";
+    }
+  }
+}
 
 function updateTimerDisplay() {
   const mins = Math.floor(seconds / 60);
@@ -58,6 +78,65 @@ let currentSelectedRange = null;
 let currentTargetSpan = null;
 
 document.addEventListener('DOMContentLoaded', function() {
+  // 1. Tự động chèn Nút Điều khiển Cỡ chữ & Tối/Sáng vào Header nếu chưa có
+  const headerBar = document.querySelector('.header-bar');
+  if (headerBar && !document.getElementById('btnThemeToggle')) {
+    const controlsDiv = document.createElement('div');
+    controlsDiv.className = 'header-controls';
+    controlsDiv.innerHTML = `
+      <button class="btn-header" onclick="changeFontSize(-1)">🔍 A-</button>
+      <button class="btn-header" onclick="changeFontSize(1)">🔍 A+</button>
+      <button class="btn-header" id="btnThemeToggle" onclick="toggleTheme()">🌙 Chế độ tối</button>
+    `;
+    headerBar.appendChild(controlsDiv);
+  }
+
+  // 2. Tự động chèn Thanh kéo Kích thước 2 cột (Resizable Drag Bar)
+  const container = document.querySelector('.container');
+  const passageBox = document.getElementById('passageBox');
+  const questionBox = document.querySelector('.question-box');
+
+  if (container && passageBox && questionBox && !document.getElementById('dragResizer')) {
+    const resizer = document.createElement('div');
+    resizer.className = 'resizer';
+    resizer.id = 'dragResizer';
+    container.insertBefore(resizer, questionBox);
+
+    let isResizing = false;
+
+    resizer.addEventListener('mousedown', function(e) {
+      isResizing = true;
+      resizer.classList.add('resizing');
+      document.body.style.cursor = 'col-resize';
+      document.body.style.userSelect = 'none';
+    });
+
+    document.addEventListener('mousemove', function(e) {
+      if (!isResizing) return;
+      const containerRect = container.getBoundingClientRect();
+      let pointerRelativeX = e.clientX - containerRect.left;
+      let minWidthPx = 250;
+      let maxWidthPx = containerRect.width - 250;
+
+      if (pointerRelativeX < minWidthPx) pointerRelativeX = minWidthPx;
+      if (pointerRelativeX > maxWidthPx) pointerRelativeX = maxWidthPx;
+
+      let passageWidthPercent = (pointerRelativeX / containerRect.width) * 100;
+      passageBox.style.width = passageWidthPercent + '%';
+      questionBox.style.width = (100 - passageWidthPercent) + '%';
+    });
+
+    document.addEventListener('mouseup', function() {
+      if (isResizing) {
+        isResizing = false;
+        resizer.classList.remove('resizing');
+        document.body.style.cursor = 'default';
+        document.body.style.userSelect = 'auto';
+      }
+    });
+  }
+
+  // 3. Xử lý Popup bôi đen
   const hlPopup = document.getElementById('hlPopup');
   const removeHlPopup = document.getElementById('removeHlPopup');
 
@@ -211,6 +290,7 @@ async function checkAnswers() {
       qDiv.classList.add('incorrect-border');
     }
 
+    // TỰ ĐỘNG HIỆN TOÀN BỘ LỜI GIẢI CHI TIẾT DÙ ĐÚNG HAY SAI
     if (expDiv) expDiv.style.display = "block";
     detailsSummary += `${qKey.toUpperCase()}: ${userVal || 'Để trống'} | Suy nghĩ: ${thought || 'N/A'}\n`;
   }
@@ -263,7 +343,7 @@ function cleanMetaThoughts(text) {
   return clean.trim();
 }
 
-// AI TRỢ GIẢNG (Cấu hình Timeout 30 giây để ngắt chờ an toàn)
+// AI TRỢ GIẢNG
 async function askGeminiAI(qId) {
   const inputEl = document.getElementById(`ai_ask_${qId}`);
   const responseBox = document.getElementById(`ai_response_${qId}`);
@@ -275,32 +355,28 @@ async function askGeminiAI(qId) {
     return;
   }
 
-  // Mở khung phản hồi
   responseBox.style.display = "block";
 
   const safeQuestionText = userQuestion.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
-  // Thêm ô thắc mắc mới (Cỡ chữ to 16px, Font đậm nổi bật)
   const tempId = "temp_" + Date.now();
   const tempDiv = document.createElement('div');
   tempDiv.id = tempId;
-  tempDiv.style.borderTop = "1px dashed #cbd5e1";
+  tempDiv.style.borderTop = "1px dashed var(--border-color)";
   tempDiv.style.paddingTop = "12px";
   tempDiv.style.marginTop = "12px";
   tempDiv.innerHTML = `
-    <div style="color: #0369a1; font-weight: 700; font-size: 16px; margin-bottom: 6px; background: #e0f2fe; padding: 6px 12px; border-radius: 6px; border-left: 4px solid #0284c7;">
+    <div style="color: var(--primary-blue); font-weight: 700; font-size: 1.05em; margin-bottom: 6px; background: #e0f2fe; padding: 6px 12px; border-radius: 6px; border-left: 4px solid var(--primary-blue);">
       💬 Thắc mắc: "${safeQuestionText}"
     </div>
-    <i style="color: #64748b; font-size: 14px;">⏳ AI đang đọc bài và soạn lời giải thích...</i>
+    <i style="color: var(--text-muted); font-size: 0.95em;">⏳ AI đang đọc bài và soạn lời giải thích...</i>
   `;
   
   responseBox.appendChild(tempDiv);
   tempDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
-  // Xóa sạch ô nhập
   inputEl.value = "";
 
-  // BẢO VỆ PROMPT: Chỉ lấy nội dung câu hỏi IELTS thuần túy
   const qDiv = document.getElementById(qId);
   let questionTextOnly = "";
   if (qDiv) {
@@ -327,7 +403,6 @@ ${questionTextOnly}
 [HỌC VIÊN HỎI]:
 ${userQuestion}`;
 
-  // THỜI GIAN CHỜ TIMEOUT NÂNG LÊN 30 GIÂY (30000ms)
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 30000);
 
@@ -351,16 +426,16 @@ ${userQuestion}`;
       
       let formattedReply = cleanedReply
         .replace(/\n/g, "<br>")
-        .replace(/\*\*(.*?)\*\*/g, "<strong style='color: #0f172a;'>$1</strong>")
+        .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
         .replace(/==(.*?)==/g, "<mark style='background-color: #fef08a; color: #854d0e; padding: 2px 5px; border-radius: 4px; font-weight: 600;'>$1</mark>")
         .replace(/\[kw\](.*?)\[\/kw\]/g, "<span style='background-color: #bbf7d0; color: #14532d; padding: 2px 6px; border-radius: 4px; font-weight: 700;'>$1</span>");
 
       targetEl.innerHTML = `
-        <div style="color: #0369a1; font-weight: 700; font-size: 16px; margin-bottom: 8px; background: #e0f2fe; padding: 6px 12px; border-radius: 6px; border-left: 4px solid #0284c7;">
+        <div style="color: var(--primary-blue); font-weight: 700; font-size: 1.05em; margin-bottom: 8px; background: #e0f2fe; padding: 6px 12px; border-radius: 6px; border-left: 4px solid var(--primary-blue);">
           💬 Thắc mắc: "${safeQuestionText}"
         </div>
-        <div style="font-size: 15px; line-height: 1.7; color: #1e293b;">
-          <b style="color: #0284c7; font-size: 15px;">🤖 Trợ giảng AI:</b><br>${formattedReply}
+        <div style="font-size: 1em; line-height: 1.7; color: var(--text-main);">
+          <b style="color: var(--primary-blue);">🤖 Trợ giảng AI:</b><br>${formattedReply}
         </div>
       `;
       targetEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
