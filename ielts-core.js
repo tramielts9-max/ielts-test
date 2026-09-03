@@ -129,7 +129,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }, { once: true });
 });
 
-// Định vị đoạn văn chứa đáp án trong bài đọc
+// Định vị đoạn văn chứa đáp án và Tô màu Cùng màu 2 bên (Passage & Explanation)
 function highlightText(elementId) {
   document.querySelectorAll('.hl-active').forEach(el => el.classList.remove('hl-active'));
   const target = document.getElementById(elementId);
