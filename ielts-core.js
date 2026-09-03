@@ -2,8 +2,7 @@
  * ==========================================================================
  * IELTS PRACTICE TEST CORE ENGINE (ielts-core.js)
  * Tự động hóa toàn bộ: Bấm giờ, Bôi đen Highlight, Chấm điểm, AI Trợ giảng, Gửi điểm
- * Nâng cấp: Tự động lưu & Khôi phục trạng thái làm bài 100% qua localStorage
- * Nút: Resizer 2 cột, Dark Mode, Font controls, Nút Làm lại bài
+ * Nâng cấp: Tự động lưu & Khôi phục lịch sử bài làm theo Email (Review Mode)
  * ==========================================================================
  */
 
@@ -19,8 +18,9 @@ let timerInterval = null;
 let isTimerRunning = false;
 let userFinalScore = 0;
 let currentFontSize = 15;
+let isReviewMode = false;
 
-// Lấy Key lưu trữ độc bản cho từng trang bài tập (Ví dụ: ielts_state_cam21-test4-p1.html)
+// Lấy Key lưu trữ độc bản cho từng trang bài tập
 function getStorageKey() {
   const pageName = window.location.pathname.split('/').pop() || 'default_test';
   return 'ielts_state_' + pageName;
@@ -32,7 +32,7 @@ function changeFontSize(delta) {
   if (currentFontSize < 12) currentFontSize = 12;
   if (currentFontSize > 22) currentFontSize = 22;
   document.documentElement.style.setProperty('--font-size-base', currentFontSize + 'px');
-  saveStateToLocalStorage();
+  if (!isReviewMode) saveStateToLocalStorage();
 }
 
 // Bật/Tắt Chế độ Tối (Dark Mode)
@@ -46,7 +46,7 @@ function toggleTheme() {
       btnTheme.innerText = "🌙 Chế độ tối";
     }
   }
-  saveStateToLocalStorage();
+  if (!isReviewMode) saveStateToLocalStorage();
 }
 
 function updateTimerDisplay() {
@@ -62,7 +62,7 @@ function updateTimerDisplay() {
 }
 
 function startTimer() {
-  if (!isTimerRunning) {
+  if (!isTimerRunning && !isReviewMode) {
     isTimerRunning = true;
     timerInterval = setInterval(() => {
       seconds++;
@@ -78,7 +78,7 @@ function pauseTimer() {
   if (isTimerRunning) {
     isTimerRunning = false;
     clearInterval(timerInterval);
-    saveStateToLocalStorage();
+    if (!isReviewMode) saveStateToLocalStorage();
   }
 }
 
@@ -86,8 +86,9 @@ function stopTimer() {
   pauseTimer();
 }
 
-// TỰ ĐỘNG LƯU TOÀN BỘ TRẠNG THÁI VÀO LOCALSTORAGE
+// TỰ ĐỘNG LƯU TRẠNG THÁI HIỆN TẠI VÀO LOCALSTORAGE
 function saveStateToLocalStorage() {
+  if (isReviewMode) return;
   try {
     const key = getStorageKey();
     const state = {
@@ -104,22 +105,18 @@ function saveStateToLocalStorage() {
       aiResponses: {}
     };
 
-    // Lưu các ô điền từ
     document.querySelectorAll('input[type="text"].fill-input').forEach(input => {
       state.inputs[input.id] = input.value;
     });
 
-    // Lưu các nút chọn Radio
     document.querySelectorAll('input[type="radio"]:checked').forEach(radio => {
       state.radios[radio.name] = radio.value;
     });
 
-    // Lưu suy nghĩ của học sinh
     document.querySelectorAll('.thought-box textarea').forEach(textarea => {
       state.thoughts[textarea.id] = textarea.value;
     });
 
-    // Lưu phản hồi từ AI
     document.querySelectorAll('.ai-response').forEach(aiBox => {
       if (aiBox.innerHTML.trim() !== '') {
         state.aiResponses[aiBox.id] = aiBox.innerHTML;
@@ -128,7 +125,6 @@ function saveStateToLocalStorage() {
 
     localStorage.setItem(key, JSON.stringify(state));
 
-    // Cập nhật tín hiệu "Đã lưu" trên Header
     const saveIndicator = document.getElementById('saveIndicator');
     if (saveIndicator) {
       saveIndicator.style.display = 'inline-block';
@@ -139,7 +135,33 @@ function saveStateToLocalStorage() {
   }
 }
 
-// KHÔI PHỤC TOÀN BỘ TRẠNG THÁI KHI HỌC SINH QUAY LẠI TRANG
+// QUẢN LÝ DATABASE LỊCH SỬ THEO EMAIL (STORAGE DATABASE)
+function getHistoryDatabase() {
+  try {
+    const raw = localStorage.getItem('ielts_history_database');
+    return raw ? JSON.parse(raw) : {};
+  } catch (e) {
+    return {};
+  }
+}
+
+function saveAttemptToHistoryDatabase(attemptData) {
+  try {
+    const db = getHistoryDatabase();
+    const email = attemptData.studentEmail.toLowerCase().trim();
+    if (!email) return;
+
+    if (!db[email]) db[email] = [];
+    // Thêm lần nộp bài mới lên đầu danh sách
+    db[email].unshift(attemptData);
+
+    localStorage.setItem('ielts_history_database', JSON.stringify(db));
+  } catch (e) {
+    console.warn("Không thể lưu vào history database:", e);
+  }
+}
+
+// KHÔI PHỤC TOÀN BỘ TRẠNG THÁI BÀI LÀM CŨ NẾU MỞ TRANG THƯỜNG
 function restoreStateFromLocalStorage() {
   try {
     const key = getStorageKey();
@@ -148,13 +170,11 @@ function restoreStateFromLocalStorage() {
 
     const state = JSON.parse(savedData);
 
-    // 1. Khôi phục thời gian
     if (state.seconds) {
       seconds = state.seconds;
       updateTimerDisplay();
     }
 
-    // 2. Khôi phục Họ tên & Email
     if (state.studentName && document.getElementById('studentNameInput')) {
       document.getElementById('studentNameInput').value = state.studentName;
     }
@@ -162,7 +182,6 @@ function restoreStateFromLocalStorage() {
       document.getElementById('studentEmailInput').value = state.studentEmail;
     }
 
-    // 3. Khôi phục Giao diện Tối/Sáng & Cỡ chữ
     if (state.isDarkTheme) {
       document.body.classList.add('dark-theme');
       const btnTheme = document.getElementById('btnThemeToggle');
@@ -173,7 +192,6 @@ function restoreStateFromLocalStorage() {
       document.documentElement.style.setProperty('--font-size-base', currentFontSize + 'px');
     }
 
-    // 4. Khôi phục các ô Điền từ
     if (state.inputs) {
       for (const inputId in state.inputs) {
         const el = document.getElementById(inputId);
@@ -181,7 +199,6 @@ function restoreStateFromLocalStorage() {
       }
     }
 
-    // 5. Khôi phục các tùy chọn Radio
     if (state.radios) {
       for (const radioName in state.radios) {
         const val = state.radios[radioName];
@@ -190,7 +207,6 @@ function restoreStateFromLocalStorage() {
       }
     }
 
-    // 6. Khôi phục Mạch suy nghĩ
     if (state.thoughts) {
       for (const textareaId in state.thoughts) {
         const el = document.getElementById(textareaId);
@@ -198,7 +214,6 @@ function restoreStateFromLocalStorage() {
       }
     }
 
-    // 7. Khôi phục Câu trả lời của AI
     if (state.aiResponses) {
       for (const boxId in state.aiResponses) {
         const el = document.getElementById(boxId);
@@ -209,59 +224,136 @@ function restoreStateFromLocalStorage() {
       }
     }
 
-    // 8. Nếu bài đã bấm Chấm bài trước đó -> Khôi phục kết quả & Lời giải
     if (state.isSubmitted) {
-      const passageBox = document.getElementById('passageBox');
-      if (passageBox) passageBox.classList.add('submitted');
-      
-      const scoreBadge = document.getElementById('scoreBadge');
-      const scoreText = document.getElementById('scoreText');
-      if (scoreBadge) scoreBadge.style.display = 'block';
-      if (scoreText && state.scoreText) scoreText.innerText = state.scoreText;
-
-      document.querySelectorAll('.explanation').forEach(exp => {
-        exp.style.display = 'block';
-      });
-
-      // Đánh dấu viền đúng/sai
-      if (window.TEST_DATA && window.TEST_DATA.answers) {
-        const answers = window.TEST_DATA.answers;
-        for (const qKey in answers) {
-          const qDiv = document.getElementById(qKey);
-          if (!qDiv) continue;
-          const resDiv = qDiv.querySelector('.result');
-          const expectedAns = answers[qKey];
-          const radioSelected = qDiv.querySelector(`input[name="${qKey}"]:checked`);
-          const textInput = document.getElementById(`${qKey}_input`);
-
-          let userVal = "";
-          let isCorrect = false;
-          if (radioSelected) {
-            userVal = radioSelected.value.trim();
-            isCorrect = (userVal.toUpperCase() === expectedAns.toUpperCase());
-          } else if (textInput) {
-            userVal = textInput.value.trim();
-            const cleanUserVal = userVal.toLowerCase().replace(/\s+/g, ' ');
-            if (Array.isArray(expectedAns)) {
-              isCorrect = expectedAns.map(a => a.toLowerCase().trim()).includes(cleanUserVal);
-            } else {
-              isCorrect = (cleanUserVal === expectedAns.toLowerCase().trim());
-            }
-          }
-
-          if (isCorrect) {
-            if (resDiv) resDiv.innerHTML = "<span class='correct-text'>✓ Đúng</span>";
-            qDiv.classList.add('correct-border');
-          } else {
-            const correctStr = Array.isArray(expectedAns) ? expectedAns.join(" / ") : expectedAns;
-            if (resDiv) resDiv.innerHTML = `<span class='incorrect-text'>✗ Sai (Đáp án đúng: <b>${correctStr}</b>)</span>`;
-            qDiv.classList.add('incorrect-border');
-          }
-        }
-      }
+      applySubmittedUI(state.scoreText);
     }
   } catch (err) {
     console.warn("Không thể khôi phục localStorage:", err);
+  }
+}
+
+// KHÔI PHỤC TOÀN BỘ BỨC ẢNH LẦN NỘP BÀI QUÁ KHỨ (CHẾ ĐỘ XEM LẠI LỊCH SỬ - REVIEW MODE)
+function restoreAttemptFromSnapshot(attempt) {
+  isReviewMode = true;
+  stopTimer();
+
+  // Tạo thanh thông báo Review Mode
+  const reviewBanner = document.createElement('div');
+  reviewBanner.style.cssText = "background: #f59e0b; color: #78350f; padding: 10px 16px; font-weight: 700; font-size: 14px; text-align: center; border-radius: 8px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;";
+  reviewBanner.innerHTML = `
+    <span>📜 ĐANG XEM LẠI LỊCH SỬ BÀI LÀM (${attempt.timestamp}) — Điểm: ${attempt.score} (Học viên: ${attempt.studentName})</span>
+    <a href="index.html" style="background: #78350f; color: white; padding: 4px 12px; text-decoration: none; border-radius: 4px; font-size: 13px;">🔙 Quay lại Danh mục Lịch sử</a>
+  `;
+  document.body.insertBefore(reviewBanner, document.body.firstChild);
+
+  // Điền Họ tên & Email
+  if (document.getElementById('studentNameInput')) document.getElementById('studentNameInput').value = attempt.studentName;
+  if (document.getElementById('studentEmailInput')) document.getElementById('studentEmailInput').value = attempt.studentEmail;
+
+  // Thời gian
+  const timerDisplay = document.getElementById('timerDisplay');
+  if (timerDisplay && attempt.timeSpent) timerDisplay.innerText = attempt.timeSpent;
+
+  // Ô điền từ
+  if (attempt.inputs) {
+    for (const inputId in attempt.inputs) {
+      const el = document.getElementById(inputId);
+      if (el) {
+        el.value = attempt.inputs[inputId];
+        el.disabled = true;
+      }
+    }
+  }
+
+  // Radio chọn
+  if (attempt.radios) {
+    for (const radioName in attempt.radios) {
+      const val = attempt.radios[radioName];
+      const radioEl = document.querySelector(`input[name="${radioName}"][value="${val}"]`);
+      if (radioEl) {
+        radioEl.checked = true;
+      }
+    }
+    document.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
+  }
+
+  // Mạch suy nghĩ
+  if (attempt.thoughts) {
+    for (const textareaId in attempt.thoughts) {
+      const el = document.getElementById(textareaId);
+      if (el) {
+        el.value = attempt.thoughts[textareaId];
+        el.disabled = true;
+      }
+    }
+  }
+
+  // Phản hồi AI
+  if (attempt.aiResponses) {
+    for (const boxId in attempt.aiResponses) {
+      const el = document.getElementById(boxId);
+      if (el) {
+        el.style.display = 'block';
+        el.innerHTML = attempt.aiResponses[boxId];
+      }
+    }
+  }
+
+  // Bật giao diện đã nộp bài & Lời giải
+  applySubmittedUI(attempt.score);
+
+  // Ẩn nút nộp bài
+  const submitBtn = document.querySelector('.btn-submit');
+  if (submitBtn) submitBtn.style.display = 'none';
+}
+
+function applySubmittedUI(scoreStr) {
+  const passageBox = document.getElementById('passageBox');
+  if (passageBox) passageBox.classList.add('submitted');
+  
+  const scoreBadge = document.getElementById('scoreBadge');
+  const scoreText = document.getElementById('scoreText');
+  if (scoreBadge) scoreBadge.style.display = 'block';
+  if (scoreText && scoreStr) scoreText.innerText = scoreStr;
+
+  document.querySelectorAll('.explanation').forEach(exp => {
+    exp.style.display = 'block';
+  });
+
+  if (window.TEST_DATA && window.TEST_DATA.answers) {
+    const answers = window.TEST_DATA.answers;
+    for (const qKey in answers) {
+      const qDiv = document.getElementById(qKey);
+      if (!qDiv) continue;
+      const resDiv = qDiv.querySelector('.result');
+      const expectedAns = answers[qKey];
+      const radioSelected = qDiv.querySelector(`input[name="${qKey}"]:checked`);
+      const textInput = document.getElementById(`${qKey}_input`);
+
+      let userVal = "";
+      let isCorrect = false;
+      if (radioSelected) {
+        userVal = radioSelected.value.trim();
+        isCorrect = (userVal.toUpperCase() === expectedAns.toUpperCase());
+      } else if (textInput) {
+        userVal = textInput.value.trim();
+        const cleanUserVal = userVal.toLowerCase().replace(/\s+/g, ' ');
+        if (Array.isArray(expectedAns)) {
+          isCorrect = expectedAns.map(a => a.toLowerCase().trim()).includes(cleanUserVal);
+        } else {
+          isCorrect = (cleanUserVal === expectedAns.toLowerCase().trim());
+        }
+      }
+
+      if (isCorrect) {
+        if (resDiv) resDiv.innerHTML = "<span class='correct-text'>✓ Đúng</span>";
+        qDiv.classList.add('correct-border');
+      } else {
+        const correctStr = Array.isArray(expectedAns) ? expectedAns.join(" / ") : expectedAns;
+        if (resDiv) resDiv.innerHTML = `<span class='incorrect-text'>✗ Sai (Đáp án đúng: <b>${correctStr}</b>)</span>`;
+        qDiv.classList.add('incorrect-border');
+      }
+    }
   }
 }
 
@@ -270,7 +362,7 @@ function resetTestProgress() {
   if (confirm("⚠️ Bạn có chắc chắn muốn xóa toàn bộ kết quả bài làm trang này để LÀM LẠI TỪ ĐẦU không?")) {
     const key = getStorageKey();
     localStorage.removeItem(key);
-    window.location.reload();
+    window.location.href = window.location.pathname;
   }
 }
 
@@ -279,7 +371,7 @@ let currentSelectedRange = null;
 let currentTargetSpan = null;
 
 document.addEventListener('DOMContentLoaded', function() {
-  // 1. Tự động chèn Nút Điều khiển Cỡ chữ, Tối/Sáng & Nút Reset vào Header
+  // 1. Tự động chèn Nút Control vào Header
   const headerBar = document.querySelector('.header-bar');
   if (headerBar && !document.getElementById('btnThemeToggle')) {
     const controlsDiv = document.createElement('div');
@@ -339,12 +431,29 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // 3. Khôi phục trạng thái làm bài cũ từ localStorage
-  restoreStateFromLocalStorage();
+  // 3. ĐIỀU HƯỚNG: KIỂM TRA XEM CÓ PHẢI ĐANG XEM LẠI LỊCH SỬ (REVIEW MODE) HAY KHÔNG
+  const urlParams = new URLSearchParams(window.location.search);
+  const attemptId = urlParams.get('attemptId');
+  const studentEmailParam = urlParams.get('email');
 
-  // 4. Tự động theo dõi thao tác người dùng để lưu tự động
-  document.addEventListener('input', saveStateToLocalStorage);
-  document.addEventListener('change', saveStateToLocalStorage);
+  if (attemptId && studentEmailParam) {
+    const db = getHistoryDatabase();
+    const userAttempts = db[studentEmailParam.toLowerCase().trim()] || [];
+    const matchedAttempt = userAttempts.find(a => a.id === attemptId);
+    if (matchedAttempt) {
+      restoreAttemptFromSnapshot(matchedAttempt);
+    } else {
+      restoreStateFromLocalStorage();
+    }
+  } else {
+    restoreStateFromLocalStorage();
+  }
+
+  // 4. Theo dõi thao tác người dùng để tự động lưu
+  if (!isReviewMode) {
+    document.addEventListener('input', saveStateToLocalStorage);
+    document.addEventListener('change', saveStateToLocalStorage);
+  }
 
   // 5. Xử lý Popup bôi đen
   const hlPopup = document.getElementById('hlPopup');
@@ -412,7 +521,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Tự động bật timer khi tương tác
   document.body.addEventListener('click', function() {
-    if (!isTimerRunning && seconds === 0) {
+    if (!isTimerRunning && seconds === 0 && !isReviewMode) {
       startTimer();
     }
   }, { once: true });
@@ -428,8 +537,9 @@ function highlightText(elementId) {
   }
 }
 
-// Chấm điểm tự động linh hoạt cho mọi dạng đề
+// CHẤM ĐIỂM VÀ LƯU BỨC ẢNH VÀO DATABASE LỊCH SỬ CỦA EMAIL
 async function checkAnswers() {
+  if (isReviewMode) return;
   if (!window.TEST_DATA || !window.TEST_DATA.answers) {
     alert("Lỗi cấu hình: Chưa khai báo TEST_DATA.answers cho bài tập này!");
     return;
@@ -456,6 +566,11 @@ async function checkAnswers() {
     passageBox.classList.add('submitted');
   }
 
+  const snapshotInputs = {};
+  const snapshotRadios = {};
+  const snapshotThoughts = {};
+  const snapshotAI = {};
+
   for (const qKey in answers) {
     const qDiv = document.getElementById(qKey);
     if (!qDiv) continue;
@@ -465,22 +580,24 @@ async function checkAnswers() {
     const thoughtInput = document.getElementById(`${qKey}_thought`);
     const thought = thoughtInput ? thoughtInput.value.trim() : '';
 
+    if (thoughtInput) snapshotThoughts[`${qKey}_thought`] = thought;
+
     qDiv.classList.remove('correct-border', 'incorrect-border');
 
     let userVal = "";
     let isCorrect = false;
     const expectedAns = answers[qKey];
 
-    // 1. Dạng Trắc nghiệm (Radio)
     const radioSelected = qDiv.querySelector(`input[name="${qKey}"]:checked`);
     const textInput = document.getElementById(`${qKey}_input`);
 
     if (radioSelected) {
       userVal = radioSelected.value.trim();
+      snapshotRadios[qKey] = userVal;
       isCorrect = (userVal.toUpperCase() === expectedAns.toUpperCase());
     } else if (textInput) {
-      // 2. Dạng Điền từ
       userVal = textInput.value.trim();
+      snapshotInputs[`${qKey}_input`] = userVal;
       const cleanUserVal = userVal.toLowerCase().replace(/\s+/g, ' ');
 
       if (Array.isArray(expectedAns)) {
@@ -488,6 +605,11 @@ async function checkAnswers() {
       } else {
         isCorrect = (cleanUserVal === expectedAns.toLowerCase().trim());
       }
+    }
+
+    const aiResBox = document.getElementById(`ai_response_${qKey}`);
+    if (aiResBox && aiResBox.innerHTML.trim() !== '') {
+      snapshotAI[`ai_response_${qKey}`] = aiResBox.innerHTML;
     }
 
     if (isCorrect) {
@@ -500,7 +622,6 @@ async function checkAnswers() {
       qDiv.classList.add('incorrect-border');
     }
 
-    // TỰ ĐỘNG HIỆN TOÀN BỘ LỜI GIẢI CHI TIẾT DÙ ĐÚNG HAY SAI
     if (expDiv) expDiv.style.display = "block";
     detailsSummary += `${qKey.toUpperCase()}: ${userVal || 'Để trống'} | Suy nghĩ: ${thought || 'N/A'}\n`;
   }
@@ -510,10 +631,30 @@ async function checkAnswers() {
   
   const scoreText = document.getElementById('scoreText');
   const scoreBadge = document.getElementById('scoreBadge');
-  if (scoreText) scoreText.innerText = `${score}/${totalQuestions}`;
+  const scoreStr = `${score}/${totalQuestions}`;
+  if (scoreText) scoreText.innerText = scoreStr;
   if (scoreBadge) scoreBadge.style.display = 'block';
 
-  // LƯU TRẠNG THÁI SAU KHI CHẤM BÀI
+  // LƯU BỨC ẢNH CHI TIẾT LẦN NỘP NÀY VÀO DATABASE LỊCH SỬ DÀNH RIÊNG CHO EMAIL NÀY
+  const now = new Date();
+  const timeStr = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')} - ${String(now.getDate()).padStart(2,'0')}/${String(now.getMonth()+1).padStart(2,'0')}/${now.getFullYear()}`;
+  
+  const attemptSnapshot = {
+    id: "attempt_" + Date.now(),
+    timestamp: timeStr,
+    testTitle: window.TEST_DATA.title || document.title,
+    pageUrl: window.location.pathname.split('/').pop(),
+    studentName: studentName,
+    studentEmail: studentEmail,
+    score: scoreStr,
+    timeSpent: timeSpentText,
+    inputs: snapshotInputs,
+    radios: snapshotRadios,
+    thoughts: snapshotThoughts,
+    aiResponses: snapshotAI
+  };
+
+  saveAttemptToHistoryDatabase(attemptSnapshot);
   saveStateToLocalStorage();
 
   // Gửi kết quả về Google Sheets
@@ -527,15 +668,15 @@ async function checkAnswers() {
           testTitle: window.TEST_DATA.title || document.title,
           studentName: studentName,
           studentEmail: studentEmail,
-          score: `${score}/${totalQuestions}`,
+          score: scoreStr,
           timeSpent: timeSpentText,
           details: detailsSummary
         })
       });
-      alert(`🎉 Chúc mừng ${studentName}! Bài làm đạt ${score}/${totalQuestions} câu. Kết quả đã được lưu về hệ thống!`);
+      alert(`🎉 Chúc mừng ${studentName}! Bài làm đạt ${scoreStr} câu. Kết quả đã được lưu về hệ thống!`);
     } catch (err) {
       console.error("Lỗi gửi điểm:", err);
-      alert(`Bài làm đạt ${score}/${totalQuestions} câu!`);
+      alert(`Bài làm đạt ${scoreStr} câu!`);
     }
   }
 }
@@ -544,11 +685,9 @@ async function checkAnswers() {
 function cleanMetaThoughts(text) {
   if (!text) return "";
   let clean = text;
-  
   clean = clean.replace(/\[THẮC MẮC CỦA HỌC VIÊN\]:\s*".*?"/gi, "");
   clean = clean.replace(/\[THÔNG TIN CÂU HỎI\]:.*/gi, "");
   clean = clean.replace(/💬 Trả lời:/gi, "");
-  
   if (clean.includes("Check constraints:") || clean.includes("Self-Correction")) {
     const parts = clean.split(/(Check constraints:|Self-Correction|Proceeds|Output Generation)/i);
     clean = parts[0];
@@ -558,6 +697,10 @@ function cleanMetaThoughts(text) {
 
 // AI TRỢ GIẢNG
 async function askGeminiAI(qId) {
+  if (isReviewMode) {
+    alert("Bạn đang ở chế độ xem lại lịch sử.");
+    return;
+  }
   const inputEl = document.getElementById(`ai_ask_${qId}`);
   const responseBox = document.getElementById(`ai_response_${qId}`);
   if (!inputEl || !responseBox) return;

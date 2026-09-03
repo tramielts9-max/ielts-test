@@ -18,6 +18,95 @@
     .portal-hero h1 { margin: 0 0 10px 0; font-size: 26px; }
     .portal-hero p { margin: 0; color: #93c5fd; font-size: 15px; }
 
+    .history-lookup-box {
+      background: var(--bg-card);
+      border: 2px solid var(--primary-blue);
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.1);
+    }
+    .history-lookup-box h3 {
+      margin: 0 0 12px 0;
+      color: var(--primary-blue);
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .lookup-input-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .lookup-input-group input {
+      flex: 1;
+      min-width: 250px;
+      padding: 10px 14px;
+      font-size: 15px;
+      border: 1.5px solid var(--border-color);
+      border-radius: 6px;
+      background: var(--bg-subcard);
+      color: var(--text-main);
+      outline: none;
+    }
+    .btn-lookup {
+      background: var(--primary-blue);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 15px;
+      font-weight: 700;
+      border-radius: 6px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .btn-lookup:hover { background: #0369a1; }
+
+    .history-results-list {
+      margin-top: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .history-card {
+      background: var(--bg-subcard);
+      border: 1px solid var(--border-color);
+      padding: 14px 18px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .history-card-info h4 { margin: 0 0 4px 0; font-size: 16px; color: var(--text-main); }
+    .history-card-info p { margin: 0; font-size: 13px; color: var(--text-muted); }
+    .history-card-score {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .score-pill {
+      background: #16a34a;
+      color: white;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .btn-review {
+      background: #0284c7;
+      color: white;
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 13.5px;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+    .btn-review:hover { background: #0369a1; }
+
     .test-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -26,11 +115,11 @@
       margin: auto;
     }
     .test-card {
-      background: white;
+      background: var(--bg-card);
       border-radius: 10px;
       padding: 20px;
       box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
-      border: 1px solid #e2e8f0;
+      border: 1px solid var(--border-color);
       transition: transform 0.2s, box-shadow 0.2s;
       display: flex;
       flex-direction: column;
@@ -51,8 +140,8 @@
       border-radius: 20px;
       margin-bottom: 10px;
     }
-    .test-card h3 { margin: 0 0 10px 0; font-size: 17px; color: #0f172a; }
-    .test-card p { font-size: 13.5px; color: #64748b; line-height: 1.5; margin-bottom: 15px; }
+    .test-card h3 { margin: 0 0 10px 0; font-size: 17px; color: var(--text-main); }
+    .test-card p { font-size: 13.5px; color: var(--text-muted); line-height: 1.5; margin-bottom: 15px; }
     .btn-start-test {
       display: block;
       text-align: center;
@@ -74,6 +163,17 @@
   <div class="portal-hero">
     <h1>📚 HỆ THỐNG LUYỆN THI IELTS READING TRỰC TUYẾN</h1>
     <p>Bộ đề Cambridge 21 Academic mới nhất • Tự động chấm điểm • AI Trợ giảng giải thích chi tiết</p>
+  </div>
+
+  <!-- KHU VỰC TRA CỨU LỊCH SỬ BÀI LÀM THEO EMAIL -->
+  <div class="history-lookup-box">
+    <h3>📜 TRA CỨU LỊCH SỬ CÁC LẦN LÀM BÀI CỦA HỌC VIÊN</h3>
+    <p style="margin: 0 0 12px 0; font-size: 14px; color: var(--text-muted);">Nhập Email Google của em để xem lại toàn bộ các lần làm bài, đáp án đã điền và lịch sử trao đổi với AI Trợ giảng:</p>
+    <div class="lookup-input-group">
+      <input type="email" id="lookupEmailInput" placeholder="Nhập Email Google của em (ví dụ: student@gmail.com)...">
+      <button class="btn-lookup" onclick="lookupHistory()">🔍 Xem Lịch Sử</button>
+    </div>
+    <div class="history-results-list" id="historyResultsList" style="display: none;"></div>
   </div>
 
   <h2 style="margin-bottom: 20px;">Cambridge IELTS 21 - Academic Test 4</h2>
@@ -111,5 +211,65 @@
   </div>
 </div>
 
+<script src="ielts-core.js"></script>
+<script>
+  function lookupHistory() {
+    const emailInput = document.getElementById('lookupEmailInput');
+    const resultsBox = document.getElementById('historyResultsList');
+    if (!emailInput || !resultsBox) return;
+
+    const email = emailInput.value.trim().toLowerCase();
+    if (!email) {
+      alert("⚠️ Vui lòng nhập Email để tra cứu lịch sử làm bài!");
+      return;
+    }
+
+    const db = getHistoryDatabase();
+    const attempts = db[email] || [];
+
+    resultsBox.style.display = 'flex';
+
+    if (attempts.length === 0) {
+      resultsBox.innerHTML = `
+        <div style="background: var(--bg-card); padding: 15px; border-radius: 8px; text-align: center; color: var(--text-muted);">
+          ℹ️ Chưa tìm thấy lịch sử làm bài nào dành cho Email: <b>${email}</b>. Em hãy bấm vào các bài làm bên dưới và nộp bài để lưu lịch sử nhé!
+        </div>
+      `;
+      return;
+    }
+
+    let html = `<h4 style="margin: 5px 0 10px 0; color: var(--primary-blue);">Tìm thấy ${attempts.length} lần làm bài cho "${email}":</h4>`;
+
+    attempts.forEach(attempt => {
+      html += `
+        <div class="history-card">
+          <div class="history-card-info">
+            <h4>📖 ${attempt.testTitle}</h4>
+            <p>⏱️ Thời gian nộp bài: <b>${attempt.timestamp}</b> • Làm trong: <b>${attempt.timeSpent}</b></p>
+          </div>
+          <div class="history-card-score">
+            <span class="score-pill">Điểm: ${attempt.score}</span>
+            <a href="${attempt.pageUrl}?attemptId=${attempt.id}&email=${encodeURIComponent(email)}" class="btn-review">👁️ Xem lại chi tiết</a>
+          </div>
+        </div>
+      `;
+    });
+
+    resultsBox.innerHTML = html;
+  }
+
+  // Tự động gợi ý Email vừa nộp gần nhất nếu có
+  document.addEventListener('DOMContentLoaded', function() {
+    const db = getHistoryDatabase();
+    const emails = Object.keys(db);
+    if (emails.length > 0) {
+      const emailInput = document.getElementById('lookupEmailInput');
+      if (emailInput) {
+        emailInput.value = emails[0];
+        lookupHistory();
+      }
+    }
+  });
+</script>
 </body>
 </html>
