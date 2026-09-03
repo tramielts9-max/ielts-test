@@ -5,14 +5,14 @@
 
 :root {
   --font-size-base: 15px;
-  --bg-body: #f1f5f9;
-  --bg-card: #ffffff;
-  --bg-subcard: #f8fafc;
+  --bg-body: #F7F4EF;
+  --bg-card: #FFFFFF;
+  --bg-subcard: #FAF7F2;
   --text-main: #1e293b;
   --text-muted: #64748b;
-  --border-color: #cbd5e1;
-  --primary-blue: #0284c7;
-  --primary-dark: #0f172a;
+  --border-color: #E5DED4;
+  --primary-blue: #8B1518;
+  --primary-dark: #1A1A1A;
 }
 
 /* Dark Mode Theme Variables */
@@ -254,8 +254,8 @@ h3 {
 /* Section Title Câu hỏi */
 .section-title {
   font-weight: 700;
-  background: #e0f2fe;
-  color: #0369a1;
+  background: #FDF2F2;
+  color: #8B1518;
   padding: 10px 14px;
   border-left: 4px solid var(--primary-blue);
   margin: 20px 0 14px 0;
@@ -382,8 +382,8 @@ input[type="text"].fill-input,
 }
 
 /* Nút Submit */
-.btn-submit {
-  background-color: var(--primary-blue);
+.btn-submit, .btn-lookup {
+  background-color: #8B1518;
   color: white;
   border: none;
   padding: 14px 20px;
