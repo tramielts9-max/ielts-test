@@ -2,10 +2,8 @@
  * ==========================================================================
  * IELTS PRACTICE TEST CORE ENGINE (ielts-core.js)
  * Tự động hóa toàn bộ: Bấm giờ, Bôi đen Highlight, Chấm điểm, AI Trợ giảng, Gửi điểm
- * NÂNG CẤP BẢO VỆ DỮ LIỆU CỰC KỲ MẠNH MẼ:
- * 1. Lưu Profile Học Viên Toàn Hệ Thống (Nhập 1 lần dùng cho mọi Passage)
- * 2. Lưu ngầm 100% Trạng thái (Answers, Thoughts, Highlights, Timer, AI Chats)
- * 3. Khôi phục nguyên trạng 100% khi chuyển trang hoặc quay lại bài cũ
+ * Nâng cấp: Tự động lưu & Khôi phục trạng thái làm bài 100% qua localStorage
+ * Nút: Resizer 2 cột, Dark Mode, Font controls, Nút Làm lại bài
  * ==========================================================================
  */
 
@@ -15,307 +13,29 @@ const IELTS_CONFIG = {
   GOOGLE_SCRIPT_URL: "https://script.google.com/macros/s/AKfycby7vRFXq_YhjIEq4kN-8NLRFw2sj-7VkVEmTw6IkNkPmidEPnPtxtNkSE-HKfn5mAPfbw/exec"
 };
 
+// Quản lý đồng hồ bấm giờ & Cỡ chữ
 let seconds = 0;
 let timerInterval = null;
 let isTimerRunning = false;
 let userFinalScore = 0;
 let currentFontSize = 15;
 
-// Lấy Key lưu trữ riêng cho từng bài (tránh đè bài này lên bài khác)
-function getTestStorageKey() {
-  const path = window.location.pathname;
-  let pageName = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
-  if (!pageName) pageName = 'cam21-test4-p1';
-  return `IELTS_STATE_${pageName}`;
+// Lấy Key lưu trữ độc bản cho từng trang bài tập (Ví dụ: ielts_state_cam21-test4-p1.html)
+function getStorageKey() {
+  const pageName = window.location.pathname.split('/').pop() || 'default_test';
+  return 'ielts_state_' + pageName;
 }
 
-// --------------------------------------------------------------------------
-// 1. TỰ ĐỘNG LƯU TOÀN BỘ TRẠNG THÁI (AUTO-SAVE)
-// --------------------------------------------------------------------------
-function saveStateToStorage() {
-  const key = getTestStorageKey();
-  const studentNameInput = document.getElementById('studentNameInput');
-  const studentEmailInput = document.getElementById('studentEmailInput');
-  const scoreBadge = document.getElementById('scoreBadge');
-  const scoreText = document.getElementById('scoreText');
-
-  const nameVal = studentNameInput ? studentNameInput.value.trim() : "";
-  const emailVal = studentEmailInput ? studentEmailInput.value.trim() : "";
-
-  // 1.1 Lưu Profile toàn hệ thống (Dùng chung cho tất cả các Passage)
-  if (nameVal || emailVal) {
-    localStorage.setItem('IELTS_USER_PROFILE', JSON.stringify({
-      studentName: nameVal,
-      studentEmail: emailVal
-    }));
-  }
-
-  // 1.2 Dọn dẹp & Lưu dữ liệu riêng của bài làm hiện tại
-  const state = {
-    studentName: nameVal,
-    studentEmail: emailVal,
-    seconds: seconds,
-    isSubmitted: document.getElementById('passageBox') ? document.getElementById('passageBox').classList.contains('submitted') : false,
-    scoreText: scoreText ? scoreText.innerText : "",
-    scoreBadgeDisplay: scoreBadge ? scoreBadge.style.display : "none",
-    answers: {},
-    thoughts: {},
-    aiResponses: {}
-  };
-
-  // Quét và lưu toàn bộ câu trả lời của tất cả các câu hỏi
-  const allQuestions = document.querySelectorAll('.question');
-  allQuestions.forEach(qDiv => {
-    const qKey = qDiv.id;
-    if (!qKey) return;
-
-    const radioSelected = qDiv.querySelector(`input[type="radio"]:checked`);
-    const textInput = document.getElementById(`${qKey}_input`);
-    if (radioSelected) {
-      state.answers[qKey] = radioSelected.value;
-    } else if (textInput) {
-      state.answers[qKey] = textInput.value;
-    }
-
-    const thoughtInput = document.getElementById(`${qKey}_thought`);
-    if (thoughtInput && thoughtInput.value) {
-      state.thoughts[`${qKey}_thought`] = thoughtInput.value;
-    }
-
-    const aiResponseBox = document.getElementById(`ai_response_${qKey}`);
-    if (aiResponseBox && aiResponseBox.innerHTML.trim().length > 0) {
-      state.aiResponses[qKey] = aiResponseBox.innerHTML;
-    }
-  });
-
-  localStorage.setItem(key, JSON.stringify(state));
-}
-
-// --------------------------------------------------------------------------
-// 2. KHÔI PHỤC NGUYÊN TRẠNG 100% (RESTORE STATE)
-// --------------------------------------------------------------------------
-function restoreStateFromStorage() {
-  // 2.1 Tự động điền Họ tên & Email từ Profile dùng chung
-  const profileData = localStorage.getItem('IELTS_USER_PROFILE');
-  if (profileData) {
-    try {
-      const profile = JSON.parse(profileData);
-      const studentNameInput = document.getElementById('studentNameInput');
-      const studentEmailInput = document.getElementById('studentEmailInput');
-      if (studentNameInput && profile.studentName) studentNameInput.value = profile.studentName;
-      if (studentEmailInput && profile.studentEmail) studentEmailInput.value = profile.studentEmail;
-    } catch (e) {}
-  }
-
-  // 2.2 Khôi phục chi tiết bài làm của trang này
-  const key = getTestStorageKey();
-  const savedData = localStorage.getItem(key);
-  if (!savedData) return;
-
-  try {
-    const state = JSON.parse(savedData);
-
-    // Khôi phục đồng hồ
-    if (state.seconds) {
-      seconds = state.seconds;
-      updateTimerDisplay();
-    }
-
-    // Khôi phục các đáp án đã chọn / điền
-    if (state.answers) {
-      for (const qKey in state.answers) {
-        const val = state.answers[qKey];
-        const radio = document.querySelector(`input[name="${qKey}"][value="${val}"]`);
-        const textInput = document.getElementById(`${qKey}_input`);
-        if (radio) radio.checked = true;
-        if (textInput) textInput.value = val;
-      }
-    }
-
-    // Khôi phục suy nghĩ cá nhân
-    if (state.thoughts) {
-      for (const tKey in state.thoughts) {
-        const thoughtInput = document.getElementById(tKey);
-        if (thoughtInput) thoughtInput.value = state.thoughts[tKey];
-      }
-    }
-
-    // Khôi phục toàn bộ các câu trả lời AI
-    if (state.aiResponses) {
-      for (const qKey in state.aiResponses) {
-        const aiResponseBox = document.getElementById(`ai_response_${qKey}`);
-        if (aiResponseBox && state.aiResponses[qKey]) {
-          aiResponseBox.style.display = "block";
-          aiResponseBox.innerHTML = state.aiResponses[qKey];
-        }
-      }
-    }
-
-    // Nếu bài này đã từng bấm Chấm bài trước đó -> Khôi phục giao diện đã chấm bài ngay lập tức
-    if (state.isSubmitted) {
-      renderSubmittedUI(state.scoreText);
-    }
-  } catch (e) {
-    console.warn("Lỗi khôi phục dữ liệu:", e);
-  }
-}
-
-// Hiển thị lại giao diện kết quả mà KHÔNG gửi lại điểm sang Google Sheets
-function renderSubmittedUI(scoreStr) {
-  if (!window.TEST_DATA || !window.TEST_DATA.answers) return;
-
-  const passageBox = document.getElementById('passageBox');
-  if (passageBox) passageBox.classList.add('submitted');
-
-  const answers = window.TEST_DATA.answers;
-  for (const qKey in answers) {
-    const qDiv = document.getElementById(qKey);
-    if (!qDiv) continue;
-
-    const resDiv = qDiv.querySelector('.result');
-    const expDiv = qDiv.querySelector('.explanation');
-    const expectedAns = answers[qKey];
-
-    const radioSelected = qDiv.querySelector(`input[name="${qKey}"]:checked`);
-    const textInput = document.getElementById(`${qKey}_input`);
-
-    let userVal = "";
-    let isCorrect = false;
-
-    if (radioSelected) {
-      userVal = radioSelected.value.trim();
-      isCorrect = (userVal.toUpperCase() === expectedAns.toUpperCase());
-    } else if (textInput) {
-      userVal = textInput.value.trim();
-      const cleanUserVal = userVal.toLowerCase().replace(/\s+/g, ' ');
-      if (Array.isArray(expectedAns)) {
-        isCorrect = expectedAns.map(a => a.toLowerCase().trim()).includes(cleanUserVal);
-      } else {
-        isCorrect = (cleanUserVal === expectedAns.toLowerCase().trim());
-      }
-    }
-
-    qDiv.classList.remove('correct-border', 'incorrect-border');
-    if (isCorrect) {
-      if (resDiv) resDiv.innerHTML = "<span class='correct-text'>✓ Đúng</span>";
-      qDiv.classList.add('correct-border');
-    } else {
-      const correctStr = Array.isArray(expectedAns) ? expectedAns.join(" / ") : expectedAns;
-      if (resDiv) resDiv.innerHTML = `<span class='incorrect-text'>✗ Sai (Đáp án đúng: <b>${correctStr}</b>)</span>`;
-      qDiv.classList.add('incorrect-border');
-    }
-
-    if (expDiv) expDiv.style.display = "block";
-  }
-
-  const scoreText = document.getElementById('scoreText');
-  const scoreBadge = document.getElementById('scoreBadge');
-  if (scoreText && scoreStr) scoreText.innerText = scoreStr;
-  if (scoreBadge) scoreBadge.style.display = 'block';
-}
-
-// --------------------------------------------------------------------------
-// 3. XUẤT BÁO CÁO BÀI LÀM (EXPORT REPORT)
-// --------------------------------------------------------------------------
-function exportStudentReport() {
-  saveStateToStorage();
-  const studentName = document.getElementById('studentNameInput') ? document.getElementById('studentNameInput').value.trim() || 'Học viên' : 'Học viên';
-  const studentEmail = document.getElementById('studentEmailInput') ? document.getElementById('studentEmailInput').value.trim() || 'N/A' : 'N/A';
-  const testTitle = window.TEST_DATA ? (window.TEST_DATA.title || document.title) : document.title;
-  const timeSpent = document.getElementById('timerDisplay') ? document.getElementById('timerDisplay').innerText : '00:00';
-  const scoreText = document.getElementById('scoreText') ? document.getElementById('scoreText').innerText : 'Chưa chấm';
-
-  let reportHtml = `
-    <!DOCTYPE html>
-    <html lang="vi">
-    <head>
-      <meta charset="UTF-8">
-      <title>Báo Cáo Bài Làm - ${studentName}</title>
-      <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; padding: 25px; color: #1e293b; line-height: 1.6; }
-        .header { border-bottom: 2px solid #0284c7; padding-bottom: 12px; margin-bottom: 20px; }
-        .header h1 { margin: 0; color: #0f172a; font-size: 22px; }
-        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; background: #f8fafc; padding: 14px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #cbd5e1; }
-        .info-item { font-size: 14px; }
-        .info-item b { color: #0284c7; }
-        .q-card { border: 1px solid #cbd5e1; padding: 16px; border-radius: 8px; margin-bottom: 16px; background: #ffffff; }
-        .q-title { font-weight: bold; font-size: 15px; margin-bottom: 8px; color: #0f172a; }
-        .ans-user { color: #0369a1; font-weight: 600; }
-        .thought-text { font-style: italic; background: #f1f5f9; padding: 8px 12px; border-radius: 6px; margin: 8px 0; font-size: 13.5px; border-left: 3px solid #64748b; }
-        .exp-box { background: #f0f9ff; border-left: 4px solid #0284c7; padding: 12px; margin-top: 10px; border-radius: 4px; font-size: 14px; }
-        .btn-print { background: #0284c7; color: white; border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-bottom: 20px; font-size: 14px; }
-        @media print { .btn-print { display: none; } }
-      </style>
-    </head>
-    <body>
-      <button class="btn-print" onclick="window.print()">🖨️ In / Tải file PDF Báo Cáo</button>
-      <div class="header">
-        <h1>📊 BÁO CÁO KẾT QUẢ BÀI LÀM IELTS READING</h1>
-        <p style="margin: 4px 0 0 0; color: #64748b; font-size: 14px;">Hệ Thống Luyện Thi Thông Minh - TramIELTS9 Max</p>
-      </div>
-
-      <div class="info-grid">
-        <div class="info-item"><b>👤 Học viên:</b> ${studentName}</div>
-        <div class="info-item"><b>✉️ Email:</b> ${studentEmail}</div>
-        <div class="info-item"><b>📖 Bài làm:</b> ${testTitle}</div>
-        <div class="info-item"><b>⏱️ Thời gian:</b> ${timeSpent}</div>
-        <div class="info-item"><b>🎯 Điểm số:</b> ${scoreText}</div>
-        <div class="info-item"><b>📅 Ngày xuất báo cáo:</b> ${new Date().toLocaleString('vi-VN')}</div>
-      </div>
-
-      <h2>📝 CHI TIẾT TƯỜNG CÂU HỎI VÀ LỜI GIẢI:</h2>
-  `;
-
-  if (window.TEST_DATA && window.TEST_DATA.answers) {
-    let qIndex = 1;
-    for (const qKey in window.TEST_DATA.answers) {
-      const qDiv = document.getElementById(qKey);
-      if (!qDiv) continue;
-
-      const qText = qDiv.querySelector('p') ? qDiv.querySelector('p').innerText : `Câu ${qIndex}`;
-      const radioSelected = qDiv.querySelector(`input[name="${qKey}"]:checked`);
-      const textInput = document.getElementById(`${qKey}_input`);
-      const userVal = radioSelected ? radioSelected.value : (textInput ? textInput.value : "Chưa trả lời");
-      
-      const thoughtInput = document.getElementById(`${qKey}_thought`);
-      const thoughtVal = thoughtInput ? thoughtInput.value.trim() : "";
-
-      const expDiv = qDiv.querySelector('.explanation');
-      let expContent = expDiv ? expDiv.innerHTML : "";
-      expContent = expContent.replace(/<button.*?>.*?<\/button>/gi, "").replace(/<div class="ai-assistant-box">.*?<\/div>/gis, "");
-
-      const aiResponseBox = document.getElementById(`ai_response_${qKey}`);
-      const aiVal = aiResponseBox ? aiResponseBox.innerHTML.trim() : "";
-
-      reportHtml += `
-        <div class="q-card">
-          <div class="q-title">${qText}</div>
-          <div><b>👉 Câu trả lời của em:</b> <span class="ans-user">${userVal}</span></div>
-          ${thoughtVal ? `<div class="thought-text">💭 <b>Mạch suy nghĩ:</b> "${thoughtVal}"</div>` : ''}
-          <div class="exp-box">
-            ${expContent}
-            ${aiVal ? `<div style="margin-top: 10px; border-top: 1px dashed #bae6fd; padding-top: 8px;">${aiVal}</div>` : ''}
-          </div>
-        </div>
-      `;
-      qIndex++;
-    }
-  }
-
-  reportHtml += `</body></html>`;
-
-  const reportWindow = window.open('', '_blank');
-  reportWindow.document.write(reportHtml);
-  reportWindow.document.close();
-}
-
+// Thay đổi Cỡ chữ To/Nhỏ toàn trang
 function changeFontSize(delta) {
   currentFontSize += delta;
   if (currentFontSize < 12) currentFontSize = 12;
   if (currentFontSize > 22) currentFontSize = 22;
   document.documentElement.style.setProperty('--font-size-base', currentFontSize + 'px');
+  saveStateToLocalStorage();
 }
 
+// Bật/Tắt Chế độ Tối (Dark Mode)
 function toggleTheme() {
   document.body.classList.toggle('dark-theme');
   const btnTheme = document.getElementById('btnThemeToggle');
@@ -326,24 +46,255 @@ function toggleTheme() {
       btnTheme.innerText = "🌙 Chế độ tối";
     }
   }
+  saveStateToLocalStorage();
 }
 
+function updateTimerDisplay() {
+  const mins = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  const timerDisplay = document.getElementById('timerDisplay');
+  if (timerDisplay) {
+    timerDisplay.innerText = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    if (mins >= 20) {
+      timerDisplay.classList.add('timer-overtime');
+    }
+  }
+}
+
+function startTimer() {
+  if (!isTimerRunning) {
+    isTimerRunning = true;
+    timerInterval = setInterval(() => {
+      seconds++;
+      updateTimerDisplay();
+      if (seconds % 5 === 0) {
+        saveStateToLocalStorage();
+      }
+    }, 1000);
+  }
+}
+
+function pauseTimer() {
+  if (isTimerRunning) {
+    isTimerRunning = false;
+    clearInterval(timerInterval);
+    saveStateToLocalStorage();
+  }
+}
+
+function stopTimer() {
+  pauseTimer();
+}
+
+// TỰ ĐỘNG LƯU TOÀN BỘ TRẠNG THÁI VÀO LOCALSTORAGE
+function saveStateToLocalStorage() {
+  try {
+    const key = getStorageKey();
+    const state = {
+      seconds: seconds,
+      studentName: document.getElementById('studentNameInput') ? document.getElementById('studentNameInput').value : '',
+      studentEmail: document.getElementById('studentEmailInput') ? document.getElementById('studentEmailInput').value : '',
+      isDarkTheme: document.body.classList.contains('dark-theme'),
+      fontSize: currentFontSize,
+      isSubmitted: document.getElementById('passageBox') ? document.getElementById('passageBox').classList.contains('submitted') : false,
+      scoreText: document.getElementById('scoreText') ? document.getElementById('scoreText').innerText : '',
+      inputs: {},
+      radios: {},
+      thoughts: {},
+      aiResponses: {}
+    };
+
+    // Lưu các ô điền từ
+    document.querySelectorAll('input[type="text"].fill-input').forEach(input => {
+      state.inputs[input.id] = input.value;
+    });
+
+    // Lưu các nút chọn Radio
+    document.querySelectorAll('input[type="radio"]:checked').forEach(radio => {
+      state.radios[radio.name] = radio.value;
+    });
+
+    // Lưu suy nghĩ của học sinh
+    document.querySelectorAll('.thought-box textarea').forEach(textarea => {
+      state.thoughts[textarea.id] = textarea.value;
+    });
+
+    // Lưu phản hồi từ AI
+    document.querySelectorAll('.ai-response').forEach(aiBox => {
+      if (aiBox.innerHTML.trim() !== '') {
+        state.aiResponses[aiBox.id] = aiBox.innerHTML;
+      }
+    });
+
+    localStorage.setItem(key, JSON.stringify(state));
+
+    // Cập nhật tín hiệu "Đã lưu" trên Header
+    const saveIndicator = document.getElementById('saveIndicator');
+    if (saveIndicator) {
+      saveIndicator.style.display = 'inline-block';
+      saveIndicator.innerText = '✓ Đã tự động lưu';
+    }
+  } catch (err) {
+    console.warn("Không thể lưu localStorage:", err);
+  }
+}
+
+// KHÔI PHỤC TOÀN BỘ TRẠNG THÁI KHI HỌC SINH QUAY LẠI TRANG
+function restoreStateFromLocalStorage() {
+  try {
+    const key = getStorageKey();
+    const savedData = localStorage.getItem(key);
+    if (!savedData) return;
+
+    const state = JSON.parse(savedData);
+
+    // 1. Khôi phục thời gian
+    if (state.seconds) {
+      seconds = state.seconds;
+      updateTimerDisplay();
+    }
+
+    // 2. Khôi phục Họ tên & Email
+    if (state.studentName && document.getElementById('studentNameInput')) {
+      document.getElementById('studentNameInput').value = state.studentName;
+    }
+    if (state.studentEmail && document.getElementById('studentEmailInput')) {
+      document.getElementById('studentEmailInput').value = state.studentEmail;
+    }
+
+    // 3. Khôi phục Giao diện Tối/Sáng & Cỡ chữ
+    if (state.isDarkTheme) {
+      document.body.classList.add('dark-theme');
+      const btnTheme = document.getElementById('btnThemeToggle');
+      if (btnTheme) btnTheme.innerText = "☀️ Chế độ sáng";
+    }
+    if (state.fontSize) {
+      currentFontSize = state.fontSize;
+      document.documentElement.style.setProperty('--font-size-base', currentFontSize + 'px');
+    }
+
+    // 4. Khôi phục các ô Điền từ
+    if (state.inputs) {
+      for (const inputId in state.inputs) {
+        const el = document.getElementById(inputId);
+        if (el) el.value = state.inputs[inputId];
+      }
+    }
+
+    // 5. Khôi phục các tùy chọn Radio
+    if (state.radios) {
+      for (const radioName in state.radios) {
+        const val = state.radios[radioName];
+        const radioEl = document.querySelector(`input[name="${radioName}"][value="${val}"]`);
+        if (radioEl) radioEl.checked = true;
+      }
+    }
+
+    // 6. Khôi phục Mạch suy nghĩ
+    if (state.thoughts) {
+      for (const textareaId in state.thoughts) {
+        const el = document.getElementById(textareaId);
+        if (el) el.value = state.thoughts[textareaId];
+      }
+    }
+
+    // 7. Khôi phục Câu trả lời của AI
+    if (state.aiResponses) {
+      for (const boxId in state.aiResponses) {
+        const el = document.getElementById(boxId);
+        if (el) {
+          el.style.display = 'block';
+          el.innerHTML = state.aiResponses[boxId];
+        }
+      }
+    }
+
+    // 8. Nếu bài đã bấm Chấm bài trước đó -> Khôi phục kết quả & Lời giải
+    if (state.isSubmitted) {
+      const passageBox = document.getElementById('passageBox');
+      if (passageBox) passageBox.classList.add('submitted');
+      
+      const scoreBadge = document.getElementById('scoreBadge');
+      const scoreText = document.getElementById('scoreText');
+      if (scoreBadge) scoreBadge.style.display = 'block';
+      if (scoreText && state.scoreText) scoreText.innerText = state.scoreText;
+
+      document.querySelectorAll('.explanation').forEach(exp => {
+        exp.style.display = 'block';
+      });
+
+      // Đánh dấu viền đúng/sai
+      if (window.TEST_DATA && window.TEST_DATA.answers) {
+        const answers = window.TEST_DATA.answers;
+        for (const qKey in answers) {
+          const qDiv = document.getElementById(qKey);
+          if (!qDiv) continue;
+          const resDiv = qDiv.querySelector('.result');
+          const expectedAns = answers[qKey];
+          const radioSelected = qDiv.querySelector(`input[name="${qKey}"]:checked`);
+          const textInput = document.getElementById(`${qKey}_input`);
+
+          let userVal = "";
+          let isCorrect = false;
+          if (radioSelected) {
+            userVal = radioSelected.value.trim();
+            isCorrect = (userVal.toUpperCase() === expectedAns.toUpperCase());
+          } else if (textInput) {
+            userVal = textInput.value.trim();
+            const cleanUserVal = userVal.toLowerCase().replace(/\s+/g, ' ');
+            if (Array.isArray(expectedAns)) {
+              isCorrect = expectedAns.map(a => a.toLowerCase().trim()).includes(cleanUserVal);
+            } else {
+              isCorrect = (cleanUserVal === expectedAns.toLowerCase().trim());
+            }
+          }
+
+          if (isCorrect) {
+            if (resDiv) resDiv.innerHTML = "<span class='correct-text'>✓ Đúng</span>";
+            qDiv.classList.add('correct-border');
+          } else {
+            const correctStr = Array.isArray(expectedAns) ? expectedAns.join(" / ") : expectedAns;
+            if (resDiv) resDiv.innerHTML = `<span class='incorrect-text'>✗ Sai (Đáp án đúng: <b>${correctStr}</b>)</span>`;
+            qDiv.classList.add('incorrect-border');
+          }
+        }
+      }
+    }
+  } catch (err) {
+    console.warn("Không thể khôi phục localStorage:", err);
+  }
+}
+
+// NÚT LÀM LẠI BÀI (XÓA SẠCH DỮ LIỆU ĐỂ LÀM LẠI TỪ ĐẦU)
+function resetTestProgress() {
+  if (confirm("⚠️ Bạn có chắc chắn muốn xóa toàn bộ kết quả bài làm trang này để LÀM LẠI TỪ ĐẦU không?")) {
+    const key = getStorageKey();
+    localStorage.removeItem(key);
+    window.location.reload();
+  }
+}
+
+// Xử lý Highlight tương tác người dùng
+let currentSelectedRange = null;
+let currentTargetSpan = null;
+
 document.addEventListener('DOMContentLoaded', function() {
-  // 1. Tự động chèn Nút Control vào Header
+  // 1. Tự động chèn Nút Điều khiển Cỡ chữ, Tối/Sáng & Nút Reset vào Header
   const headerBar = document.querySelector('.header-bar');
-  if (headerBar && !document.getElementById('btnExportReport')) {
+  if (headerBar && !document.getElementById('btnThemeToggle')) {
     const controlsDiv = document.createElement('div');
     controlsDiv.className = 'header-controls';
     controlsDiv.innerHTML = `
+      <span id="saveIndicator" style="font-size: 12px; background: rgba(34, 197, 94, 0.2); color: #4ade80; padding: 4px 10px; border-radius: 20px; font-weight: 600;">✓ Đã tự động lưu</span>
       <button class="btn-header" onclick="changeFontSize(-1)">🔍 A-</button>
       <button class="btn-header" onclick="changeFontSize(1)">🔍 A+</button>
       <button class="btn-header" id="btnThemeToggle" onclick="toggleTheme()">🌙 Chế độ tối</button>
-      <button class="btn-header" id="btnExportReport" onclick="exportStudentReport()" style="background: #16a34a; border-color: #15803d;">📥 Xuất Báo Cáo</button>
+      <button class="btn-header" style="background: rgba(239,68,68,0.2); border-color: rgba(239,68,68,0.4);" onclick="resetTestProgress()">🗑️ Làm lại bài</button>
     `;
     headerBar.appendChild(controlsDiv);
   }
 
-  // 2. Tự động chèn Thanh kéo Kích thước 2 cột
+  // 2. Tự động chèn Thanh kéo Kích thước 2 cột (Resizable Drag Bar)
   const container = document.querySelector('.container');
   const passageBox = document.getElementById('passageBox');
   const questionBox = document.querySelector('.question-box');
@@ -388,23 +339,14 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // 3. Khôi phục nguyên trạng 100% ngay khi vừa tải trang xong
-  restoreStateFromStorage();
+  // 3. Khôi phục trạng thái làm bài cũ từ localStorage
+  restoreStateFromLocalStorage();
 
-  // 4. Lắng nghe các sự kiện để tự động lưu ngầm thời gian thực
-  document.body.addEventListener('input', function(e) {
-    saveStateToStorage();
-  });
-  document.body.addEventListener('change', function(e) {
-    saveStateToStorage();
-  });
+  // 4. Tự động theo dõi thao tác người dùng để lưu tự động
+  document.addEventListener('input', saveStateToLocalStorage);
+  document.addEventListener('change', saveStateToLocalStorage);
 
-  // 5. Lưu khi chuẩn bị rồi trang (Chuyển Passage)
-  window.addEventListener('beforeunload', function() {
-    saveStateToStorage();
-  });
-
-  // 6. Xử lý Bôi đen
+  // 5. Xử lý Popup bôi đen
   const hlPopup = document.getElementById('hlPopup');
   const removeHlPopup = document.getElementById('removeHlPopup');
 
@@ -448,7 +390,6 @@ document.addEventListener('DOMContentLoaded', function() {
           window.getSelection().removeAllRanges();
           hlPopup.style.display = 'none';
           currentSelectedRange = null;
-          saveStateToStorage();
         }
       });
     }
@@ -464,7 +405,6 @@ document.addEventListener('DOMContentLoaded', function() {
           parent.removeChild(currentTargetSpan);
           removeHlPopup.style.display = 'none';
           currentTargetSpan = null;
-          saveStateToStorage();
         }
       });
     }
@@ -539,6 +479,7 @@ async function checkAnswers() {
       userVal = radioSelected.value.trim();
       isCorrect = (userVal.toUpperCase() === expectedAns.toUpperCase());
     } else if (textInput) {
+      // 2. Dạng Điền từ
       userVal = textInput.value.trim();
       const cleanUserVal = userVal.toLowerCase().replace(/\s+/g, ' ');
 
@@ -559,6 +500,7 @@ async function checkAnswers() {
       qDiv.classList.add('incorrect-border');
     }
 
+    // TỰ ĐỘNG HIỆN TOÀN BỘ LỜI GIẢI CHI TIẾT DÙ ĐÚNG HAY SAI
     if (expDiv) expDiv.style.display = "block";
     detailsSummary += `${qKey.toUpperCase()}: ${userVal || 'Để trống'} | Suy nghĩ: ${thought || 'N/A'}\n`;
   }
@@ -571,8 +513,8 @@ async function checkAnswers() {
   if (scoreText) scoreText.innerText = `${score}/${totalQuestions}`;
   if (scoreBadge) scoreBadge.style.display = 'block';
 
-  // Lưu trạng thái đã nộp bài vào Storage ngay lập tức
-  saveStateToStorage();
+  // LƯU TRẠNG THÁI SAU KHI CHẤM BÀI
+  saveStateToLocalStorage();
 
   // Gửi kết quả về Google Sheets
   if (IELTS_CONFIG.GOOGLE_SCRIPT_URL) {
@@ -710,7 +652,7 @@ ${userQuestion}`;
         </div>
       `;
       targetEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      saveStateToStorage();
+      saveStateToLocalStorage();
     } else if (targetEl) {
       targetEl.innerHTML = `⚠️ <b>Trợ giảng AI:</b> Phản hồi trống, em thử gửi lại nhé!`;
     }
