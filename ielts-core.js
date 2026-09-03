@@ -2,7 +2,10 @@
  * ==========================================================================
  * IELTS PRACTICE TEST CORE ENGINE (ielts-core.js)
  * Tự động hóa toàn bộ: Bấm giờ, Bôi đen Highlight, Chấm điểm, AI Trợ giảng, Gửi điểm
- * Nâng cấp: Thanh kéo thay đổi kích thước 2 cột, Chế độ Tối/Sáng, Tăng/Giảm Cỡ Chữ
+ * NÂNG CẤP HỆ THỐNG:
+ * 1. Tự động lưu ngầm thời gian thực (Auto-save & State Retention qua localStorage)
+ * 2. Khôi phục nguyên trạng lịch sử làm bài (Full Snapshot Restoration)
+ * 3. Nút Xuất Báo Cáo Bài Làm (Export Document / Printable Report)
  * ==========================================================================
  */
 
@@ -18,6 +21,273 @@ let timerInterval = null;
 let isTimerRunning = false;
 let userFinalScore = 0;
 let currentFontSize = 15;
+
+// Lấy ID bài làm duy nhất làm Key lưu vào Storage
+function getTestStorageKey() {
+  const pagePath = window.location.pathname.split('/').pop().replace('.html', '') || 'default_test';
+  return `IELTS_PRACTICE_STATE_${pagePath}`;
+}
+
+// --------------------------------------------------------------------------
+// 1. CƠ CHẾ TỰ ĐỘNG LƯU NGẦM THỜI GIAN THỰC (AUTO-SAVE TO LOCALSTORAGE)
+// --------------------------------------------------------------------------
+function saveStateToStorage() {
+  const key = getTestStorageKey();
+  const studentNameInput = document.getElementById('studentNameInput');
+  const studentEmailInput = document.getElementById('studentEmailInput');
+  const scoreBadge = document.getElementById('scoreBadge');
+  const scoreText = document.getElementById('scoreText');
+
+  const state = {
+    studentName: studentNameInput ? studentNameInput.value : "",
+    studentEmail: studentEmailInput ? studentEmailInput.value : "",
+    seconds: seconds,
+    isSubmitted: document.getElementById('passageBox') ? document.getElementById('passageBox').classList.contains('submitted') : false,
+    scoreText: scoreText ? scoreText.innerText : "",
+    scoreBadgeDisplay: scoreBadge ? scoreBadge.style.display : "none",
+    answers: {},
+    thoughts: {},
+    aiResponses: {}
+  };
+
+  // Lưu các câu trả lời
+  if (window.TEST_DATA && window.TEST_DATA.answers) {
+    for (const qKey in window.TEST_DATA.answers) {
+      const radioSelected = document.querySelector(`input[name="${qKey}"]:checked`);
+      const textInput = document.getElementById(`${qKey}_input`);
+      if (radioSelected) {
+        state.answers[qKey] = radioSelected.value;
+      } else if (textInput) {
+        state.answers[qKey] = textInput.value;
+      }
+
+      // Lưu mạch suy nghĩ
+      const thoughtInput = document.getElementById(`${qKey}_thought`);
+      if (thoughtInput) {
+        state.thoughts[`${qKey}_thought`] = thoughtInput.value;
+      }
+
+      // Lưu nội dung phản hồi từ AI
+      const aiResponseBox = document.getElementById(`ai_response_${qKey}`);
+      if (aiResponseBox && aiResponseBox.innerHTML.trim().length > 0) {
+        state.aiResponses[qKey] = aiResponseBox.innerHTML;
+      }
+    }
+  }
+
+  localStorage.setItem(key, JSON.stringify(state));
+}
+
+// --------------------------------------------------------------------------
+// 2. KHÔI PHỤC NGUYÊN TRẠNG KHI MỞ LẠI BÀI (FULL SNAPSHOT RESTORATION)
+// --------------------------------------------------------------------------
+function restoreStateFromStorage() {
+  const key = getTestStorageKey();
+  const savedData = localStorage.getItem(key);
+  if (!savedData) return;
+
+  try {
+    const state = JSON.parse(savedData);
+
+    // Điền lại Họ tên & Email
+    const studentNameInput = document.getElementById('studentNameInput');
+    const studentEmailInput = document.getElementById('studentEmailInput');
+    if (studentNameInput && state.studentName) studentNameInput.value = state.studentName;
+    if (studentEmailInput && state.studentEmail) studentEmailInput.value = state.studentEmail;
+
+    // Khôi phục đồng hồ
+    if (state.seconds) {
+      seconds = state.seconds;
+      updateTimerDisplay();
+    }
+
+    // Điền lại các đáp án đã khoanh / điền
+    if (state.answers) {
+      for (const qKey in state.answers) {
+        const val = state.answers[qKey];
+        const radio = document.querySelector(`input[name="${qKey}"][value="${val}"]`);
+        const textInput = document.getElementById(`${qKey}_input`);
+        if (radio) radio.checked = true;
+        if (textInput) textInput.value = val;
+      }
+    }
+
+    // Điền lại mạch suy nghĩ
+    if (state.thoughts) {
+      for (const tKey in state.thoughts) {
+        const thoughtInput = document.getElementById(tKey);
+        if (thoughtInput) thoughtInput.value = state.thoughts[tKey];
+      }
+    }
+
+    // Điền lại các câu trả lời của AI
+    if (state.aiResponses) {
+      for (const qKey in state.aiResponses) {
+        const aiResponseBox = document.getElementById(`ai_response_${qKey}`);
+        if (aiResponseBox && state.aiResponses[qKey]) {
+          aiResponseBox.style.display = "block";
+          aiResponseBox.innerHTML = state.aiResponses[qKey];
+        }
+      }
+    }
+
+    // Khôi phục giao diện đã chấm bài (nếu đã nộp bài trước đó)
+    if (state.isSubmitted) {
+      renderSubmittedUI(state.scoreText);
+    }
+  } catch (e) {
+    console.warn("Lỗi khôi phục dữ liệu từ localStorage:", e);
+  }
+}
+
+// Hiển thị lại giao diện kết quả UI mà không gửi lại điểm sang Google Sheets
+function renderSubmittedUI(scoreStr) {
+  if (!window.TEST_DATA || !window.TEST_DATA.answers) return;
+
+  const passageBox = document.getElementById('passageBox');
+  if (passageBox) passageBox.classList.add('submitted');
+
+  const answers = window.TEST_DATA.answers;
+  for (const qKey in answers) {
+    const qDiv = document.getElementById(qKey);
+    if (!qDiv) continue;
+
+    const resDiv = qDiv.querySelector('.result');
+    const expDiv = qDiv.querySelector('.explanation');
+    const expectedAns = answers[qKey];
+
+    const radioSelected = qDiv.querySelector(`input[name="${qKey}"]:checked`);
+    const textInput = document.getElementById(`${qKey}_input`);
+
+    let userVal = "";
+    let isCorrect = false;
+
+    if (radioSelected) {
+      userVal = radioSelected.value.trim();
+      isCorrect = (userVal.toUpperCase() === expectedAns.toUpperCase());
+    } else if (textInput) {
+      userVal = textInput.value.trim();
+      const cleanUserVal = userVal.toLowerCase().replace(/\s+/g, ' ');
+      if (Array.isArray(expectedAns)) {
+        isCorrect = expectedAns.map(a => a.toLowerCase().trim()).includes(cleanUserVal);
+      } else {
+        isCorrect = (cleanUserVal === expectedAns.toLowerCase().trim());
+      }
+    }
+
+    qDiv.classList.remove('correct-border', 'incorrect-border');
+    if (isCorrect) {
+      if (resDiv) resDiv.innerHTML = "<span class='correct-text'>✓ Đúng</span>";
+      qDiv.classList.add('correct-border');
+    } else {
+      const correctStr = Array.isArray(expectedAns) ? expectedAns.join(" / ") : expectedAns;
+      if (resDiv) resDiv.innerHTML = `<span class='incorrect-text'>✗ Sai (Đáp án đúng: <b>${correctStr}</b>)</span>`;
+      qDiv.classList.add('incorrect-border');
+    }
+
+    if (expDiv) expDiv.style.display = "block";
+  }
+
+  const scoreText = document.getElementById('scoreText');
+  const scoreBadge = document.getElementById('scoreBadge');
+  if (scoreText && scoreStr) scoreText.innerText = scoreStr;
+  if (scoreBadge) scoreBadge.style.display = 'block';
+}
+
+// --------------------------------------------------------------------------
+// 3. XUẤT BÁO CÁO BÀI LÀM TRÍCH XUẤT ĐẦY ĐỦ (EXPORT REPORT / PRINT DOCUMENT)
+// --------------------------------------------------------------------------
+function exportStudentReport() {
+  const studentName = document.getElementById('studentNameInput') ? document.getElementById('studentNameInput').value.trim() || 'Học viên' : 'Học viên';
+  const studentEmail = document.getElementById('studentEmailInput') ? document.getElementById('studentEmailInput').value.trim() || 'N/A' : 'N/A';
+  const testTitle = window.TEST_DATA ? (window.TEST_DATA.title || document.title) : document.title;
+  const timeSpent = document.getElementById('timerDisplay') ? document.getElementById('timerDisplay').innerText : '00:00';
+  const scoreText = document.getElementById('scoreText') ? document.getElementById('scoreText').innerText : 'Chưa chấm';
+
+  let reportHtml = `
+    <!DOCTYPE html>
+    <html lang="vi">
+    <head>
+      <meta charset="UTF-8">
+      <title>Báo Cáo Bài Làm - ${studentName}</title>
+      <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; padding: 25px; color: #1e293b; line-height: 1.6; }
+        .header { border-bottom: 2px solid #0284c7; padding-bottom: 12px; margin-bottom: 20px; }
+        .header h1 { margin: 0; color: #0f172a; font-size: 22px; }
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; background: #f8fafc; padding: 14px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #cbd5e1; }
+        .info-item { font-size: 14px; }
+        .info-item b { color: #0284c7; }
+        .q-card { border: 1px solid #cbd5e1; padding: 16px; border-radius: 8px; margin-bottom: 16px; background: #ffffff; }
+        .q-title { font-weight: bold; font-size: 15px; margin-bottom: 8px; color: #0f172a; }
+        .ans-user { color: #0369a1; font-weight: 600; }
+        .thought-text { font-style: italic; background: #f1f5f9; padding: 8px 12px; border-radius: 6px; margin: 8px 0; font-size: 13.5px; border-left: 3px solid #64748b; }
+        .exp-box { background: #f0f9ff; border-left: 4px solid #0284c7; padding: 12px; margin-top: 10px; border-radius: 4px; font-size: 14px; }
+        .btn-print { background: #0284c7; color: white; border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-bottom: 20px; font-size: 14px; }
+        @media print { .btn-print { display: none; } }
+      </style>
+    </head>
+    <body>
+      <button class="btn-print" onclick="window.print()">🖨️ In / Tải file PDF Báo Cáo</button>
+      <div class="header">
+        <h1>📊 BÁO CÁO KẾT QUẢ BÀI LÀM IELTS READING</h1>
+        <p style="margin: 4px 0 0 0; color: #64748b; font-size: 14px;">Hệ Thống Luyện Thi Thông Minh - TramIELTS9 Max</p>
+      </div>
+
+      <div class="info-grid">
+        <div class="info-item"><b>👤 Học viên:</b> ${studentName}</div>
+        <div class="info-item"><b>✉️ Email:</b> ${studentEmail}</div>
+        <div class="info-item"><b>📖 Bài làm:</b> ${testTitle}</div>
+        <div class="info-item"><b>⏱️ Thời gian:</b> ${timeSpent}</div>
+        <div class="info-item"><b>🎯 Điểm số:</b> ${scoreText}</div>
+        <div class="info-item"><b>📅 Ngày xuất báo cáo:</b> ${new Date().toLocaleString('vi-VN')}</div>
+      </div>
+
+      <h2>📝 CHI TIẾT TỪNG CÂU HỎI VÀ LỜI GIẢI:</h2>
+  `;
+
+  if (window.TEST_DATA && window.TEST_DATA.answers) {
+    let qIndex = 1;
+    for (const qKey in window.TEST_DATA.answers) {
+      const qDiv = document.getElementById(qKey);
+      if (!qDiv) continue;
+
+      const qText = qDiv.querySelector('p') ? qDiv.querySelector('p').innerText : `Câu ${qIndex}`;
+      const radioSelected = qDiv.querySelector(`input[name="${qKey}"]:checked`);
+      const textInput = document.getElementById(`${qKey}_input`);
+      const userVal = radioSelected ? radioSelected.value : (textInput ? textInput.value : "Chưa trả lời");
+      
+      const thoughtInput = document.getElementById(`${qKey}_thought`);
+      const thoughtVal = thoughtInput ? thoughtInput.value.trim() : "";
+
+      const expDiv = qDiv.querySelector('.explanation');
+      let expContent = expDiv ? expDiv.innerHTML : "";
+      // Dọn dẹp nút bấm và ô hỏi AI trong bản in
+      expContent = expContent.replace(/<button.*?>.*?<\/button>/gi, "").replace(/<div class="ai-assistant-box">.*?<\/div>/gis, "");
+
+      const aiResponseBox = document.getElementById(`ai_response_${qKey}`);
+      const aiVal = aiResponseBox ? aiResponseBox.innerHTML.trim() : "";
+
+      reportHtml += `
+        <div class="q-card">
+          <div class="q-title">${qText}</div>
+          <div><b>👉 Câu trả lời của em:</b> <span class="ans-user">${userVal}</span></div>
+          ${thoughtVal ? `<div class="thought-text">💭 <b>Mạch suy nghĩ:</b> "${thoughtVal}"</div>` : ''}
+          <div class="exp-box">
+            ${expContent}
+            ${aiVal ? `<div style="margin-top: 10px; border-top: 1px dashed #bae6fd; padding-top: 8px;">${aiVal}</div>` : ''}
+          </div>
+        </div>
+      `;
+      qIndex++;
+    }
+  }
+
+  reportHtml += `</body></html>`;
+
+  const reportWindow = window.open('', '_blank');
+  reportWindow.document.write(reportHtml);
+  reportWindow.document.close();
+}
 
 // Thay đổi Cỡ chữ To/Nhỏ toàn trang
 function changeFontSize(delta) {
@@ -40,53 +310,17 @@ function toggleTheme() {
   }
 }
 
-function updateTimerDisplay() {
-  const mins = Math.floor(seconds / 60);
-  const secs = seconds % 60;
-  const timerDisplay = document.getElementById('timerDisplay');
-  if (timerDisplay) {
-    timerDisplay.innerText = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-    if (mins >= 20) {
-      timerDisplay.classList.add('timer-overtime');
-    }
-  }
-}
-
-function startTimer() {
-  if (!isTimerRunning) {
-    isTimerRunning = true;
-    timerInterval = setInterval(() => {
-      seconds++;
-      updateTimerDisplay();
-    }, 1000);
-  }
-}
-
-function pauseTimer() {
-  if (isTimerRunning) {
-    isTimerRunning = false;
-    clearInterval(timerInterval);
-  }
-}
-
-function stopTimer() {
-  pauseTimer();
-}
-
-// Xử lý Highlight tương tác người dùng
-let currentSelectedRange = null;
-let currentTargetSpan = null;
-
 document.addEventListener('DOMContentLoaded', function() {
-  // 1. Tự động chèn Nút Điều khiển Cỡ chữ & Tối/Sáng vào Header nếu chưa có
+  // 1. Tự động chèn Nút Control & Nút Xuất Báo Cáo vào Header
   const headerBar = document.querySelector('.header-bar');
-  if (headerBar && !document.getElementById('btnThemeToggle')) {
+  if (headerBar && !document.getElementById('btnExportReport')) {
     const controlsDiv = document.createElement('div');
     controlsDiv.className = 'header-controls';
     controlsDiv.innerHTML = `
       <button class="btn-header" onclick="changeFontSize(-1)">🔍 A-</button>
       <button class="btn-header" onclick="changeFontSize(1)">🔍 A+</button>
       <button class="btn-header" id="btnThemeToggle" onclick="toggleTheme()">🌙 Chế độ tối</button>
+      <button class="btn-header" id="btnExportReport" onclick="exportStudentReport()" style="background: #16a34a; border-color: #15803d;">📥 Xuất Báo Cáo</button>
     `;
     headerBar.appendChild(controlsDiv);
   }
@@ -136,7 +370,18 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // 3. Xử lý Popup bôi đen
+  // 3. Tự động khôi phục dữ liệu đã lưu từ trước (State Restoration)
+  restoreStateFromStorage();
+
+  // 4. Lắng nghe các sự kiện thay đổi để lưu ngầm thời gian thực (Real-time Auto-save)
+  document.body.addEventListener('input', function(e) {
+    saveStateToStorage();
+  });
+  document.body.addEventListener('change', function(e) {
+    saveStateToStorage();
+  });
+
+  // 5. Xử lý Popup bôi đen
   const hlPopup = document.getElementById('hlPopup');
   const removeHlPopup = document.getElementById('removeHlPopup');
 
@@ -180,6 +425,7 @@ document.addEventListener('DOMContentLoaded', function() {
           window.getSelection().removeAllRanges();
           hlPopup.style.display = 'none';
           currentSelectedRange = null;
+          saveStateToStorage();
         }
       });
     }
@@ -195,6 +441,7 @@ document.addEventListener('DOMContentLoaded', function() {
           parent.removeChild(currentTargetSpan);
           removeHlPopup.style.display = 'none';
           currentTargetSpan = null;
+          saveStateToStorage();
         }
       });
     }
@@ -269,7 +516,6 @@ async function checkAnswers() {
       userVal = radioSelected.value.trim();
       isCorrect = (userVal.toUpperCase() === expectedAns.toUpperCase());
     } else if (textInput) {
-      // 2. Dạng Điền từ
       userVal = textInput.value.trim();
       const cleanUserVal = userVal.toLowerCase().replace(/\s+/g, ' ');
 
@@ -290,7 +536,6 @@ async function checkAnswers() {
       qDiv.classList.add('incorrect-border');
     }
 
-    // TỰ ĐỘNG HIỆN TOÀN BỘ LỜI GIẢI CHI TIẾT DÙ ĐÚNG HAY SAI
     if (expDiv) expDiv.style.display = "block";
     detailsSummary += `${qKey.toUpperCase()}: ${userVal || 'Để trống'} | Suy nghĩ: ${thought || 'N/A'}\n`;
   }
@@ -302,6 +547,9 @@ async function checkAnswers() {
   const scoreBadge = document.getElementById('scoreBadge');
   if (scoreText) scoreText.innerText = `${score}/${totalQuestions}`;
   if (scoreBadge) scoreBadge.style.display = 'block';
+
+  // Lưu trạng thái đã nộp bài vào Storage
+  saveStateToStorage();
 
   // Gửi kết quả về Google Sheets
   if (IELTS_CONFIG.GOOGLE_SCRIPT_URL) {
@@ -439,6 +687,7 @@ ${userQuestion}`;
         </div>
       `;
       targetEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      saveStateToStorage();
     } else if (targetEl) {
       targetEl.innerHTML = `⚠️ <b>Trợ giảng AI:</b> Phản hồi trống, em thử gửi lại nhé!`;
     }
