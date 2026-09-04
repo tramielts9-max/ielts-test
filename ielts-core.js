@@ -88,7 +88,32 @@ function stopTimer() {
 
 // TỰ ĐỘNG LƯU TRẠNG THÁI HIỆN TẠI VÀO LOCALSTORAGE
 function saveStateToLocalStorage() {
-  if (isReviewMode) return;
+  if (isReviewMode) {
+    // Nếu đang ở Review Mode, tự động cập nhật Mạch suy nghĩ & Chat AI vào Lịch sử
+    const urlParams = new URLSearchParams(window.location.search);
+    const attemptId = urlParams.get('attemptId');
+    const studentEmailParam = urlParams.get('email');
+    if (attemptId && studentEmailParam) {
+      const db = getHistoryDatabase();
+      const emailKey = studentEmailParam.toLowerCase().trim();
+      const userAttempts = db[emailKey] || [];
+      const matchedAttempt = userAttempts.find(a => a.id === attemptId);
+      if (matchedAttempt) {
+        document.querySelectorAll('.thought-box textarea').forEach(textarea => {
+          if (!matchedAttempt.thoughts) matchedAttempt.thoughts = {};
+          matchedAttempt.thoughts[textarea.id] = textarea.value;
+        });
+        document.querySelectorAll('.ai-response').forEach(aiBox => {
+          if (aiBox.innerHTML.trim() !== '') {
+            if (!matchedAttempt.aiResponses) matchedAttempt.aiResponses = {};
+            matchedAttempt.aiResponses[aiBox.id] = aiBox.innerHTML;
+          }
+        });
+        localStorage.setItem('ielts_history_database', JSON.stringify(db));
+      }
+    }
+    return;
+  }
   try {
     const key = getStorageKey();
     const state = {
@@ -277,13 +302,12 @@ function restoreAttemptFromSnapshot(attempt) {
     document.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
   }
 
-  // Mạch suy nghĩ
+// Mạch suy nghĩ
   if (attempt.thoughts) {
     for (const textareaId in attempt.thoughts) {
       const el = document.getElementById(textareaId);
       if (el) {
         el.value = attempt.thoughts[textareaId];
-        el.disabled = true;
       }
     }
   }
