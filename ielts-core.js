@@ -249,8 +249,9 @@ function restoreStateFromLocalStorage() {
       }
     }
 
-    if (state.isSubmitted) {
+if (state.isSubmitted) {
       applySubmittedUI(state.scoreText);
+      showPostSaveButton();
     }
   } catch (err) {
     console.warn("Không thể khôi phục localStorage:", err);
@@ -381,11 +382,19 @@ function applySubmittedUI(scoreStr) {
   }
 }
 
-// NÚT LÀM LẠI BÀI (XÓA SẠCH DỮ LIỆU ĐỂ LÀM LẠI TỪ ĐẦU)
+// NÚT LÀM LẠI BÀI (XÓA SẠCH DỮ LIỆU ĐỂ BẮT ĐẦU PHIÊN BẢN MỚI)
 function resetTestProgress() {
-  if (confirm("⚠️ Bạn có chắc chắn muốn xóa toàn bộ kết quả bài làm trang này để LÀM LẠI TỪ ĐẦU không?")) {
+  if (confirm("⚠️ Bạn có chắc chắn muốn xóa toàn bộ kết quả bài làm trang này để BẮT ĐẦU PHIÊN BẢN MỚI không?")) {
     const key = getStorageKey();
     localStorage.removeItem(key);
+    
+    // Xóa thêm cache tạm nếu có
+    const currentPath = window.location.pathname;
+    document.querySelectorAll('.ai-response').forEach(box => {
+      const qId = box.id.replace("ai_response_", "");
+      localStorage.removeItem(`ai_chat_${currentPath}_${qId}`);
+    });
+
     window.location.href = window.location.pathname;
   }
 }
@@ -707,11 +716,80 @@ async function checkAnswers() {
         })
       });
       alert(`🎉 Chúc mừng ${studentName}! Bài làm đạt ${scoreStr} câu. Kết quả đã được lưu về hệ thống!`);
-    } catch (err) {
+} catch (err) {
       console.error("Lỗi gửi điểm:", err);
       alert(`Bài làm đạt ${scoreStr} câu!`);
     }
   }
+
+  // TỰ ĐỘNG HIỆN NÚT LƯU BỔ SUNG SAU KHI NỘP BÀI
+  showPostSaveButton();
+}
+
+// NÚT LƯU CẬP NHẬT (SAU KHI HỎI AI VÀ SỬA MẠCH SUY NGHĨ)
+function showPostSaveButton() {
+  if (document.getElementById('btnPostSave')) return;
+
+  const actionBar = document.querySelector('.action-bar') || document.querySelector('.question-box');
+  if (!actionBar) return;
+
+  const postSaveBox = document.createElement('div');
+  postSaveBox.id = 'btnPostSaveContainer';
+  postSaveBox.style.cssText = "margin-top: 15px; padding: 12px; background: #f0fdf4; border: 1.5px solid #22c55e; border-radius: 8px; text-align: center;";
+  postSaveBox.innerHTML = `
+    <button type="button" id="btnPostSave" onclick="savePostReviewUpdate()" style="background: #16a34a; color: white; border: none; padding: 10px 20px; font-weight: 700; font-size: 14.5px; border-radius: 6px; cursor: pointer; transition: background 0.2s;">
+      💾 Lưu vào lịch sử bài làm (Bản Sau sửa)
+    </button>
+    <p style="margin: 6px 0 0 0; font-size: 13px; color: #15803d; font-style: italic;">
+      💡 Chú thích: Hãy bấm nút này sau khi em đã hỏi AI xong và điền đầy đủ Mạch suy nghĩ để lưu trọn vẹn vào Lịch sử nhé!
+    </p>
+  `;
+  actionBar.appendChild(postSaveBox);
+}
+
+function savePostReviewUpdate() {
+  const studentEmailInput = document.getElementById('studentEmailInput');
+  const email = studentEmailInput ? studentEmailInput.value.trim().toLowerCase() : "";
+
+  if (!email) {
+    alert("⚠️ Không tìm thấy Email học viên để lưu!");
+    return;
+  }
+
+  const db = getHistoryDatabase();
+  const userAttempts = db[email] || [];
+  if (userAttempts.length === 0) {
+    alert("⚠️ Em chưa nộp bài lần nào để ghi nhận lịch sử!");
+    return;
+  }
+
+  // Thu thập Mạch suy nghĩ và Chat AI hiện tại
+  const snapshotThoughts = {};
+  const snapshotAI = {};
+
+  document.querySelectorAll('.thought-box textarea').forEach(textarea => {
+    snapshotThoughts[textarea.id] = textarea.value;
+  });
+
+  document.querySelectorAll('.ai-response').forEach(aiBox => {
+    if (aiBox.innerHTML.trim() !== '') {
+      snapshotAI[aiBox.id] = aiBox.innerHTML;
+    }
+  });
+
+  // Cập nhật bản gần nhất hoặc tạo bản "Sau sửa"
+  const latestAttempt = userAttempts[0];
+  latestAttempt.thoughts = snapshotThoughts;
+  latestAttempt.aiResponses = snapshotAI;
+  
+  if (!latestAttempt.testTitle.includes("(Sau sửa)")) {
+    latestAttempt.testTitle += " (Sau sửa)";
+  }
+
+  localStorage.setItem('ielts_history_database', JSON.stringify(db));
+  saveStateToLocalStorage();
+
+  alert("✅ Đã cập nhật thành công toàn bộ Mạch suy nghĩ & Chat AI mới nhất vào Lịch sử làm bài!");
 }
 
 // BỘ LỌC TẬN GỐC CÁC THẺ NHÃN VÀ THẮC MẮC LẶP LẠI
