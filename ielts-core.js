@@ -88,7 +88,32 @@ function stopTimer() {
 
 // TỰ ĐỘNG LƯU TRẠNG THÁI HIỆN TẠI VÀO LOCALSTORAGE
 function saveStateToLocalStorage() {
-  if (isReviewMode) return;
+  if (isReviewMode) {
+    // Nếu đang ở Review Mode, tự động cập nhật Mạch suy nghĩ & Chat AI vào Lịch sử
+    const urlParams = new URLSearchParams(window.location.search);
+    const attemptId = urlParams.get('attemptId');
+    const studentEmailParam = urlParams.get('email');
+    if (attemptId && studentEmailParam) {
+      const db = getHistoryDatabase();
+      const emailKey = studentEmailParam.toLowerCase().trim();
+      const userAttempts = db[emailKey] || [];
+      const matchedAttempt = userAttempts.find(a => a.id === attemptId);
+      if (matchedAttempt) {
+        document.querySelectorAll('.thought-box textarea').forEach(textarea => {
+          if (!matchedAttempt.thoughts) matchedAttempt.thoughts = {};
+          matchedAttempt.thoughts[textarea.id] = textarea.value;
+        });
+        document.querySelectorAll('.ai-response').forEach(aiBox => {
+          if (aiBox.innerHTML.trim() !== '') {
+            if (!matchedAttempt.aiResponses) matchedAttempt.aiResponses = {};
+            matchedAttempt.aiResponses[aiBox.id] = aiBox.innerHTML;
+          }
+        });
+        localStorage.setItem('ielts_history_database', JSON.stringify(db));
+      }
+    }
+    return;
+  }
   try {
     const key = getStorageKey();
     const state = {
@@ -152,6 +177,7 @@ function saveAttemptToHistoryDatabase(attemptData) {
     if (!email) return;
 
     if (!db[email]) db[email] = [];
+    // Thêm lần nộp bài mới lên đầu danh sách
     db[email].unshift(attemptData);
 
     localStorage.setItem('ielts_history_database', JSON.stringify(db));
@@ -223,7 +249,7 @@ function restoreStateFromLocalStorage() {
       }
     }
 
-    if (state.isSubmitted) {
+if (state.isSubmitted) {
       applySubmittedUI(state.scoreText);
       showPostSaveButton();
     }
@@ -237,6 +263,7 @@ function restoreAttemptFromSnapshot(attempt) {
   isReviewMode = true;
   stopTimer();
 
+  // Tạo thanh thông báo Review Mode
   const reviewBanner = document.createElement('div');
   reviewBanner.style.cssText = "background: #f59e0b; color: #78350f; padding: 10px 16px; font-weight: 700; font-size: 14px; text-align: center; border-radius: 8px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;";
   reviewBanner.innerHTML = `
@@ -245,12 +272,15 @@ function restoreAttemptFromSnapshot(attempt) {
   `;
   document.body.insertBefore(reviewBanner, document.body.firstChild);
 
+  // Điền Họ tên & Email
   if (document.getElementById('studentNameInput')) document.getElementById('studentNameInput').value = attempt.studentName;
   if (document.getElementById('studentEmailInput')) document.getElementById('studentEmailInput').value = attempt.studentEmail;
 
+  // Thời gian
   const timerDisplay = document.getElementById('timerDisplay');
   if (timerDisplay && attempt.timeSpent) timerDisplay.innerText = attempt.timeSpent;
 
+  // Ô điền từ
   if (attempt.inputs) {
     for (const inputId in attempt.inputs) {
       const el = document.getElementById(inputId);
@@ -261,6 +291,7 @@ function restoreAttemptFromSnapshot(attempt) {
     }
   }
 
+  // Radio chọn
   if (attempt.radios) {
     for (const radioName in attempt.radios) {
       const val = attempt.radios[radioName];
@@ -272,6 +303,7 @@ function restoreAttemptFromSnapshot(attempt) {
     document.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
   }
 
+// Mạch suy nghĩ
   if (attempt.thoughts) {
     for (const textareaId in attempt.thoughts) {
       const el = document.getElementById(textareaId);
@@ -281,6 +313,7 @@ function restoreAttemptFromSnapshot(attempt) {
     }
   }
 
+  // Phản hồi AI
   if (attempt.aiResponses) {
     for (const boxId in attempt.aiResponses) {
       const el = document.getElementById(boxId);
@@ -291,8 +324,10 @@ function restoreAttemptFromSnapshot(attempt) {
     }
   }
 
+  // Bật giao diện đã nộp bài & Lời giải
   applySubmittedUI(attempt.score);
 
+  // Ẩn nút nộp bài
   const submitBtn = document.querySelector('.btn-submit');
   if (submitBtn) submitBtn.style.display = 'none';
 }
@@ -353,6 +388,7 @@ function resetTestProgress() {
     const key = getStorageKey();
     localStorage.removeItem(key);
     
+    // Xóa thêm cache tạm nếu có
     const currentPath = window.location.pathname;
     document.querySelectorAll('.ai-response').forEach(box => {
       const qId = box.id.replace("ai_response_", "");
@@ -383,7 +419,7 @@ document.addEventListener('DOMContentLoaded', function() {
     headerBar.appendChild(controlsDiv);
   }
 
-  // 2. Resizable Drag Bar
+  // 2. Tự động chèn Thanh kéo Kích thước 2 cột (Resizable Drag Bar)
   const container = document.querySelector('.container');
   const passageBox = document.getElementById('passageBox');
   const questionBox = document.querySelector('.question-box');
@@ -428,7 +464,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // 3. ĐIỀU HƯỚNG REVIEW MODE
+  // 3. ĐIỀU HƯỚNG: KIỂM TRA XEM CÓ PHẢI ĐANG XEM LẠI LỊCH SỬ (REVIEW MODE) HAY KHÔNG
   const urlParams = new URLSearchParams(window.location.search);
   const attemptId = urlParams.get('attemptId');
   const studentEmailParam = urlParams.get('email');
@@ -446,13 +482,13 @@ document.addEventListener('DOMContentLoaded', function() {
     restoreStateFromLocalStorage();
   }
 
-  // 4. Theo dõi thao tác người dùng
+  // 4. Theo dõi thao tác người dùng để tự động lưu
   if (!isReviewMode) {
     document.addEventListener('input', saveStateToLocalStorage);
     document.addEventListener('change', saveStateToLocalStorage);
   }
 
-  // 5. Popup bôi đen
+  // 5. Xử lý Popup bôi đen
   const hlPopup = document.getElementById('hlPopup');
   const removeHlPopup = document.getElementById('removeHlPopup');
 
@@ -491,7 +527,7 @@ document.addEventListener('DOMContentLoaded', function() {
           try {
             currentSelectedRange.surroundContents(span);
           } catch (e) {
-            console.warn("Không thể bôi đen nhiều phần tử");
+            console.warn("Không thể bôi đen trên nhiều phần tử phức tạp");
           }
           window.getSelection().removeAllRanges();
           hlPopup.style.display = 'none';
@@ -521,8 +557,9 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!isTimerRunning && seconds === 0 && !isReviewMode) {
       startTimer();
     }
-  }, { once: true });
+}, { once: true });
 
+  // Tự động "đánh thức" server ngay khi học viên vừa mở trang web
   if (IELTS_CONFIG.GOOGLE_SCRIPT_URL) {
     fetch(IELTS_CONFIG.GOOGLE_SCRIPT_URL, {
       method: "POST",
@@ -532,6 +569,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
+// Định vị đoạn văn chứa đáp án trong bài đọc
 function highlightText(elementId) {
   document.querySelectorAll('.hl-active').forEach(el => el.classList.remove('hl-active'));
   const target = document.getElementById(elementId);
@@ -541,11 +579,11 @@ function highlightText(elementId) {
   }
 }
 
-// CHẤM ĐIỂM VÀ LƯU BÀI LÀM
+// CHẤM ĐIỂM VÀ LƯU BỨC ẢNH VÀO DATABASE LỊCH SỬ CỦA EMAIL
 async function checkAnswers() {
   if (isReviewMode) return;
   if (!window.TEST_DATA || !window.TEST_DATA.answers) {
-    alert("Lỗi cấu hình: Chưa khai báo TEST_DATA.answers!");
+    alert("Lỗi cấu hình: Chưa khai báo TEST_DATA.answers cho bài tập này!");
     return;
   }
 
@@ -566,7 +604,9 @@ async function checkAnswers() {
   let detailsSummary = "";
 
   const passageBox = document.getElementById('passageBox');
-  if (passageBox) passageBox.classList.add('submitted');
+  if (passageBox) {
+    passageBox.classList.add('submitted');
+  }
 
   const snapshotInputs = {};
   const snapshotRadios = {};
@@ -637,6 +677,7 @@ async function checkAnswers() {
   if (scoreText) scoreText.innerText = scoreStr;
   if (scoreBadge) scoreBadge.style.display = 'block';
 
+  // LƯU BỨC ẢNH CHI TIẾT LẦN NỘP NÀY VÀO DATABASE LỊCH SỬ DÀNH RIÊNG CHO EMAIL NÀY
   const now = new Date();
   const timeStr = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')} - ${String(now.getDate()).padStart(2,'0')}/${String(now.getMonth()+1).padStart(2,'0')}/${now.getFullYear()}`;
   
@@ -658,6 +699,7 @@ async function checkAnswers() {
   saveAttemptToHistoryDatabase(attemptSnapshot);
   saveStateToLocalStorage();
 
+  // Gửi kết quả về Google Sheets
   if (IELTS_CONFIG.GOOGLE_SCRIPT_URL) {
     try {
       await fetch(IELTS_CONFIG.GOOGLE_SCRIPT_URL, {
@@ -674,16 +716,17 @@ async function checkAnswers() {
         })
       });
       alert(`🎉 Chúc mừng ${studentName}! Bài làm đạt ${scoreStr} câu. Kết quả đã được lưu về hệ thống!`);
-    } catch (err) {
+} catch (err) {
       console.error("Lỗi gửi điểm:", err);
       alert(`Bài làm đạt ${scoreStr} câu!`);
     }
   }
 
+  // TỰ ĐỘNG HIỆN NÚT LƯU BỔ SUNG SAU KHI NỘP BÀI
   showPostSaveButton();
 }
 
-// NÚT LƯU BỔ SUNG SAU KHI NỘP BÀI
+// NÚT LƯU CẬP NHẬT (SAU KHI HỎI AI VÀ SỬA MẠCH SUY NGHĨ)
 function showPostSaveButton() {
   if (document.getElementById('btnPostSave')) return;
 
@@ -694,11 +737,11 @@ function showPostSaveButton() {
   postSaveBox.id = 'btnPostSaveContainer';
   postSaveBox.style.cssText = "margin-top: 15px; padding: 12px; background: #f0fdf4; border: 1.5px solid #22c55e; border-radius: 8px; text-align: center;";
   postSaveBox.innerHTML = `
-    <button type="button" id="btnPostSave" onclick="savePostReviewUpdate()" style="background: #16a34a; color: white; border: none; padding: 10px 20px; font-weight: 700; font-size: 14.5px; border-radius: 6px; cursor: pointer;">
+    <button type="button" id="btnPostSave" onclick="savePostReviewUpdate()" style="background: #16a34a; color: white; border: none; padding: 10px 20px; font-weight: 700; font-size: 14.5px; border-radius: 6px; cursor: pointer; transition: background 0.2s;">
       💾 Lưu vào lịch sử bài làm (Bản Sau sửa)
     </button>
     <p style="margin: 6px 0 0 0; font-size: 13px; color: #15803d; font-style: italic;">
-      💡 Hãy bấm nút này sau khi em đã hỏi AI xong và điền đầy đủ Mạch suy nghĩ để lưu trọn vẹn vào Lịch sử nhé!
+      💡 Chú thích: Hãy bấm nút này sau khi em đã hỏi AI xong và điền đầy đủ Mạch suy nghĩ để lưu trọn vẹn vào Lịch sử nhé!
     </p>
   `;
   actionBar.appendChild(postSaveBox);
@@ -720,6 +763,7 @@ function savePostReviewUpdate() {
     return;
   }
 
+  // Thu thập Mạch suy nghĩ và Chat AI hiện tại
   const snapshotThoughts = {};
   const snapshotAI = {};
 
@@ -733,6 +777,7 @@ function savePostReviewUpdate() {
     }
   });
 
+  // Cập nhật bản gần nhất hoặc tạo bản "Sau sửa"
   const latestAttempt = userAttempts[0];
   latestAttempt.thoughts = snapshotThoughts;
   latestAttempt.aiResponses = snapshotAI;
@@ -744,9 +789,10 @@ function savePostReviewUpdate() {
   localStorage.setItem('ielts_history_database', JSON.stringify(db));
   saveStateToLocalStorage();
 
-  alert("✅ Đã cập nhật thành công toàn bộ Mạch suy nghĩ & Chat AI mới nhất vào Lịch sử!");
+  alert("✅ Đã cập nhật thành công toàn bộ Mạch suy nghĩ & Chat AI mới nhất vào Lịch sử làm bài!");
 }
 
+// BỘ LỌC TẬN GỐC CÁC THẺ NHÃN VÀ THẮC MẮC LẶP LẠI
 function cleanMetaThoughts(text) {
   if (!text) return "";
   let clean = text;
@@ -806,14 +852,14 @@ async function askGeminiAI(qId) {
     questionTextOnly = cloneDiv.innerText.trim();
   }
 
-  const prompt = `Trợ giảng IELTS Reading: Giải thích ngắn gọn thắc mắc học viên.
-Dùng **từ khóa** in đậm, ==bằng chứng== tô vàng.
+const prompt = `Trợ giảng IELTS Reading: Giải thích ngắn gọn, đi thẳng vào vấn đề.
+Dùng **từ khóa** in đậm, ==bằng chứng== tô vàng đoạn văn.
 
 [CÂU HỎI]: ${questionTextOnly}
-[THẮC MẮC]: ${userQuestion}`;
+[HỌC VIÊN HỎI]: ${userQuestion}`;
 
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 45000);
+  const timeoutId = setTimeout(() => controller.abort(), 90000);
 
   try {
     const res = await fetch(IELTS_CONFIG.GOOGLE_SCRIPT_URL, {
@@ -847,8 +893,9 @@ Dùng **từ khóa** in đậm, ==bằng chứng== tô vàng.
           <b style="color: var(--primary-blue);">🤖 Trợ giảng AI:</b><br>${formattedReply}
         </div>
       `;
-      targetEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+targetEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       saveStateToLocalStorage();
+
     } else if (targetEl) {
       targetEl.innerHTML = `⚠️ <b>Trợ giảng AI:</b> Phản hồi trống, em thử gửi lại nhé!`;
     }
@@ -857,7 +904,7 @@ Dùng **từ khóa** in đậm, ==bằng chứng== tô vàng.
     const targetEl = document.getElementById(tempId);
     if (targetEl) {
       if (err.name === 'AbortError') {
-        targetEl.innerHTML = `⚠️ <b>Trợ giảng AI:</b> Kết nối quá thời gian cho phép. Vui lòng bấm gửi lại!`;
+        targetEl.innerHTML = `⚠️ <b>Trợ giảng AI:</b> Kết nối quá thời gian cho phép (Timeout 90s). Vui lòng bấm gửi lại!`;
       } else {
         console.error("Lỗi gọi Apps Script:", err);
         targetEl.innerHTML = `⚠️ <b>Trợ giảng AI:</b> Lỗi kết nối đến server. Em bấm thử lại lần nữa nhé!`;
