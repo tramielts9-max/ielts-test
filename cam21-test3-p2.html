@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>IELTS 21 Test 3 - Passage 2: The problems of getting around the city of Dar es Salaam</title>
+  <link rel="stylesheet" href="ielts-core.css">
+</head>
+<body>
+
+<div class="user-info-box">
+  <div class="user-info-field">
+    <label for="studentNameInput">👤 Họ và Tên:</label>
+    <input type="text" id="studentNameInput" placeholder="Nhập họ và tên học viên...">
+  </div>
+  <div class="user-info-field">
+    <label for="studentEmailInput">✉️ Email Google:</label>
+    <input type="email" id="studentEmailInput" placeholder="Nhập Email để lưu kết quả...">
+  </div>
+</div>
+
+<div class="header-bar">
+  <h1>IELTS Academic 21 - Test 3 - Passage 2</h1>
+  
+  <div class="header-nav">
+    <a href="index.html" class="nav-link">🏠 Trang chủ</a>
+    <a href="cam21-test3-p1.html" class="nav-link">Passage 1</a>
+    <a href="cam21-test3-p2.html" class="nav-link active">Passage 2</a>
+    <a href="cam21-test3-p3.html" class="nav-link">Passage 3</a>
+  </div>
+
+  <div class="timer-container">
+    <span>⏱️ Thời gian:</span>
+    <span class="timer-display" id="timerDisplay">00:00</span>
+    <button class="btn-timer" onclick="startTimer()">▶️ Bắt đầu</button>
+    <button class="btn-timer" onclick="pauseTimer()">⏸️ Tạm dừng</button>
+  </div>
+
+  <div class="score-badge" id="scoreBadge">Điểm số: <span id="scoreText">0/13</span></div>
+</div>
+
+<div id="hlPopup" class="hl-popup"><button id="btnDoHighlight">🖍️ Highlight</button></div>
+<div id="removeHlPopup" class="hl-popup"><button id="btnRemoveHighlight">❌ Xóa Highlight</button></div>
+
+<div class="container">
+  <!-- CỘT BÀI ĐỌC -->
+  <div class="passage-box" id="passageBox">
+    <h2>READING PASSAGE 2</h2>
+    <h3>The problems of getting around the city of Dar es Salaam</h3>
+    
+    <p><span class="hl" id="hl-q14" data-q="[Q14]">Dar es Salaam in Tanzania is one of the fastest growing cities in Africa. Its population has increased eightfold since 1980 and swells by half a million people every year. United Nations projections anticipate it will become a megacity within seven years as its population passes 10 million, reaching 13.4 million by 2035. Daniel Hoornweg for the Global Cities Institute forecasts the city could be home to an incredible 73.7 million people by 2100.</span></p>
+    
+    <p><span class="hl" id="hl-q15" data-q="[Q15]">Today, four out of five of its people live in single-storey informal settlements on the spreading edges of the city, where the journey to and from the centre regularly takes over two hours.</span> It can be longer if rain turns the dirt roads to mud.</p>
+    
+    <p>Even in the middle of the day, traffic frequently slows to a stop without warning. It is not unusual for cars and minibuses to queue for 20 minutes at a key intersection. <span class="hl" id="hl-q16" data-q="[Q16]">A single suburban rail line serves residents in a few areas to the south but is tiny in the context of the wider city.</span> Outside the centre many rely on boda boda (motorbike taxis) to navigate the narrow side streets and potholed mud roads that make up much of the metropolis. Their safety record is scandalous.</p>
+    
+    <p>Dar es Salaam's reliance on four arterial roads into the city is a legacy of the colonial government that planned the city at the start of the 20th century to cater for a population of 35,000. Most of the current growth is made up of young people arriving from the countryside to find work, and as the population has exploded, Dar es Salaam has grown around those four highways. <span class="hl" id="hl-q17" data-q="[Q17]">Nearly all the expansion is happening on the periphery, and nearly all takes place informally without any agreed strategy.</span></p>
+    
+    <p><span class="hl" id="hl-q18" data-q="[Q18]">But Dar es Salaam is pinning its hopes on a solution that could offer a different model for Africa's megacities, giving them an alternative to a future controlled by the private car. Unlike many cities on the continent, Dar es Salaam isn't trying to build a metro. It has chosen a less exciting but cheaper and more achievable method: the bus.</span></p>
+    
+    <p>The DART bus rapid transit (BRT) system <span class="hl" id="hl-q19" data-q="[Q19]">runs on bus <span class="kw">lanes</span> separated from other traffic</span>, mostly in the middle of the road to reduce stoppages. <span class="hl" id="hl-q20" data-q="[Q20]">Ticket purchase and control takes place at stations prior to <span class="kw">boarding</span></span> and the buses are step-free, <span class="hl" id="hl-q21" data-q="[Q21]">which means the entire route is accessible to people using <span class="kw">wheelchairs</span> or who are travelling with baby buggies.</span></p>
+    
+    <p>'The new buses are much, much better,' says Paulas George, a young IT worker. He takes the bus every day and it has cut his journey time by two-thirds. <span class="hl" id="hl-q22" data-q="[Q22]">He says it is not perfect, though, complaining that drivers often refuse to turn on the air conditioning to save <span class="kw">fuel</span>.</span></p>
+    
+    <p>That is not the only problem. <span class="hl" id="hl-q23" data-q="[Q23]">A shortage of buses after a serious <span class="kw">flood</span> at the main depot during the rainy season</span> means the system is carrying 200,000 people a day - half the expected capacity. <span class="hl" id="hl-q24" data-q="[Q24]"><span class="kw">Smartcards</span> can't be used as the mechanical readers aren't working either</span>, forcing passengers to buy individual paper tickets for every journey. Each is printed with a scannable QR code, but there are no scanners. <span class="hl" id="hl-q25" data-q="[Q25]">Staff stand by the <span class="kw">gates</span> and tear tickets as people enter.</span> <span class="hl" id="hl-q26" data-q="[Q26]">As a result, <span class="kw">queues</span> are considerable at peak times.</span></p>
+    
+    <p>Morogoro Road to the north-west of the city was phase I of the BRT project. Phases II and III will install bus lanes along Nyerere Road to the south-west and Kilwa Road to the south. Construction on both routes is due to start imminently. Phase IV, towards Bagamoyo in the north, is in the preliminary design stage. 'Much of the city will have access to a world-class transport system within the space of a few years,' says Chris Kost, the Africa director of ITDP (the Institute for Transportation and Development Policy). All phases are being planned to high standards and, once complete, a third of city residents will be within a short walk of the BRT network.</p>
+    
+    <p>The ITDP regrets Africa's obsession with metros. 'With a metro, an international firm will often just parachute in its own system,' says Kost. 'Bus rapid transit allows existing stakeholders to get involved. That's what we did in Dar es Salaam and what we're planning in Nairobi, where the bus bodies will be built in the city and local operators will look after tickets, fare collection and IT ...Bus rapid transit has been transformational for Dar es Salaam. For millions of people in African cities, this is their best hope of ever being connected.'</p>
+  </div>
+
+  <!-- CỘT CÂU HỎI -->
+  <div class="question-box">
+    <!-- Questions 14-18 TFNG -->
+    <div class="section-title">Questions 14-18</div>
+    <p><i>Do the following statements agree with the information given in Reading Passage 2? Select TRUE, FALSE, or NOT GIVEN.</i></p>
+
+    <!-- Q14 -->
+    <div class="question" id="q14">
+      <p><b>14.</b> The population of Dar es Salaam is rising more rapidly than was previously predicted.</p>
+      <div class="options">
+        <label><input type="radio" name="q14" value="TRUE"> TRUE</label>
+        <label><input type="radio" name="q14" value="FALSE"> FALSE</label>
+        <label><input type="radio" name="q14" value="NOT GIVEN"> NOT GIVEN</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em (Câu 14):</label><textarea id="q14_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <h4 style="color: #0369a1; margin-bottom: 8px;">📝 LỜI GIẢI CHI TIẾT 4 BƯỚC:</h4>
+        <div class="exp-step">• <b>Đáp án chốt:</b> <span class="kw-exp">NOT GIVEN</span></div>
+        <div class="exp-step">• <b>Bước 1 (Cắt câu & Khoanh từ):</b> Cắt câu đề bài làm 3 phần: Dân số của Dar es Salaam ('The population of Dar es Salaam') / đang tăng nhanh hơn ('is rising more rapidly than') / so với dự đoán trước đó ('was previously predicted'). Khoanh cụm so sánh <mark style="background-color: #fef08a;">more rapidly than was previously predicted</mark>. <i>Lý do chọn từ khóa:</i> Chọn tên riêng 'Dar es Salaam' kết hợp với từ chỉ sự dự đoán 'predicted / projections' để tìm đoạn văn nói về tốc độ gia tăng dân số.</div>
+        <div class="exp-step">• <b>Bước 2 (Tìm vị trí):</b> Quét tên riêng 'Dar es Salaam' và các từ dự báo 'projections', 'forecasts', 'predicted' ở Đoạn 1.</div>
+        <div class="exp-step">• <b>Bước 3 (So từ hai bên):</b> So sánh đối chiếu thông tin hai bên: Bài đọc đưa ra các con số dự báo của Liên Hợp Quốc ('United Nations projections') và dự báo của Daniel Hoornweg ('forecasts'). Tuy nhiên, bài đọc KHÔNG HỀ đề cập đến việc tốc độ tăng thực tế hiện tại có 'nhanh hơn mức từng dự đoán trong quá khứ' (more rapidly than previously predicted) hay không.</div>
+        <div class="exp-step">• <b>Bước 4 (Chốt đáp án):</b> Không có bất kỳ sự so sánh nào giữa tốc độ thực tế và dự đoán trước đây. Lựa chọn đáp án <b>NOT GIVEN</b>.</div>
+        <div class="exp-step" style="background: #f1f5f9; padding: 6px; border-radius: 4px; margin-top: 4px;">🛡️ <b>Mẹo B1 / Mất gốc:</b> Thấy cụm so sánh 'more rapidly than' (nhanh hơn) và 'previously' (trước đó). Đọc đoạn 1 chỉ thấy nêu số liệu dự đoán chứ không so sánh với quá khứ. Chọn <b>NOT GIVEN</b>.</div>
+        <button class="btn-locate" onclick="highlightText('hl-q14')">📍 Định vị vị trí trong bài đọc</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q14"><button class="ai-btn" onclick="askGeminiAI('q14')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q14"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q15 -->
+    <div class="question" id="q15">
+      <p><b>15.</b> Most of the residents of Dar es Salaam live in high-rise blocks on the edge of the city.</p>
+      <div class="options">
+        <label><input type="radio" name="q15" value="TRUE"> TRUE</label>
+        <label><input type="radio" name="q15" value="FALSE"> FALSE</label>
+        <label><input type="radio" name="q15" value="NOT GIVEN"> NOT GIVEN</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em (Câu 15):</label><textarea id="q15_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <h4 style="color: #0369a1; margin-bottom: 8px;">📝 LỜI GIẢI CHI TIẾT 4 BƯỚC:</h4>
+        <div class="exp-step">• <b>Đáp án chốt:</b> <span class="kw-exp">FALSE</span></div>
+        <div class="exp-step">• <b>Bước 1 (Cắt câu & Khoanh từ):</b> Cắt câu đề bài làm 3 phần: Hầu hết cư dân Dar es Salaam ('Most of the residents of Dar es Salaam') / sống trong các tòa nhà cao tầng ('live in high-rise blocks') / ở rìa thành phố ('on the edge of the city'). Khoanh cụm kiểu nhà <mark style="background-color: #fef08a;">high-rise blocks</mark> (tòa nhà cao tầng). <i>Lý do chọn từ khóa:</i> Chọn cụm 'high-rise blocks' và 'edge of the city' để tìm thông tin về hình thức nhà ở của cư dân ven đô.</div>
+        <div class="exp-step">• <b>Bước 2 (Tìm vị trí):</b> Quét từ khóa 'residents', 'high-rise blocks', 'edge of the city' ở Đoạn 2.</div>
+        <div class="exp-step">• <b>Bước 3 (So từ hai bên):</b> So sánh đối chiếu thông tin hai bên: Đề bài khẳng định người dân sống trong 'high-rise blocks' (tòa nhà cao tầng). Bài đọc ghi rõ: 4/5 người dân (tức đa số) sống trong <mark style="background-color: #fef08a;">single-storey informal settlements</mark> (khu định cư tự phát 1 tầng / nhà cấp 4).</div>
+        <div class="exp-step">• <b>Bước 4 (Chốt đáp án):</b> Một bên bảo sống ở nhà 'cao tầng' (high-rise), một bên khẳng định nhà '1 tầng' (single-storey). Hai thông tin hoàn toàn trái ngược mâu thuẫn nhau. Lựa chọn đáp án <b>FALSE</b>.</div>
+        <div class="exp-step" style="background: #f1f5f9; padding: 6px; border-radius: 4px; margin-top: 4px;">🛡️ <b>Mẹo B1 / Mất gốc:</b> Đề ghi 'high-rise blocks' (nhà cao tầng). Bài ghi 'single-storey' (nhà 1 tầng). Ngược nghĩa hoàn toàn. Chọn <b>FALSE</b>.</div>
+        <button class="btn-locate" onclick="highlightText('hl-q15')">📍 Định vị vị trí trong bài đọc</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q15"><button class="ai-btn" onclick="askGeminiAI('q15')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q15"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q16 -->
+    <div class="question" id="q16">
+      <p><b>16.</b> Residents have been consulted about their views on the suburban rail line in Dar es Salaam.</p>
+      <div class="options">
+        <label><input type="radio" name="q16" value="TRUE"> TRUE</label>
+        <label><input type="radio" name="q16" value="FALSE"> FALSE</label>
+        <label><input type="radio" name="q16" value="NOT GIVEN"> NOT GIVEN</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em (Câu 16):</label><textarea id="q16_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <h4 style="color: #0369a1; margin-bottom: 8px;">📝 LỜI GIẢI CHI TIẾT 4 BƯỚC:</h4>
+        <div class="exp-step">• <b>Đáp án chốt:</b> <span class="kw-exp">NOT GIVEN</span></div>
+        <div class="exp-step">• <b>Bước 1 (Cắt câu & Khoanh từ):</b> Cắt câu đề bài làm 3 phần: Cư dân ('Residents') / đã được tham vấn ý kiến ('have been consulted about their views') / về tuyến đường sắt ngoại ô ở Dar es Salaam ('on the suburban rail line in Dar es Salaam'). Khoanh cụm hành động <mark style="background-color: #fef08a;">consulted about their views</mark>. <i>Lý do chọn từ khóa:</i> Chọn cụm danh từ kỹ thuật 'suburban rail line' làm từ khóa quét chính vì tên tuyến giao thông này khó bị viết lại bằng từ khác.</div>
+        <div class="exp-step">• <b>Bước 2 (Tìm vị trí):</b> Quét từ khóa 'suburban rail line' ở Đoạn 3.</div>
+        <div class="exp-step">• <b>Bước 3 (So từ hai bên):</b> So sánh đối chiếu thông tin hai bên: Bài đọc đề cập có một tuyến đường sắt ngoại ô đơn lẻ phục vụ cư dân ở phía nam nhưng quy mô rất nhỏ. Tuy nhiên, bài đọc KHÔNG HỀ nhắc đến việc chính quyền có 'hỏi ý kiến / tham vấn cư dân' (consulted about their views) hay không.</div>
+        <div class="exp-step">• <b>Bước 4 (Chốt đáp án):</b> Không có thông tin xác nhận việc lấy ý kiến người dân về tuyến đường sắt. Lựa chọn đáp án <b>NOT GIVEN</b>.</div>
+        <div class="exp-step" style="background: #f1f5f9; padding: 6px; border-radius: 4px; margin-top: 4px;">🛡️ <b>Mẹo B1 / Mất gốc:</b> Tìm từ 'consulted' (tham vấn/hỏi ý kiến). Toàn bộ đoạn 3 không có từ nào mang nghĩa hỏi ý kiến cư dân. Chọn <b>NOT GIVEN</b>.</div>
+        <button class="btn-locate" onclick="highlightText('hl-q16')">📍 Định vị vị trí trong bài đọc</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q16"><button class="ai-btn" onclick="askGeminiAI('q16')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q16"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q17 -->
+    <div class="question" id="q17">
+      <p><b>17.</b> The majority of the present residential development in Dar es Salaam is unplanned.</p>
+      <div class="options">
+        <label><input type="radio" name="q17" value="TRUE"> TRUE</label>
+        <label><input type="radio" name="q17" value="FALSE"> FALSE</label>
+        <label><input type="radio" name="q17" value="NOT GIVEN"> NOT GIVEN</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em (Câu 17):</label><textarea id="q17_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <h4 style="color: #0369a1; margin-bottom: 8px;">📝 LỜI GIẢI CHI TIẾT 4 BƯỚC:</h4>
+        <div class="exp-step">• <b>Đáp án chốt:</b> <span class="kw-exp">TRUE</span></div>
+        <div class="exp-step">• <b>Bước 1 (Cắt câu & Khoanh từ):</b> Cắt câu đề bài làm 3 phần: Phần lớn các phát triển khu dân cư hiện tại ('The majority of the present residential development') / ở Dar es Salaam ('in Dar es Salaam') / là không có quy hoạch ('is unplanned'). Khoanh tính từ <mark style="background-color: #fef08a;">unplanned</mark> (không theo quy hoạch). <i>Lý do chọn từ khóa:</i> Chọn cụm 'residential development' và 'unplanned' để kiểm tra quy hoạch đô thị của thành phố.</div>
+        <div class="exp-step">• <b>Bước 2 (Tìm vị trí):</b> Quét từ khóa 'expansion', 'unplanned', 'without any agreed strategy' ở Đoạn 4.</div>
+        <div class="exp-step">• <b>Bước 3 (So từ hai bên):</b> So sánh đối chiếu thông tin hai bên: Đề bài nói đa số việc phát triển khu dân cư là 'unplanned' (không theo quy hoạch). Bài đọc ghi rõ: <mark style="background-color: #fef08a;">Nearly all the expansion... takes place informally without any agreed strategy</mark> (Gần như toàn bộ sự mở rộng diễn ra tự phát mà không có bất kỳ chiến lược/quy hoạch nào được thống nhất).</div>
+        <div class="exp-step">• <b>Bước 4 (Chốt đáp án):</b> Cụm 'without any agreed strategy' (không có chiến lược thống nhất) và 'informally' (tự phát) đồng nghĩa 100% với 'unplanned'. Lựa chọn đáp án <b>TRUE</b>.</div>
+        <div class="exp-step" style="background: #f1f5f9; padding: 6px; border-radius: 4px; margin-top: 4px;">🛡️ <b>Mẹo B1 / Mất gốc:</b> Từ 'unplanned' (không quy hoạch) = 'without any agreed strategy' (không có chiến lược). Chọn <b>TRUE</b>.</div>
+        <button class="btn-locate" onclick="highlightText('hl-q17')">📍 Định vị vị trí trong bài đọc</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q17"><button class="ai-btn" onclick="askGeminiAI('q17')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q17"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q18 -->
+    <div class="question" id="q18">
+      <p><b>18.</b> Dar es Salaam's authorities have decided to follow the public transport plan adopted by a large number of African cities.</p>
+      <div class="options">
+        <label><input type="radio" name="q18" value="TRUE"> TRUE</label>
+        <label><input type="radio" name="q18" value="FALSE"> FALSE</label>
+        <label><input type="radio" name="q18" value="NOT GIVEN"> NOT GIVEN</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em (Câu 18):</label><textarea id="q18_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <h4 style="color: #0369a1; margin-bottom: 8px;">📝 LỜI GIẢI CHI TIẾT 4 BƯỚC:</h4>
+        <div class="exp-step">• <b>Đáp án chốt:</b> <span class="kw-exp">FALSE</span></div>
+        <div class="exp-step">• <b>Bước 1 (Cắt câu & Khoanh từ):</b> Cắt câu đề bài làm 3 phần: Chính quyền Dar es Salaam ('Dar es Salaam's authorities') / đã quyết định làm theo kế hoạch giao thông công cộng ('have decided to follow the public transport plan') / được áp dụng bởi nhiều thành phố châu Phi khác ('adopted by a large number of African cities'). Khoanh cụm <mark style="background-color: #fef08a;">follow the public transport plan adopted by a large number</mark>. <i>Lý do chọn từ khóa:</i> Chọn từ 'African cities' và 'public transport plan' để truy tìm sự so sánh lựa chọn mô hình giao thông giữa các thành phố.</div>
+        <div class="exp-step">• <b>Bước 2 (Tìm vị trí):</b> Quét từ khóa 'African cities', 'metro', 'bus' ở Đoạn 5.</div>
+        <div class="exp-step">• <b>Bước 3 (So từ hai bên):</b> So sánh đối chiếu thông tin hai bên: Đề bài nói Dar es Salaam 'làm theo' (follow) kế hoạch của nhiều thành phố châu Phi khác. Bài đọc khẳng định: <mark style="background-color: #fef08a;">Unlike many cities on the continent, Dar es Salaam isn't trying to build a metro. It has chosen... the bus</mark> (Không giống như nhiều thành phố trên châu lục đang xây metro, Dar es Salaam đã chọn xe buýt).</div>
+        <div class="exp-step">• <b>Bước 4 (Chốt đáp án):</b> Bài đọc chỉ rõ Dar es Salaam làm 'khác/không giống' (unlike) số đông các thành phố châu Phi khác, chứ không phải 'làm theo' (follow). Hai thông tin mâu thuẫn 100%. Lựa chọn đáp án <b>FALSE</b>.</div>
+        <div class="exp-step" style="background: #f1f5f9; padding: 6px; border-radius: 4px; margin-top: 4px;">🛡️ <b>Mẹo B1 / Mất gốc:</b> Đề ghi 'follow' (làm theo). Bài ghi 'Unlike many cities' (không giống nhiều thành phố khác). Ngược nghĩa. Chọn <b>FALSE</b>.</div>
+        <button class="btn-locate" onclick="highlightText('hl-q18')">📍 Định vị vị trí trong bài đọc</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q18"><button class="ai-btn" onclick="askGeminiAI('q18')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q18"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Questions 19-26 Note Completion -->
+    <div class="section-title">Questions 19-26</div>
+    <p><i>Complete the notes below. Choose <b>ONE WORD ONLY</b> from the passage for each answer.</i></p>
+
+    <div style="background: var(--bg-subcard, #f8fafc); border: 1px solid var(--border-color, #e2e8f0); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+      <h4 style="margin-top: 0;">Dar es Salaam's DART Bus Rapid Transit system</h4>
+      <p><b>Features</b></p>
+      <ul>
+        <li>the buses use designated <b>19.</b> <input type="text" id="q19_input" class="fill-input"> to cut down on delays</li>
+        <li>passengers pay fares before <b>20.</b> <input type="text" id="q20_input" class="fill-input"></li>
+        <li>passengers in <b>21.</b> <input type="text" id="q21_input" class="fill-input"> can use every part of the system</li>
+      </ul>
+
+      <p><b>Problems</b></p>
+      <ul>
+        <li>the temperature control is sometimes not activated in order to reduce <b>22.</b> <input type="text" id="q22_input" class="fill-input"> use</li>
+        <li>insufficient number of vehicles are available due to the effects of a severe <b>23.</b> <input type="text" id="q23_input" class="fill-input"></li>
+        <li>passengers are unable to use <b>24.</b> <input type="text" id="q24_input" class="fill-input"> because some equipment is out of action</li>
+        <li>tickets have to be checked manually at station <b>25.</b> <input type="text" id="q25_input" class="fill-input"></li>
+        <li><b>26.</b> <input type="text" id="q26_input" class="fill-input"> frequently build up during rush hours</li>
+      </ul>
+    </div>
+
+    <!-- Q19 -->
+    <div class="question" id="q19">
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em (Câu 19):</label><textarea id="q19_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <h4 style="color: #0369a1; margin-bottom: 8px;">📝 LỜI GIẢI CHI TIẾT 4 BƯỚC:</h4>
+        <div class="exp-step">• <b>Đáp án chốt:</b> <span class="kw-exp">lanes</span></div>
+        <div class="exp-step">• <b>Bước 1 (Cắt câu & Khoanh từ):</b> Cắt câu trong ghi chú: 'the buses use designated 19 ________ to cut down on delays'. Đứng sau tính từ 'designated' (dành riêng/được chỉ định), cần một danh từ số nhiều chỉ làn đường/tuyến đường. <i>Lý do chọn từ khóa:</i> Chọn cụm 'cut down on delays' và 'designated' vì đây là cụm từ miêu tả mục đích giảm ùn tắc giao thông của làn xe buýt.</div>
+        <div class="exp-step">• <b>Bước 2 (Tìm vị trí):</b> Quét từ khóa 'designated', 'cut down on delays', 'separated from other traffic' ở Đoạn 6.</div>
+        <div class="exp-step">• <b>Bước 3 (So từ hai bên):</b> So sánh đối chiếu giữa đề và bài đọc: 'designated [19]' (các... được dành riêng) tương ứng với <mark style="background-color: #fef08a;">bus lanes separated from other traffic</mark> (các làn đường xe buýt tách biệt khỏi dòng xe khác); 'to cut down on delays' (để giảm chậm trễ) tương ứng với 'to reduce stoppages' (để giảm việc dừng đỗ/ùn tắc). Danh từ là 'lanes'.</div>
+        <div class="exp-step">• <b>Bước 4 (Chốt đáp án):</b> Nghĩa câu bài đọc: Chạy trên các làn đường xe buýt tách biệt để giảm việc tắc nghẽn. Danh từ cần điền là 'lanes'. Yêu cầu 'ONE WORD ONLY' -> Điền chính xác <span class="kw-exp">lanes</span>.</div>
+        <div class="exp-step" style="background: #f1f5f9; padding: 6px; border-radius: 4px; margin-top: 4px;">🛡️ <b>Mẹo B1 / Mất gốc:</b> Thấy cụm 'reduce stoppages' (= cut down on delays). Danh từ đứng trước đó là <b>lanes</b> (làn đường). Điền <b>lanes</b>.</div>
+        <button class="btn-locate" onclick="highlightText('hl-q19')">📍 Định vị vị trí trong bài đọc</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q19"><button class="ai-btn" onclick="askGeminiAI('q19')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q19"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q20 -->
+    <div class="question" id="q20">
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em (Câu 20):</label><textarea id="q20_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <h4 style="color: #0369a1; margin-bottom: 8px;">📝 LỜI GIẢI CHI TIẾT 4 BƯỚC:</h4>
+        <div class="exp-step">• <b>Đáp án chốt:</b> <span class="kw-exp">boarding</span></div>
+        <div class="exp-step">• <b>Bước 1 (Cắt câu & Khoanh từ):</b> Cắt câu trong ghi chú: 'passengers pay fares before 20 ________'. Đứng sau giới từ 'before', cần một danh từ hoặc động từ dạng V-ing chỉ hành động bước lên xe. <i>Lý do chọn từ khóa:</i> Chọn cụm 'pay fares' (trả tiền vé) và 'before' làm từ khóa vì đây là mốc thời điểm thanh toán trước khi di chuyển.</div>
+        <div class="exp-step">• <b>Bước 2 (Tìm vị trí):</b> Quét từ khóa 'pay fares', 'before', 'stations' ở Đoạn 6.</div>
+        <div class="exp-step">• <b>Bước 3 (So từ hai bên):</b> So sánh đối chiếu giữa đề và bài đọc: 'passengers pay fares' (hành khách trả tiền vé) tương ứng với <mark style="background-color: #fef08a;">Ticket purchase</mark> (việc mua vé); giới từ 'before' (trước khi) đồng nghĩa trực tiếp với giới từ 'prior to'. Từ đi liền sau 'prior to' là 'boarding'.</div>
+        <div class="exp-step">• <b>Bước 4 (Chốt đáp án):</b> Nghĩa câu bài đọc: Việc mua vé diễn ra tại ga trước khi lên xe (prior to boarding). Nghĩa câu đề bài: Hành khách trả tiền vé trước khi lên xe (before boarding). Từ duy nhất khớp vị trí ngữ pháp là <span class="kw-exp">boarding</span>. Điền <span class="kw-exp">boarding</span>.</div>
+        <div class="exp-step" style="background: #f1f5f9; padding: 6px; border-radius: 4px; margin-top: 4px;">🛡️ <b>Mẹo B1 / Mất gốc:</b> Từ 'before' (trước khi) = 'prior to'. Từ đứng ngay sau 'prior to' là <b>boarding</b> (lên xe). Điền <b>boarding</b>.</div>
+        <button class="btn-locate" onclick="highlightText('hl-q20')">📍 Định vị vị trí trong bài đọc</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q20"><button class="ai-btn" onclick="askGeminiAI('q20')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q20"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q21 -->
+    <div class="question" id="q21">
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em (Câu 21):</label><textarea id="q21_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <h4 style="color: #0369a1; margin-bottom: 8px;">📝 LỜI GIẢI CHI TIẾT 4 BƯỚC:</h4>
+        <div class="exp-step">• <b>Đáp án chốt:</b> <span class="kw-exp">wheelchairs</span></div>
+        <div class="exp-step">• <b>Bước 1 (Cắt câu & Khoanh từ):</b> Cắt câu trong ghi chú: 'passengers in 21 ________ can use every part of the system'. Đứng sau giới từ 'in', cần một danh từ số nhiều chỉ phương tiện hỗ trợ di chuyển của người khuyết tật. <i>Lý do chọn từ khóa:</i> Chọn cụm 'accessible' và 'every part of the system' vì đây là tính năng tiếp cận không rào cản cho mọi đối tượng.</div>
+        <div class="exp-step">• <b>Bước 2 (Tìm vị trí):</b> Quét từ khóa 'accessible', 'entire route' ở Đoạn 6.</div>
+        <div class="exp-step">• <b>Bước 3 (So từ hai bên):</b> So sánh đối chiếu giữa đề và bài đọc: 'can use every part of the system' (có thể dùng mọi phần của hệ thống) tương ứng với <mark style="background-color: #fef08a;">the entire route is accessible to...</mark> (toàn bộ tuyến đường có thể truy cập bởi...). Danh từ đi cùng người sử dụng là 'wheelchairs'.</div>
+        <div class="exp-step">• <b>Bước 4 (Chốt đáp án):</b> Nghĩa câu bài đọc: Xe buýt không có bậc bước, giúp toàn bộ tuyến đường tiếp cận được với người dùng xe lăn. Danh từ dành cho chỗ trống sau 'in' trong cụm 'in wheelchairs' (ngồi trên xe lăn) là <span class="kw-exp">wheelchairs</span>. Điền <span class="kw-exp">wheelchairs</span>.</div>
+        <div class="exp-step" style="background: #f1f5f9; padding: 6px; border-radius: 4px; margin-top: 4px;">🛡️ <b>Mẹo B1 / Mất gốc:</b> Tìm từ 'accessible' (= can use). Từ chỉ thiết bị đi kèm người đi xe là <b>wheelchairs</b> (xe lăn). Điền <b>wheelchairs</b>.</div>
+        <button class="btn-locate" onclick="highlightText('hl-q21')">📍 Định vị vị trí trong bài đọc</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q21"><button class="ai-btn" onclick="askGeminiAI('q21')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q21"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q22 -->
+    <div class="question" id="q22">
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em (Câu 22):</label><textarea id="q22_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <h4 style="color: #0369a1; margin-bottom: 8px;">📝 LỜI GIẢI CHI TIẾT 4 BƯỚC:</h4>
+        <div class="exp-step">• <b>Đáp án chốt:</b> <span class="kw-exp">fuel</span></div>
+        <div class="exp-step">• <b>Bước 1 (Cắt câu & Khoanh từ):</b> Cắt câu trong ghi chú: 'the temperature control is sometimes not activated in order to reduce 22 ________ use'. Đứng sau động từ 'reduce' và trước 'use', cần một danh từ chỉ nhiên liệu/năng lượng được tiết kiệm. <i>Lý do chọn từ khóa:</i> Chọn cụm 'temperature control' (điều hòa/kiểm soát nhiệt độ) và 'reduce... use' vì đây là lý do tài xế tắt điều hòa.</div>
+        <div class="exp-step">• <b>Bước 2 (Tìm vị trí):</b> Quét từ khóa 'temperature control', 'air conditioning', 'reduce' ở Đoạn 7.</div>
+        <div class="exp-step">• <b>Bước 3 (So từ hai bên):</b> So sánh đối chiếu ngữ nghĩa: 'temperature control is... not activated' (kiểm soát nhiệt độ không được bật) tương ứng với 'refuse to turn on the air conditioning' (từ chối bật điều hòa); 'in order to reduce [22] use' (để giảm việc dùng...) tương ứng với <mark style="background-color: #fef08a;">to save fuel</mark> (để tiết kiệm nhiên liệu). Danh từ là 'fuel'.</div>
+        <div class="exp-step">• <b>Bước 4 (Chốt đáp án):</b> Nghĩa câu bài đọc: Tài xế từ chối bật điều hòa để tiết kiệm nhiên liệu. Danh từ duy nhất khớp chỉ loại vật tư cần giảm dùng là <span class="kw-exp">fuel</span>. Điền 1 từ <span class="kw-exp">fuel</span>.</div>
+        <div class="exp-step" style="background: #f1f5f9; padding: 6px; border-radius: 4px; margin-top: 4px;">🛡️ <b>Mẹo B1 / Mất gốc:</b> Thấy cụm 'air conditioning' (điều hòa). Động từ 'save' (tiết kiệm) = 'reduce use'. Từ đi kèm là <b>fuel</b> (nhiên liệu). Điền <b>fuel</b>.</div>
+        <button class="btn-locate" onclick="highlightText('hl-q22')">📍 Định vị vị trí trong bài đọc</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q22"><button class="ai-btn" onclick="askGeminiAI('q22')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q22"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q23 -->
+    <div class="question" id="q23">
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em (Câu 23):</label><textarea id="q23_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <h4 style="color: #0369a1; margin-bottom: 8px;">📝 LỜI GIẢI CHI TIẾT 4 BƯỚC:</h4>
+        <div class="exp-step">• <b>Đáp án chốt:</b> <span class="kw-exp">flood</span></div>
+        <div class="exp-step">• <b>Bước 1 (Cắt câu & Khoanh từ):</b> Cắt câu trong ghi chú: 'insufficient number of vehicles are available due to the effects of a severe 23 ________'. Đứng sau tính từ 'severe' (nghiêm trọng), cần một danh từ chỉ thiên tai/sự cố thiên nhiên. <i>Lý do chọn từ khóa:</i> Chọn cụm 'insufficient number of vehicles' (thiếu phương tiện) và 'severe' làm từ khóa để truy tìm nguyên nhân thảm họa.</div>
+        <div class="exp-step">• <b>Bước 2 (Tìm vị trí):</b> Quét từ khóa 'insufficient', 'shortage of buses', 'severe' ở Đoạn 8.</div>
+        <div class="exp-step">• <b>Bước 3 (So từ hai bên):</b> So sánh đối chiếu ngữ nghĩa: 'insufficient number of vehicles' (thiếu số lượng xe) đồng nghĩa với 'A shortage of buses'; 'due to the effects of a severe [23]' (do ảnh hưởng của... nghiêm trọng) tương ứng với <mark style="background-color: #fef08a;">after a serious flood</mark>. Danh từ thiên tai là 'flood'.</div>
+        <div class="exp-step">• <b>Bước 4 (Chốt đáp án):</b> Nghĩa câu bài đọc: Sự thiếu hụt xe buýt sau một trận lũ lụt nghiêm trọng tại kho chính. Danh từ chỉ sự cố thiên tai đồng nghĩa với 'serious' là <span class="kw-exp">flood</span>. Điền chính xác <span class="kw-exp">flood</span>.</div>
+        <div class="exp-step" style="background: #f1f5f9; padding: 6px; border-radius: 4px; margin-top: 4px;">🛡️ <b>Mẹo B1 / Mất gốc:</b> Từ 'insufficient' = 'shortage' (thiếu hụt), 'severe' = 'serious' (nghiêm trọng). Danh từ đi kèm là <b>flood</b> (lũ lụt). Điền <b>flood</b>.</div>
+        <button class="btn-locate" onclick="highlightText('hl-q23')">📍 Định vị vị trí trong bài đọc</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q23"><button class="ai-btn" onclick="askGeminiAI('q23')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q23"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q24 -->
+    <div class="question" id="q24">
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em (Câu 24):</label><textarea id="q24_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <h4 style="color: #0369a1; margin-bottom: 8px;">📝 LỜI GIẢI CHI TIẾT 4 BƯỚC:</h4>
+        <div class="exp-step">• <b>Đáp án chốt:</b> <span class="kw-exp">smartcards</span></div>
+        <div class="exp-step">• <b>Bước 1 (Cắt câu & Khoanh từ):</b> Cắt câu trong ghi chú: 'passengers are unable to use 24 ________ because some equipment is out of action'. Đứng sau cụm 'unable to use', cần một danh từ (có thể dạng số nhiều) chỉ loại thẻ/vé thông minh không dùng được. <i>Lý do chọn từ khóa:</i> Chọn cụm 'unable to use' và 'equipment is out of action' vì đây là mô tả hư hỏng máy đọc vé.</div>
+        <div class="exp-step">• <b>Bước 2 (Tìm vị trí):</b> Quét từ khóa 'unable to use', 'can't be used', 'out of action' ở Đoạn 8.</div>
+        <div class="exp-step">• <b>Bước 3 (So từ hai bên):</b> So sánh đối chiếu ngữ nghĩa: 'passengers are unable to use [24]' (hành khách không thể sử dụng...) tương ứng với <mark style="background-color: #fef08a;">Smartcards can't be used</mark>; 'because some equipment is out of action' (vì thiết bị hỏng) tương ứng với 'as the mechanical readers aren't working'. Danh từ là 'smartcards'.</div>
+        <div class="exp-step">• <b>Bước 4 (Chốt đáp án):</b> Nghĩa câu bài đọc: Thẻ thông minh không thể sử dụng vì máy đọc cơ học cũng không hoạt động. Danh từ chỉ vật thể bị ngưng sử dụng là <span class="kw-exp">smartcards</span>. Điền <span class="kw-exp">smartcards</span>.</div>
+        <div class="exp-step" style="background: #f1f5f9; padding: 6px; border-radius: 4px; margin-top: 4px;">🛡️ <b>Mẹo B1 / Mất gốc:</b> Cụm 'can't be used' (không thể dùng) = 'unable to use'. Từ đứng trước đó là <b>Smartcards</b> (thẻ thông minh). Điền <b>smartcards</b>.</div>
+        <button class="btn-locate" onclick="highlightText('hl-q24')">📍 Định vị vị trí trong bài đọc</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q24"><button class="ai-btn" onclick="askGeminiAI('q24')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q24"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q25 -->
+    <div class="question" id="q25">
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em (Câu 25):</label><textarea id="q25_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <h4 style="color: #0369a1; margin-bottom: 8px;">📝 LỜI GIẢI CHI TIẾT 4 BƯỚC:</h4>
+        <div class="exp-step">• <b>Đáp án chốt:</b> <span class="kw-exp">gates</span></div>
+        <div class="exp-step">• <b>Bước 1 (Cắt câu & Khoanh từ):</b> Cắt câu trong ghi chú: 'tickets have to be checked manually at station 25 ________'. Đứng sau danh từ 'station' và đứng cuối câu, cần một danh từ số nhiều chỉ vị trí lối ra vào tại nhà ga. <i>Lý do chọn từ khóa:</i> Chọn cụm 'checked manually' (kiểm tra thủ công) và 'station' để định vị vị trí nhân viên đứng soát vé.</div>
+        <div class="exp-step">• <b>Bước 2 (Tìm vị trí):</b> Quét từ khóa 'checked manually', 'tear tickets', 'station' ở Đoạn 8.</div>
+        <div class="exp-step">• <b>Bước 3 (So từ hai bên):</b> So sánh đối chiếu ngữ nghĩa: 'tickets have to be checked manually' (vé phải kiểm tra thủ công) tương ứng với hành động 'Staff stand by... and tear tickets' (nhân viên đứng xé vé); vị trí đứng là <mark style="background-color: #fef08a;">by the gates</mark> (ngay tại cổng). Danh từ chỉ vị trí là 'gates'.</div>
+        <div class="exp-step">• <b>Bước 4 (Chốt đáp án):</b> Nghĩa câu bài đọc: Nhân viên đứng ở cổng và xé vé khi mọi người đi vào. Vị trí soát vé thủ công tại ga chính là các cổng vào. Danh từ là <span class="kw-exp">gates</span>. Điền 1 từ <span class="kw-exp">gates</span>.</div>
+        <div class="exp-step" style="background: #f1f5f9; padding: 6px; border-radius: 4px; margin-top: 4px;">🛡️ <b>Mẹo B1 / Mất gốc:</b> Thấy hành động 'tear tickets' (xé vé = kiểm tra thủ công). Cụm chỉ vị trí đi kèm là 'by the gates' (tại cổng). Điền <b>gates</b>.</div>
+        <button class="btn-locate" onclick="highlightText('hl-q25')">📍 Định vị vị trí trong bài đọc</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q25"><button class="ai-btn" onclick="askGeminiAI('q25')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q25"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q26 -->
+    <div class="question" id="q26">
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em (Câu 26):</label><textarea id="q26_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <h4 style="color: #0369a1; margin-bottom: 8px;">📝 LỜI GIẢI CHI TIẾT 4 BƯỚC:</h4>
+        <div class="exp-step">• <b>Đáp án chốt:</b> <span class="kw-exp">queues</span></div>
+        <div class="exp-step">• <b>Bước 1 (Cắt câu & Khoanh từ):</b> Cắt câu trong ghi chú: '26 ________ frequently build up during rush hours'. Đứng làm chủ ngữ đầu câu trước động từ 'build up', cần một danh từ số nhiều chỉ hàng người chờ đợi. <i>Lý do chọn từ khóa:</i> Chọn cụm 'rush hours' (giờ cao điểm) và 'build up' vì đây là cụm từ mô tả sự tích tụ hàng dài người chờ.</div>
+        <div class="exp-step">• <b>Bước 2 (Tìm vị trí):</b> Quét từ khóa 'rush hours', 'peak times', 'build up' ở Đoạn 8.</div>
+        <div class="exp-step">• <b>Bước 3 (So từ hai bên):</b> So sánh đối chiếu ngữ nghĩa: 'during rush hours' (trong giờ cao điểm) đồng nghĩa 100% với <mark style="background-color: #fef08a;">at peak times</mark>. Cụm 'frequently build up' (thường xuyên tích tụ/dài ra) tương ứng với 'are considerable' (rất lớn/đáng kể). Danh từ làm chủ ngữ là 'queues'.</div>
+        <div class="exp-step">• <b>Bước 4 (Chốt đáp án):</b> Nghĩa câu bài đọc: Kết quả là các hàng người xếp hàng chờ rất lớn vào các giờ cao điểm. Danh từ chỉ hàng người là <span class="kw-exp">queues</span>. Điền <span class="kw-exp">queues</span>.</div>
+        <div class="exp-step" style="background: #f1f5f9; padding: 6px; border-radius: 4px; margin-top: 4px;">🛡️ <b>Mẹo B1 / Mất gốc:</b> Từ 'rush hours' (giờ cao điểm) = 'peak times'. Danh từ đi kèm chỉ sự ùn tắc xếp hàng là <b>queues</b> (hàng chờ). Điền <b>queues</b>.</div>
+        <button class="btn-locate" onclick="highlightText('hl-q26')">📍 Định vị vị trí trong bài đọc</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q26"><button class="ai-btn" onclick="askGeminiAI('q26')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q26"></div>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn-submit" onclick="checkAnswers()">CHẤM BÀI VÀ NỘP KẾT QUẢ</button>
+  </div>
+</div>
+
+<script>
+  window.TEST_DATA = {
+    title: "Cam 21 Test 3 Passage 2",
+    answers: {
+      q14: "NOT GIVEN",
+      q15: "FALSE",
+      q16: "NOT GIVEN",
+      q17: "TRUE",
+      q18: "FALSE",
+      q19: "lanes",
+      q20: "boarding",
+      q21: "wheelchairs",
+      q22: "fuel",
+      q23: "flood",
+      q24: "smartcards",
+      q25: "gates",
+      q26: "queues"
+    }
+  };
+</script>
+<script src="ielts-core.js"></script>
+</body>
+</html>
