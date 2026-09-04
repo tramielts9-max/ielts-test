@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>IELTS 21 Test 3 - Passage 3: Rethinking the Past</title>
+  <link rel="stylesheet" href="ielts-core.css">
+</head>
+<body>
+
+<div class="user-info-box">
+  <div class="user-info-field">
+    <label for="studentNameInput">👤 Họ và Tên:</label>
+    <input type="text" id="studentNameInput" placeholder="Nhập họ và tên học viên...">
+  </div>
+  <div class="user-info-field">
+    <label for="studentEmailInput">✉️ Email Google:</label>
+    <input type="email" id="studentEmailInput" placeholder="Nhập Email để lưu kết quả...">
+  </div>
+</div>
+
+<div class="header-bar">
+  <h1>IELTS Academic 21 - Test 3 - Passage 3</h1>
+  
+  <div class="header-nav">
+    <a href="index.html" class="nav-link">🏠 Trang chủ</a>
+    <a href="cam21-test3-p1.html" class="nav-link">Passage 1</a>
+    <a href="cam21-test3-p2.html" class="nav-link">Passage 2</a>
+    <a href="cam21-test3-p3.html" class="nav-link active">Passage 3</a>
+  </div>
+
+  <div class="timer-container">
+    <span>⏱️ Thời gian:</span>
+    <span class="timer-display" id="timerDisplay">00:00</span>
+    <button class="btn-timer" onclick="startTimer()">▶️ Bắt đầu</button>
+    <button class="btn-timer" onclick="pauseTimer()">⏸️ Tạm dừng</button>
+  </div>
+
+  <div class="score-badge" id="scoreBadge">Điểm số: <span id="scoreText">0/14</span></div>
+</div>
+
+<div id="hlPopup" class="hl-popup"><button id="btnDoHighlight">🖍️ Highlight</button></div>
+<div id="removeHlPopup" class="hl-popup"><button id="btnRemoveHighlight">❌ Xóa Highlight</button></div>
+
+<div class="container">
+  <!-- CỘT BÀI ĐỌC -->
+  <div class="passage-box" id="passageBox">
+    <h2>READING PASSAGE 3</h2>
+    <h3>Rethinking the Past</h3>
+    
+    <p>It is by now a truism that the story of human evolution is being rethought. Discoveries have come thick and fast over the last decade or so, and these have forced us to rethink many crucial points, such as how old our species is - about 300,000 years old as opposed to 200,000 - and what extinct hominins, such as our cousins the Neanderthals, were really like. But because there are so many species and eras involved, it's hard to discern the common threads linking them.</p>
+    
+    <p><span class="hl" id="hl-q27" data-q="[Q27]">However, I do think it's possible to draw out some overall messages from the blizzard of archaeological finds in recent years. Two things stand out to me. One is the growing evidence that many supposedly 'advanced' behaviours, such as architecture and art, can be traced much further back in time than we thought, often to hominin species that existed before modern humans. And the other is that we have badly misunderstood gender roles in prehistoric societies, imposing patriarchal values onto cultures that had very different ideas about how women should behave.</span></p>
+    
+    <p>Let's start with architecture. <span class="hl" id="hl-q31" data-q="[Q31]">At Kalambo Falls in Zambia, researchers found buried logs that had been shaped with stone tools so that they interlocked. They seem to have once been part of a larger structure, perhaps a building. This would be unsurprising if they weren't 476,000 years old. That's almost 200,000 years before our species, Homo sapiens, evolved.</span> Extinct hominins also managed to settle in extreme places. <span class="hl" id="hl-q32" data-q="[Q32]">For instance, we now know that extinct hominins such as the Denisovans lived on the frozen heights of high-altitude regions 200,000 years ago - upending the old notion that such environments were only settled by modern humans around 3,600 years ago.</span></p>
+    
+    <p>Art also seems to have been invented by older hominins. <span class="hl" id="hl-q35" data-q="[Q35]">We have had evidence for a long time now that Neanderthals painted on cave walls.</span> <span class="hl" id="hl-q36" data-q="[Q36]">Even earlier species, such as Homo erectus, may also have made art, for example by engraving patterns on shells.</span> By far the most contentious claim in this area is that Homo naledi made art. H. naledi lived around 250,000 years ago, making it a contemporary of our species. However, it had quite a small brain, typical of older hominins - and was therefore, according to palaeoanthropological dogma, incapable of complex behaviours. <span class="hl" id="hl-q37" data-q="[Q37]"><span class="hl" id="hl-q38" data-q="[Q38]">Nevertheless, in the Rising Star cave system in South Africa where the H. naledi remains were found, researchers have found what seem to be etchings - resembling rudimentary artwork - on the cave walls, though these have yet to be firmly dated.</span></span></p>
+    
+    <p>To say these claims about H. naledi are controversial is to understate the situation. Many experts say the evidence presented so far is completely inadequate to support them. <span class="hl" id="hl-q39" data-q="[Q39]">The dispute has only been heightened by the way the results were released, in a non-traditional journal that publishes peer reviews publicly alongside the paper.</span> My views on the H. naledi controversy are complicated. I do think more evidence is needed: in particular with regard to the dating of the etchings. <span class="hl" id="hl-q40" data-q="[Q40]">At the same time, I think the species' small brains are a distraction.</span> Palaeoanthropologists got fixated on brain size because it was what they could see: if what you have is skeletons, then all you know about brains are their shapes and sizes. But other properties, such as the brain's internal wiring, are surely equally important and may explain how a species like H. naledi might have been capable of complex behaviours, despite their small brains.</p>
+    
+    <p><span class="hl" id="hl-q28" data-q="[Q28]">In a sense, we shouldn't be surprised that so many of these behaviours had their origins in older, extinct hominins. Evolution usually works by incremental steps and so does technology. The first birds weren't great at flying, and the first mobile phones weren't great at, well, anything really.</span> The idea that there was a sudden explosion of intelligence and creativity at some point in our evolution isn't inherently ridiculous: sometimes a system hits a tipping point and undergoes runaway change. But there was never that much evidence that human evolution worked this way. Instead, it seems the Neanderthals and many others all walked so we could run.</p>
+    
+    <p>One way or another, the H. naledi story is going to be an example of letting our preconceptions get in the way of the evidence. The same is true for our ideas about gender in prehistory. <span class="hl" id="hl-q29" data-q="[Q29]">Archaeology was invented by individuals with now unfashionably patriarchal views about gender, and those notions fed into their research. Today's researchers are trying to unpick this stuff, and there have been some significant steps in recent years.</span></p>
+    
+    <p>Perhaps the most dramatic was the demolition of 'Man the Hunter'. This was the idea, promoted for decades, that in most prehistoric societies the men went out to hunt and the women looked after the home. <span class="hl" id="hl-q33" data-q="[Q33]">However, a meta-analysis published in June 2023 compiled data on several dozen foraging societies and found women hunted in 80 per cent of them.</span> In line with this, it emerged that an ancient spear-throwing tool called an atlatl enables women to launch projectiles at the same speed as men. We have also seen growing evidence of women occupying positions of authority in ancient societies. The Viking queen Thyra may have helped unify Denmark in the 900s. <span class="hl" id="hl-q34" data-q="[Q34]">Going further back, an Iberian leader from around 4000 years ago turned out to be female, not male as many had assumed, when proteins in her teeth were analysed.</span></p>
+    
+    <p><span class="hl" id="hl-q30" data-q="[Q30]">It seems that the more we find out about past societies, the more our preconceptions about the ways society 'has to be' turn out to be wrong. Inequality, authoritarianism and patriarchy aren't inevitable. They're choices, and prehistory shows us that we can choose differently.</span></p>
+  </div>
+
+  <!-- CỘT CÂU HỎI -->
+  <div class="question-box">
+    <!-- Questions 27-30 Multiple Choice -->
+    <div class="section-title">Questions 27-30</div>
+    <p><i>Choose the correct letter, <b>A</b>, <b>B</b>, <b>C</b> or <b>D</b>.</i></p>
+
+    <!-- Q27 -->
+    <div class="question" id="q27">
+      <p><b>27.</b> What is the writer doing in the second paragraph?</p>
+      <div class="options">
+        <label><input type="radio" name="q27" value="A"> A. pinpointing some key changes in our understanding of prehistory</label>
+        <label><input type="radio" name="q27" value="B"> B. outlining some aspects of prehistory which are still poorly understood</label>
+        <label><input type="radio" name="q27" value="C"> C. summarising some attitudes towards recent archaeological revelations</label>
+        <label><input type="radio" name="q27" value="D"> D. giving an overview of some current disagreements among archaeologists</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em (Câu 27):</label><textarea id="q27_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <h4 style="color: #0369a1; margin-bottom: 8px;">📝 LỜI GIẢI CHI TIẾT 4 BƯỚC:</h4>
+        <div class="exp-step">• <b>Đáp án chốt:</b> <span class="kw-exp">A</span></div>
+        <div class="exp-step">• <b>Bước 1 (Cắt câu & Khoanh từ):</b> Cắt câu hỏi: Tác giả đang làm gì trong đoạn văn thứ hai? Tìm mục đích chính trong việc tóm tắt 2 điểm cốt lõi của bài viết. <i>Lý do chọn từ khóa:</i> Chọn 'second paragraph' làm mốc vị trí tuyệt đối; chọn từ 'stand out' và 'growing evidence' để tìm nhận định tổng quan của tác giả.</div>
+        <div class="exp-step">• <b>Bước 2 (Tìm vị trí):</b> Khoanh vùng và đọc toàn bộ Đoạn 2.</div>
+        <div class="exp-step">• <b>Bước 3 (So từ hai bên):</b> So sánh đối chiếu nội dung: Tác giả chỉ ra 2 thay đổi quan trọng trong nhận thức về tiền sử: (1) các hành vi tân tiến như kiến trúc, nghệ thuật xuất hiện sớm hơn nhiều; (2) hiểu sai nghiêm trọng về vai trò giới. Ý này khớp hoàn toàn với đáp án A (<mark style="background-color: #fef08a;">pinpointing some key changes in our understanding of prehistory</mark>).</div>
+        <div class="exp-step">• <b>Bước 4 (Chốt đáp án):</b> Cụm 'growing evidence... traced much further back' và 'badly misunderstood' chính là các sự thay đổi trong góc nhìn nhận thức (key changes in understanding). Chọn <b>A</b>.</div>
+        <div class="exp-step" style="background: #f1f5f9; padding: 6px; border-radius: 4px; margin-top: 4px;">🛡️ <b>Mẹo B1 / Mất gốc:</b> Thấy từ 'traced much further back' (tìm thấy sớm hơn) và 'misunderstood' (hiểu sai). Tức là nhận thức đã thay đổi ('changes in understanding'). Chọn <b>A</b>.</div>
+        <button class="btn-locate" onclick="highlightText('hl-q27')">📍 Định vị vị trí trong bài đọc</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q27"><button class="ai-btn" onclick="askGeminiAI('q27')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q27"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q28 -->
+    <div class="question" id="q28">
+      <p><b>28.</b> In the sixth paragraph, the writer mentions mobile phones to make the point that</p>
+      <div class="options">
+        <label><input type="radio" name="q28" value="A"> A. most developments happen in a gradual way.</label>
+        <label><input type="radio" name="q28" value="B"> B. innovation can come from a variety of sources.</label>
+        <label><input type="radio" name="q28" value="C"> C. not all technological advancements are positive.</label>
+        <label><input type="radio" name="q28" value="D"> D. the path of evolution can often be unpredictable.</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em (Câu 28):</label><textarea id="q28_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <h4 style="color: #0369a1; margin-bottom: 8px;">📝 LỜI GIẢI CHI TIẾT 4 BƯỚC:</h4>
+        <div class="exp-step">• <b>Đáp án chốt:</b> <span class="kw-exp">A</span></div>
+        <div class="exp-step">• <b>Bước 1 (Cắt câu & Khoanh từ):</b> Cắt câu hỏi: Trong đoạn 6, tác giả đề cập đến điện thoại di động ('mobile phones') nhằm đưa ra quan điểm gì. <i>Lý do chọn từ khóa:</i> Chọn từ khóa danh từ cụ thể 'mobile phones' trong đoạn 6 vì đây là ví dụ minh họa trực quan được tác giả dùng làm phép so sánh.</div>
+        <div class="exp-step">• <b>Bước 2 (Tìm vị trí):</b> Quét từ 'mobile phones' ở Đoạn 6.</div>
+        <div class="exp-step">• <b>Bước 3 (So từ hai bên):</b> So sánh đối chiếu: Ngay trước câu ví dụ về điện thoại di động, tác giả đưa ra luận điểm chủ đề: <mark style="background-color: #fef08a;">Evolution usually works by incremental steps and so does technology</mark> (Sự tiến hóa thường hoạt động theo các bước tiệm tiến/từng bước một và công nghệ cũng vậy). Cụm 'incremental steps' (các bước tiệm tiến) đồng nghĩa với 'most developments happen in a gradual way' (hầu hết sự phát triển diễn ra một cách dần dần).</div>
+        <div class="exp-step">• <b>Bước 4 (Chốt đáp án):</b> Ví dụ về điện thoại đời đầu chưa tốt nhằm minh chứng cho việc mọi sự phát triển công nghệ/tiến hóa đều diễn ra từng bước (incremental / gradual). Chọn <b>A</b>.</div>
+        <div class="exp-step" style="background: #f1f5f9; padding: 6px; border-radius: 4px; margin-top: 4px;">🛡️ <b>Mẹo B1 / Mất gốc:</b> Từ 'incremental steps' (các bước nhỏ/tiệm tiến) = 'gradual way' (một cách dần dần). Chọn <b>A</b>.</div>
+        <button class="btn-locate" onclick="highlightText('hl-q28')">📍 Định vị vị trí trong bài đọc</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q28"><button class="ai-btn" onclick="askGeminiAI('q28')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q28"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q29 -->
+    <div class="question" id="q29">
+      <p><b>29.</b> In the seventh paragraph, the phrase 'unpick this stuff' refers to the task of</p>
+      <div class="options">
+        <label><input type="radio" name="q29" value="A"> A. assessing the impact of certain recent research findings.</label>
+        <label><input type="radio" name="q29" value="B"> B. questioning the authenticity of evidence used in earlier research.</label>
+        <label><input type="radio" name="q29" value="C"> C. conducting research into how prehistoric societies were organised.</label>
+        <label><input type="radio" name="q29" value="D"> D. reevaluating research influenced by outdated beliefs about society.</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em (Câu 29):</label><textarea id="q29_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <h4 style="color: #0369a1; margin-bottom: 8px;">📝 LỜI GIẢI CHI TIẾT 4 BƯỚC:</h4>
+        <div class="exp-step">• <b>Đáp án chốt:</b> <span class="kw-exp">D</span></div>
+        <div class="exp-step">• <b>Bước 1 (Cắt câu & Khoanh từ):</b> Cắt câu hỏi: Trong đoạn 7, cụm từ 'unpick this stuff' ám chỉ nhiệm vụ gì. <i>Lý do chọn từ khóa:</i> Chọn cụm trong ngoặc kép 'unpick this stuff' ở đoạn 7 để xem câu tiền đề ngay trước đó.</div>
+        <div class="exp-step">• <b>Bước 2 (Tìm vị trí):</b> Định vị cụm 'unpick this stuff' ở Đoạn 7.</div>
+        <div class="exp-step">• <b>Bước 3 (So từ hai bên):</b> So sánh đối chiếu: 'this stuff' (mấy thứ này) thay thế cho <mark style="background-color: #fef08a;">patriarchal views about gender... fed into their research</mark> (các quan điểm gia trưởng về giới... đã ăn sâu vào nghiên cứu của họ trong quá khứ). Động từ 'unpick' (gỡ bỏ/phân tích lại) kết hợp lại thành việc 'reevaluating research influenced by outdated beliefs about society' (đánh giá lại các nghiên cứu bị ảnh hưởng bởi những niềm tin lạc hậu về xã hội).</div>
+        <div class="exp-step">• <b>Bước 4 (Chốt đáp án):</b> Ý 'patriarchal views' (quan điểm gia trưởng) chính là 'outdated beliefs' (quan điểm lỗi thời). 'Unpick' chính là 'reevaluating' (đánh giá/gỡ lại). Chọn <b>D</b>.</div>
+        <div class="exp-step" style="background: #f1f5f9; padding: 6px; border-radius: 4px; margin-top: 4px;">🛡️ <b>Mẹo B1 / Mất gốc:</b> Từ 'patriarchal' (gia trưởng) = 'outdated beliefs' (niềm tin lỗi thời). 'Unpick' (tháo gỡ) = 'reevaluating' (đánh giá lại). Chọn <b>D</b>.</div>
+        <button class="btn-locate" onclick="highlightText('hl-q29')">📍 Định vị vị trí trong bài đọc</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q29"><button class="ai-btn" onclick="askGeminiAI('q29')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q29"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q30 -->
+    <div class="question" id="q30">
+      <p><b>30.</b> What does the writer suggest in the final paragraph?</p>
+      <div class="options">
+        <label><input type="radio" name="q30" value="A"> A. Studying past societies could help us create a fairer society today.</label>
+        <label><input type="radio" name="q30" value="B"> B. We should not judge past societies by the standards of modern society.</label>
+        <label><input type="radio" name="q30" value="C"> C. We still have much to learn about how societies have evolved over history.</label>
+        <label><input type="radio" name="q30" value="D"> D. There is more than one way to interpret evidence about societies in prehistoric times.</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em (Câu 30):</label><textarea id="q30_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <h4 style="color: #0369a1; margin-bottom: 8px;">📝 LỜI GIẢI CHI TIẾT 4 BƯỚC:</h4>
+        <div class="exp-step">• <b>Đáp án chốt:</b> <span class="kw-exp">A</span></div>
+        <div class="exp-step">• <b>Bước 1 (Cắt câu & Khoanh từ):</b> Cắt câu hỏi: Tác giả gợi ý điều gì trong đoạn văn cuối cùng. <i>Lý do chọn từ khóa:</i> Chọn mốc 'final paragraph' (đoạn cuối) làm vị trí khoanh vùng; quét các từ kết luận 'prehistory shows us'.</div>
+        <div class="exp-step">• <b>Bước 2 (Tìm vị trí):</b> Đọc kỹ Đoạn 9 (đoạn kết).</div>
+        <div class="exp-step">• <b>Bước 3 (So từ hai bên):</b> So sánh đối chiếu: Tác giả khẳng định bất bình đẳng, độc tài không phải là tất yếu, thời tiền sử cho thấy ta có thể chọn lựa khác đi (<mark style="background-color: #fef08a;">we can choose differently</mark>). Điều này đồng nghĩa với đáp án A (<mark style="background-color: #fef08a;">Studying past societies could help us create a fairer society today</mark>).</div>
+        <div class="exp-step">• <b>Bước 4 (Chốt đáp án):</b> Ý 'choose differently' (chọn khác đi - hướng tới bình đẳng/không độc tài) chính là tạo ra xã hội công bằng hơn (fairer society). Chọn <b>A</b>.</div>
+        <div class="exp-step" style="background: #f1f5f9; padding: 6px; border-radius: 4px; margin-top: 4px;">🛡️ <b>Mẹo B1 / Mất gốc:</b> Từ 'Inequality... aren't inevitable' (bất bình đẳng không phải tất yếu) + 'choose differently' = tạo ra xã hội tốt/công bằng hơn ('fairer society'). Chọn <b>A</b>.</div>
+        <button class="btn-locate" onclick="highlightText('hl-q30')">📍 Định vị vị trí trong bài đọc</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q30"><button class="ai-btn" onclick="askGeminiAI('q30')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q30"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Questions 31-34 Matching Sentence Endings -->
+    <div class="section-title">Questions 31-34</div>
+    <p><i>Complete each sentence with the correct ending, <b>A-F</b>, below.</i></p>
+
+    <div style="background: var(--bg-subcard, #f8fafc); border: 1px solid var(--border-color, #e2e8f0); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+      <p><b>A.</b> Homo sapiens emerged at an earlier point in time than experts previously believed.</p>
+      <p><b>B.</b> previous assumptions about who had power in the prehistoric world were inaccurate.</p>
+      <p><b>C.</b> gender roles in extinct hominin species were different from those in Homo sapiens societies.</p>
+      <p><b>D.</b> experts may have been mistaken about who looked for food in early human communities.</p>
+      <p><b>E.</b> Homo sapiens was probably not the only species capable of sophisticated workmanship.</p>
+      <p><b>F.</b> other species managed to survive in harsh environments before the arrival of Homo sapiens.</p>
+    </div>
+
+    <!-- Q31 -->
+    <div class="question" id="q31">
+      <p><b>31.</b> The findings at Kalambo Falls revealed that</p>
+      <div class="options">
+        <label><input type="radio" name="q31" value="A"> A</label>
+        <label><input type="radio" name="q31" value="B"> B</label>
+        <label><input type="radio" name="q31" value="C"> C</label>
+        <label><input type="radio" name="q31" value="D"> D</label>
+        <label><input type="radio" name="q31" value="E"> E</label>
+        <label><input type="radio" name="q31" value="F"> F</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em (Câu 31):</label><textarea id="q31_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <h4 style="color: #0369a1; margin-bottom: 8px;">📝 LỜI GIẢI CHI TIẾT 4 BƯỚC:</h4>
+        <div class="exp-step">• <b>Đáp án chốt:</b> <span class="kw-exp">E</span></div>
+        <div class="exp-step">• <b>Bước 1 (Cắt câu & Khoanh từ):</b> Cắt câu đề bài: 'The findings at Kalambo Falls revealed that 31 ________'. Cần tìm vế kết thúc thể hiện ý nghĩa của phát hiện tại Kalambo Falls. <i>Lý do chọn từ khóa:</i> Chọn tên riêng địa danh 'Kalambo Falls' làm từ khóa định vị tuyệt đối vì địa danh không bị paraphrase.</div>
+        <div class="exp-step">• <b>Bước 2 (Tìm vị trí):</b> Quét tên riêng 'Kalambo Falls' ở Đoạn 3.</div>
+        <div class="exp-step">• <b>Bước 3 (So từ hai bên):</b> So sánh đối chiếu: Phát hiện gỗ đẽo gọt xếp chồng thành công trình 476.000 năm trước - trước cả khi Homo sapiens xuất hiện 200.000 năm. Ý này chứng tỏ các loài người cổ khác cũng có khả năng chế tác phức tạp. Khớp với đáp án E (<mark style="background-color: #fef08a;">Homo sapiens was probably not the only species capable of sophisticated workmanship</mark> - Homo sapiens có lẽ không phải là loài duy nhất có khả năng chế tác tinh xảo).</div>
+        <div class="exp-step">• <b>Bước 4 (Chốt đáp án):</b> Việc loài khác làm công trình đẽo gỗ trước Homo sapiens chứng minh Homo sapiens không phải loài duy nhất biết làm việc này. Chọn <b>E</b>.</div>
+        <div class="exp-step" style="background: #f1f5f9; padding: 6px; border-radius: 4px; margin-top: 4px;">🛡️ <b>Mẹo B1 / Mất gốc:</b> Nhìn thấy từ '476,000 years old' trước cả Homo sapiens. Tức là loài khác cũng làm được đồ xịn ('sophisticated workmanship'). Chọn <b>E</b>.</div>
+        <button class="btn-locate" onclick="highlightText('hl-q31')">📍 Định vị vị trí trong bài đọc</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q31"><button class="ai-btn" onclick="askGeminiAI('q31')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q31"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q32 -->
+    <div class="question" id="q32">
+      <p><b>32.</b> Evidence from high-altitude regions suggests that</p>
+      <div class="options">
+        <label><input type="radio" name="q32" value="A"> A</label>
+        <label><input type="radio" name="q32" value="B"> B</label>
+        <label><input type="radio" name="q32" value="C"> C</label>
+        <label><input type="radio" name="q32" value="D"> D</label>
+        <label><input type="radio" name="q32" value="E"> E</label>
+        <label><input type="radio" name="q32" value="F"> F</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em (Câu 32):</label><textarea id="q32_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <h4 style="color: #0369a1; margin-bottom: 8px;">📝 LỜI GIẢI CHI TIẾT 4 BƯỚC:</h4>
+        <div class="exp-step">• <b>Đáp án chốt:</b> <span class="kw-exp">F</span></div>
+        <div class="exp-step">• <b>Bước 1 (Cắt câu & Khoanh từ):</b> Cắt câu đề bài: 'Evidence from high-altitude regions suggests that 32 ________'. Cần tìm vế thể hiện phát hiện ở vùng núi cao. <i>Lý do chọn từ khóa:</i> Chọn cụm 'high-altitude regions' làm từ khóa vị trí chính.</div>
+        <div class="exp-step">• <b>Bước 2 (Tìm vị trí):</b> Quét cụm 'high-altitude regions' ở Đoạn 3.</div>
+        <div class="exp-step">• <b>Bước 3 (So từ hai bên):</b> So sánh đối chiếu: Người Denisovans sống ở vùng núi băng giá 200.000 năm trước, bác bỏ quan niệm cũ rằng chỉ người hiện đại mới sống được ở đó. Khớp với đáp án F (<mark style="background-color: #fef08a;">other species managed to survive in harsh environments before the arrival of Homo sapiens</mark> - các loài khác đã sống sót được ở môi trường khắc nghiệt trước khi Homo sapiens xuất hiện).</div>
+        <div class="exp-step">• <b>Bước 4 (Chốt đáp án):</b> 'High-altitude regions' = 'harsh environments'; 'extinct hominins... 200,000 years ago' = 'other species... before Homo sapiens'. Chọn <b>F</b>.</div>
+        <div class="exp-step" style="background: #f1f5f9; padding: 6px; border-radius: 4px; margin-top: 4px;">🛡️ <b>Mẹo B1 / Mất gốc:</b> Từ 'frozen heights' (vùng núi băng giá) = 'harsh environments' (môi trường khắc nghiệt). Chọn <b>F</b>.</div>
+        <button class="btn-locate" onclick="highlightText('hl-q32')">📍 Định vị vị trí trong bài đọc</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q32"><button class="ai-btn" onclick="askGeminiAI('q32')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q32"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q33 -->
+    <div class="question" id="q33">
+      <p><b>33.</b> An academic publication from June 2023 shows that</p>
+      <div class="options">
+        <label><input type="radio" name="q33" value="A"> A</label>
+        <label><input type="radio" name="q33" value="B"> B</label>
+        <label><input type="radio" name="q33" value="C"> C</label>
+        <label><input type="radio" name="q33" value="D"> D</label>
+        <label><input type="radio" name="q33" value="E"> E</label>
+        <label><input type="radio" name="q33" value="F"> F</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em (Câu 33):</label><textarea id="q33_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <h4 style="color: #0369a1; margin-bottom: 8px;">📝 LỜI GIẢI CHI TIẾT 4 BƯỚC:</h4>
+        <div class="exp-step">• <b>Đáp án chốt:</b> <span class="kw-exp">D</span></div>
+        <div class="exp-step">• <b>Bước 1 (Cắt câu & Khoanh từ):</b> Cắt câu đề bài: 'An academic publication from June 2023 shows that 33 ________'. Cần vế chỉ phát hiện của nghiên cứu tháng 6/2023. <i>Lý do chọn từ khóa:</i> Chọn mốc thời gian cụ thể 'June 2023' làm từ khóa quét chính xác 100%.</div>
+        <div class="exp-step">• <b>Bước 2 (Tìm vị trí):</b> Quét mốc 'June 2023' ở Đoạn 8.</div>
+        <div class="exp-step">• <b>Bước 3 (So từ hai bên):</b> So sánh đối chiếu: Nghiên cứu cho thấy phụ nữ đi săn trong 80% các xã hội hái lượm, làm sụp đổ quan niệm 'đàn ông đi săn, phụ nữ ở nhà'. Khớp với đáp án D (<mark style="background-color: #fef08a;">experts may have been mistaken about who looked for food in early human communities</mark> - các chuyên gia có thể đã nhầm lẫn về việc ai là người kiếm thức ăn trong các cộng đồng người sớm).</div>
+        <div class="exp-step">• <b>Bước 4 (Chốt đáp án):</b> 'hunted' = 'looked for food'; việc phụ nữ cũng đi săn cho thấy giả định cũ của chuyên gia bị sai (mistaken). Chọn <b>D</b>.</div>
+        <div class="exp-step" style="background: #f1f5f9; padding: 6px; border-radius: 4px; margin-top: 4px;">🛡️ <b>Mẹo B1 / Mất gốc:</b> Từ 'hunted' (đi săn) = 'looked for food' (kiếm ăn). Việc phụ nữ đi săn 80% chứng tỏ các chuyên gia đã nhầm ('mistaken'). Chọn <b>D</b>.</div>
+        <button class="btn-locate" onclick="highlightText('hl-q33')">📍 Định vị vị trí trong bài đọc</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q33"><button class="ai-btn" onclick="askGeminiAI('q33')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q33"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q34 -->
+    <div class="question" id="q34">
+      <p><b>34.</b> Analysis of a 4000-year-old Iberian leader indicates that</p>
+      <div class="options">
+        <label><input type="radio" name="q34" value="A"> A</label>
+        <label><input type="radio" name="q34" value="B"> B</label>
+        <label><input type="radio" name="q34" value="C"> C</label>
+        <label><input type="radio" name="q34" value="D"> D</label>
+        <label><input type="radio" name="q34" value="E"> E</label>
+        <label><input type="radio" name="q34" value="F"> F</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em (Câu 34):</label><textarea id="q34_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <h4 style="color: #0369a1; margin-bottom: 8px;">📝 LỜI GIẢI CHI TIẾT 4 BƯỚC:</h4>
+        <div class="exp-step">• <b>Đáp án chốt:</b> <span class="kw-exp">B</span></div>
+        <div class="exp-step">• <b>Bước 1 (Cắt câu & Khoanh từ):</b> Cắt câu đề bài: 'Analysis of a 4000-year-old Iberian leader indicates that 34 ________'. Cần vế kết luận từ phân tích thủ lĩnh người Iberian. <i>Lý do chọn từ khóa:</i> Chọn cụm từ chỉ thời gian và địa danh '4000-year-old Iberian leader' làm từ khóa.</div>
+        <div class="exp-step">• <b>Bước 2 (Tìm vị trí):</b> Quét cụm '4000-year-old Iberian leader' ở Đoạn 8.</div>
+        <div class="exp-step">• <b>Bước 3 (So từ hai bên):</b> So sánh đối chiếu: Vị thủ lĩnh 4000 năm tuổi hóa ra là nữ chứ không phải nam như từng giả định. Khớp với đáp án B (<mark style="background-color: #fef08a;">previous assumptions about who had power in the prehistoric world were inaccurate</mark> - các giả định trước đây về việc ai nắm giữ quyền lực trong thế giới tiền sử là không chính xác).</div>
+        <div class="exp-step">• <b>Bước 4 (Chốt đáp án):</b> 'leader' = 'who had power'; 'not male as assumed' = 'assumptions... inaccurate'. Chọn <b>B</b>.</div>
+        <div class="exp-step" style="background: #f1f5f9; padding: 6px; border-radius: 4px; margin-top: 4px;">🛡️ <b>Mẹo B1 / Mất gốc:</b> Từ 'leader' (thủ lĩnh) = 'who had power' (người có quyền lực). 'turned out to be female, not male' = giả định cũ sai ('inaccurate'). Chọn <b>B</b>.</div>
+        <button class="btn-locate" onclick="highlightText('hl-q34')">📍 Định vị vị trí trong bài đọc</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q34"><button class="ai-btn" onclick="askGeminiAI('q34')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q34"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Questions 35-40 YES NO NOT GIVEN -->
+    <div class="section-title">Questions 35-40</div>
+    <p><i>Do the following statements agree with the views of the writer in Reading Passage 3? Select YES, NO, or NOT GIVEN.</i></p>
+
+    <!-- Q35 -->
+    <div class="question" id="q35">
+      <p><b>35.</b> It seems likely that the Neanderthals' cave paintings were the first examples of artwork ever created.</p>
+      <div class="options">
+        <label><input type="radio" name="q35" value="YES"> YES</label>
+        <label><input type="radio" name="q35" value="NO"> NO</label>
+        <label><input type="radio" name="q35" value="NOT GIVEN"> NOT GIVEN</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em (Câu 35):</label><textarea id="q35_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <h4 style="color: #0369a1; margin-bottom: 8px;">📝 LỜI GIẢI CHI TIẾT 4 BƯỚC:</h4>
+        <div class="exp-step">• <b>Đáp án chốt:</b> <span class="kw-exp">NO</span></div>
+        <div class="exp-step">• <b>Bước 1 (Cắt câu & Khoanh từ):</b> Cắt câu đề bài làm 3 phần: Có vẻ như tranh hang động của người Neanderthal ('Neanderthals' cave paintings') / là những ví dụ đầu tiên về tác phẩm nghệ thuật từng được tạo ra ('were the first examples of artwork ever created'). Khoanh cụm so sánh nhất <mark style="background-color: #fef08a;">first examples... ever created</mark>. <i>Lý do chọn từ khóa:</i> Chọn tên riêng loài 'Neanderthals' và cụm 'cave paintings' để định vị câu hỏi.</div>
+        <div class="exp-step">• <b>Bước 2 (Tìm vị trí):</b> Quét từ khóa 'Neanderthals', 'cave walls', 'earlier species' ở Đoạn 4.</div>
+        <div class="exp-step">• <b>Bước 3 (So từ hai bên):</b> So sánh đối chiếu: Đề bảo tranh hang động của Neanderthal là tác phẩm nghệ thuật 'đầu tiên' (first). Bài đọc ghi rõ: <mark style="background-color: #fef08a;">Even earlier species, such as Homo erectus, may also have made art...</mark> (Ngay cả các loài còn sớm hơn, như Homo erectus, cũng có thể đã làm nghệ thuật...).</div>
+        <div class="exp-step">• <b>Bước 4 (Chốt đáp án):</b> Một bên bảo là 'đầu tiên', một bên khẳng định có loài 'sớm hơn nữa' (earlier) cũng làm nghệ thuật. Hai ý trái ngược nhau 100%. Lựa chọn đáp án <b>NO</b>.</div>
+        <div class="exp-step" style="background: #f1f5f9; padding: 6px; border-radius: 4px; margin-top: 4px;">🛡️ <b>Mẹo B1 / Mất gốc:</b> Đề ghi 'first' (đầu tiên). Bài ghi 'Even earlier species' (các loài còn sớm hơn nữa). Ngược nhau. Chọn <b>NO</b>.</div>
+        <button class="btn-locate" onclick="highlightText('hl-q35')">📍 Định vị vị trí trong bài đọc</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q35"><button class="ai-btn" onclick="askGeminiAI('q35')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q35"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q36 -->
+    <div class="question" id="q36">
+      <p><b>36.</b> It is very rare to find prehistoric artwork carved onto shells.</p>
+      <div class="options">
+        <label><input type="radio" name="q36" value="YES"> YES</label>
+        <label><input type="radio" name="q36" value="NO"> NO</label>
+        <label><input type="radio" name="q36" value="NOT GIVEN"> NOT GIVEN</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em (Câu 36):</label><textarea id="q36_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <h4 style="color: #0369a1; margin-bottom: 8px;">📝 LỜI GIẢI CHI TIẾT 4 BƯỚC:</h4>
+        <div class="exp-step">• <b>Đáp án chốt:</b> <span class="kw-exp">NOT GIVEN</span></div>
+        <div class="exp-step">• <b>Bước 1 (Cắt câu & Khoanh từ):</b> Cắt câu đề bài làm 3 phần: Rất hiếm khi ('It is very rare') / tìm thấy tác phẩm nghệ thuật tiền sử được khắc lên vỏ sò ('to find prehistoric artwork carved onto shells'). Khoanh cụm <mark style="background-color: #fef08a;">very rare</mark>. <i>Lý do chọn từ khóa:</i> Chọn danh từ vật thể 'shells' (vỏ sò) làm từ khóa định vị đặc trưng.</div>
+        <div class="exp-step">• <b>Bước 2 (Tìm vị trí):</b> Quét từ 'shells' ở Đoạn 4.</div>
+        <div class="exp-step">• <b>Bước 3 (So từ hai bên):</b> So sánh đối chiếu: Bài đọc chỉ lấy ví dụ Homo erectus làm nghệ thuật bằng cách khắc mẫu lên vỏ sò ('engraving patterns on shells'), nhưng KHÔNG HỀ đề cập việc tìm thấy chúng là 'rất hiếm' (very rare) hay phổ biến.</div>
+        <div class="exp-step">• <b>Bước 4 (Chốt đáp án):</b> Không có thông tin về độ hiếm (rarity) của việc khắc vỏ sò. Lựa chọn đáp án <b>NOT GIVEN</b>.</div>
+        <div class="exp-step" style="background: #f1f5f9; padding: 6px; border-radius: 4px; margin-top: 4px;">🛡️ <b>Mẹo B1 / Mất gốc:</b> Tìm từ 'rare' (hiếm). Bài chỉ ví dụ về 'shells' chứ không hề nói hiếm hay nhiều. Chọn <b>NOT GIVEN</b>.</div>
+        <button class="btn-locate" onclick="highlightText('hl-q36')">📍 Định vị vị trí trong bài đọc</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q36"><button class="ai-btn" onclick="askGeminiAI('q36')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q36"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q37 -->
+    <div class="question" id="q37">
+      <p><b>37.</b> The methods which the researchers used to examine the Rising Star cave system were rather unconventional.</p>
+      <div class="options">
+        <label><input type="radio" name="q37" value="YES"> YES</label>
+        <label><input type="radio" name="q37" value="NO"> NO</label>
+        <label><input type="radio" name="q37" value="NOT GIVEN"> NOT GIVEN</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em (Câu 37):</label><textarea id="q37_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <h4 style="color: #0369a1; margin-bottom: 8px;">📝 LỜI GIẢI CHI TIẾT 4 BƯỚC:</h4>
+        <div class="exp-step">• <b>Đáp án chốt:</b> <span class="kw-exp">NOT GIVEN</span></div>
+        <div class="exp-step">• <b>Bước 1 (Cắt câu & Khoanh từ):</b> Cắt câu đề bài làm 3 phần: Các phương pháp mà nghiên cứu sinh sử dụng ('The methods which the researchers used') / để kiểm tra hệ thống hang Rising Star ('to examine the Rising Star cave system') / là khá khác thường/độc đáo ('were rather unconventional'). Khoanh cụm <mark style="background-color: #fef08a;">rather unconventional</mark>. <i>Lý do chọn từ khóa:</i> Chọn tên riêng địa danh 'Rising Star cave system' làm từ khóa chính.</div>
+        <div class="exp-step">• <b>Bước 2 (Tìm vị trí):</b> Quét cụm 'Rising Star cave system' ở Đoạn 4.</div>
+        <div class="exp-step">• <b>Bước 3 (So từ hai bên):</b> So sánh đối chiếu: Bài đọc đề cập các nhà nghiên cứu tìm thấy vết khắc trong hang Rising Star, nhưng KHÔNG HỀ miêu tả hay đánh giá các 'phương pháp' (methods) họ dùng có phải là 'khác thường/không truyền thống' (unconventional) hay không.</div>
+        <div class="exp-step">• <b>Bước 4 (Chốt đáp án):</b> Không có thông tin về phương pháp nghiên cứu. Lựa chọn đáp án <b>NOT GIVEN</b>.</div>
+        <div class="exp-step" style="background: #f1f5f9; padding: 6px; border-radius: 4px; margin-top: 4px;">🛡️ <b>Mẹo B1 / Mất gốc:</b> Tìm từ 'unconventional' (độc lạ/khác thường) hoặc 'methods' (phương pháp). Bài không nhắc gì tới phương pháp làm việc trong hang. Chọn <b>NOT GIVEN</b>.</div>
+        <button class="btn-locate" onclick="highlightText('hl-q37')">📍 Định vị vị trí trong bài đọc</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q37"><button class="ai-btn" onclick="askGeminiAI('q37')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q37"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q38 -->
+    <div class="question" id="q38">
+      <p><b>38.</b> It is unclear how old the etchings in the Rising Star cave system are.</p>
+      <div class="options">
+        <label><input type="radio" name="q38" value="YES"> YES</label>
+        <label><input type="radio" name="q38" value="NO"> NO</label>
+        <label><input type="radio" name="q38" value="NOT GIVEN"> NOT GIVEN</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em (Câu 38):</label><textarea id="q38_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <h4 style="color: #0369a1; margin-bottom: 8px;">📝 LỜI GIẢI CHI TIẾT 4 BƯỚC:</h4>
+        <div class="exp-step">• <b>Đáp án chốt:</b> <span class="kw-exp">YES</span></div>
+        <div class="exp-step">• <b>Bước 1 (Cắt câu & Khoanh từ):</b> Cắt câu đề bài làm 3 phần: Không rõ ('It is unclear') / các vết khắc trong hệ thống hang Rising Star ('how old the etchings in the Rising Star cave system') / bao nhiêu tuổi ('are'). Khoanh cụm <mark style="background-color: #fef08a;">unclear how old</mark>. <i>Lý do chọn từ khóa:</i> Chọn danh từ 'etchings' kết hợp địa danh 'Rising Star cave system'.</div>
+        <div class="exp-step">• <b>Bước 2 (Tìm vị trí):</b> Quét từ 'etchings' và 'Rising Star cave system' ở Đoạn 4.</div>
+        <div class="exp-step">• <b>Bước 3 (So từ hai bên):</b> So sánh đối chiếu: Đề bài nói 'không rõ các vết khắc bao nhiêu tuổi' (unclear how old). Bài đọc viết: <mark style="background-color: #fef08a;">though these have yet to be firmly dated</mark> (mặc dù những vết khắc này vẫn chưa được xác định ngày/niên đại một cách chắc chắn).</div>
+        <div class="exp-step">• <b>Bước 4 (Chốt đáp án):</b> 'yet to be firmly dated' (chưa định rõ niên đại) đồng nghĩa 100% với 'unclear how old'. Lựa chọn đáp án <b>YES</b>.</div>
+        <div class="exp-step" style="background: #f1f5f9; padding: 6px; border-radius: 4px; margin-top: 4px;">🛡️ <b>Mẹo B1 / Mất gốc:</b> Cụm 'yet to be firmly dated' (chưa xác định được ngày tháng/tuổi) = 'unclear how old' (không rõ bao nhiêu tuổi). Chọn <b>YES</b>.</div>
+        <button class="btn-locate" onclick="highlightText('hl-q38')">📍 Định vị vị trí trong bài đọc</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q38"><button class="ai-btn" onclick="askGeminiAI('q38')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q38"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q39 -->
+    <div class="question" id="q39">
+      <p><b>39.</b> The means used to publicise the findings from the Rising Star cave system added to the controversy that surrounds them.</p>
+      <div class="options">
+        <label><input type="radio" name="q39" value="YES"> YES</label>
+        <label><input type="radio" name="q39" value="NO"> NO</label>
+        <label><input type="radio" name="q39" value="NOT GIVEN"> NOT GIVEN</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em (Câu 39):</label><textarea id="q39_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <h4 style="color: #0369a1; margin-bottom: 8px;">📝 LỜI GIẢI CHI TIẾT 4 BƯỚC:</h4>
+        <div class="exp-step">• <b>Đáp án chốt:</b> <span class="kw-exp">YES</span></div>
+        <div class="exp-step">• <b>Bước 1 (Cắt câu & Khoanh từ):</b> Cắt câu đề bài làm 3 phần: Phương thức dùng để công bố các phát hiện ('The means used to publicise the findings') / từ hệ thống hang Rising Star ('from the Rising Star cave system') / đã làm gia tăng tranh cãi xung quanh chúng ('added to the controversy that surrounds them'). Khoanh cụm <mark style="background-color: #fef08a;">added to the controversy</mark>. <i>Lý do chọn từ khóa:</i> Chọn từ 'publicise / released' và 'controversy / dispute' làm từ khóa quan trọng.</div>
+        <div class="exp-step">• <b>Bước 2 (Tìm vị trí):</b> Quét từ 'dispute', 'heightened', 'released' ở Đoạn 5.</div>
+        <div class="exp-step">• <b>Bước 3 (So từ hai bên):</b> So sánh đối chiếu: Đề bài nói cách công bố làm 'gia tăng tranh cãi' (added to the controversy). Bài đọc ghi: <mark style="background-color: #fef08a;">The dispute has only been heightened by the way the results were released...</mark> (Tranh cãi chỉ càng được đẩy cao hơn bởi cách thức mà các kết quả được công bố...).</div>
+        <div class="exp-step">• <b>Bước 4 (Chốt đáp án):</b> 'dispute has been heightened' (tranh cãi bị đẩy cao) trùng khớp 100% với 'added to the controversy'. Lựa chọn đáp án <b>YES</b>.</div>
+        <div class="exp-step" style="background: #f1f5f9; padding: 6px; border-radius: 4px; margin-top: 4px;">🛡️ <b>Mẹo B1 / Mất gốc:</b> Từ 'heightened' (đẩy cao lên) = 'added to'; 'dispute' (tranh chấp) = 'controversy' (tranh cãi). Chọn <b>YES</b>.</div>
+        <button class="btn-locate" onclick="highlightText('hl-q39')">📍 Định vị vị trí trong bài đọc</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q39"><button class="ai-btn" onclick="askGeminiAI('q39')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q39"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q40 -->
+    <div class="question" id="q40">
+      <p><b>40.</b> The size of H. naledi brains is a key factor in the question of whether these hominins were able to produce art.</p>
+      <div class="options">
+        <label><input type="radio" name="q40" value="YES"> YES</label>
+        <label><input type="radio" name="q40" value="NO"> NO</label>
+        <label><input type="radio" name="q40" value="NOT GIVEN"> NOT GIVEN</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em (Câu 40):</label><textarea id="q40_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <h4 style="color: #0369a1; margin-bottom: 8px;">📝 LỜI GIẢI CHI TIẾT 4 BƯỚC:</h4>
+        <div class="exp-step">• <b>Đáp án chốt:</b> <span class="kw-exp">NO</span></div>
+        <div class="exp-step">• <b>Bước 1 (Cắt câu & Khoanh từ):</b> Cắt câu đề bài làm 3 phần: Kích thước não của H. naledi ('The size of H. naledi brains') / là yếu tố mấu chốt ('is a key factor') / trong câu hỏi liệu loài này có thể tạo ra nghệ thuật hay không ('in the question of whether these hominins were able to produce art'). Khoanh cụm <mark style="background-color: #fef08a;">is a key factor</mark>. <i>Lý do chọn từ khóa:</i> Chọn thuật ngữ 'size of H. naledi brains' và cụm 'key factor'.</div>
+        <div class="exp-step">• <b>Bước 2 (Tìm vị trí):</b> Quét cụm 'small brains' ở Đoạn 5.</div>
+        <div class="exp-step">• <b>Bước 3 (So từ hai bên):</b> So sánh đối chiếu: Đề bài nói kích thước não là 'yếu tố mấu chốt' (key factor). Tác giả bài đọc nêu rõ quan điểm cá nhân: <mark style="background-color: #fef08a;">I think the species' small brains are a distraction</mark> (Tôi nghĩ rằng bộ não nhỏ của loài này là một sự xao nhãng/làm chệch hướng chú ý).</div>
+        <div class="exp-step">• <b>Bước 4 (Chốt đáp án):</b> Một bên bảo là 'yếu tố mấu chốt', một bên bảo chỉ là 'sự xao nhãng không quan trọng' (distraction). Mâu thuẫn hoàn toàn. Lựa chọn đáp án <b>NO</b>.</div>
+        <div class="exp-step" style="background: #f1f5f9; padding: 6px; border-radius: 4px; margin-top: 4px;">🛡️ <b>Mẹo B1 / Mất gốc:</b> Đề ghi 'key factor' (yếu tố mấu chốt). Bài ghi 'distraction' (sự làm xao nhãng/không đúng trọng tâm). Ngược nhau. Chọn <b>NO</b>.</div>
+        <button class="btn-locate" onclick="highlightText('hl-q40')">📍 Định vị vị trí trong bài đọc</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q40"><button class="ai-btn" onclick="askGeminiAI('q40')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q40"></div>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn-submit" onclick="checkAnswers()">CHẤM BÀI VÀ NỘP KẾT QUẢ</button>
+  </div>
+</div>
+
+<script>
+  window.TEST_DATA = {
+    title: "Cam 21 Test 3 Passage 3",
+    answers: {
+      q27: "A",
+      q28: "A",
+      q29: "D",
+      q30: "A",
+      q31: "E",
+      q32: "F",
+      q33: "D",
+      q34: "B",
+      q35: "NO",
+      q36: "NOT GIVEN",
+      q37: "NOT GIVEN",
+      q38: "YES",
+      q39: "YES",
+      q40: "NO"
+    }
+  };
+</script>
+<script src="ielts-core.js"></script>
+</body>
+</html>
