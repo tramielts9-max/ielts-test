@@ -524,7 +524,16 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!isTimerRunning && seconds === 0 && !isReviewMode) {
       startTimer();
     }
-  }, { once: true });
+}, { once: true });
+
+  // Tự động "đánh thức" server ngay khi học viên vừa mở trang web
+  if (IELTS_CONFIG.GOOGLE_SCRIPT_URL) {
+    fetch(IELTS_CONFIG.GOOGLE_SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      body: JSON.stringify({ action: "ping" })
+    }).catch(() => {});
+  }
 });
 
 // Định vị đoạn văn chứa đáp án trong bài đọc
