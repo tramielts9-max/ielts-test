@@ -741,6 +741,68 @@ async function askGeminiAI(qId) {
     questionTextOnly = cloneDiv.innerText.trim();
   }
 
+  // 1. TẠO CONTROLLER CHO TIMEOUT 90 GIÂY (90000ms)
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 90000);
+
+  try {
+    const promptText = `Em hãy đóng vai trợ giảng IELTS Reading. Giải thích ngắn gọn câu hỏi: "${questionTextOnly}". Học viên hỏi: "${userQuestion}".`;
+    
+    // Giả định API URL của mày (Dùng signal controller để hủy sau 90 giây)
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      signal: controller.signal, 
+      body: JSON.stringify({ contents: [{ parts: [{ text: promptText }] }] })
+    });
+
+    clearTimeout(timeoutId); // Xóa timeout khi nhận được dữ liệu
+
+    const data = await response.json();
+    const aiText = data.candidates?.[0]?.content?.parts?.[0]?.text || "AI không thể đưa ra phản hồi lúc này.";
+
+    // Render kết quả ra màn hình
+    const renderedHtml = `
+      <div style="color: var(--primary-blue); font-weight: 700; font-size: 1.05em; margin-bottom: 6px; background: #e0f2fe; padding: 6px 12px; border-radius: 6px; border-left: 4px solid var(--primary-blue);">
+        💬 Thắc mắc: "${safeQuestionText}"
+      </div>
+      <div style="line-height: 1.6; color: var(--text-main); font-size: 0.98em;">
+        🤖 <b>Trợ giảng AI:</b><br>${aiText.replace(/\n/g, "<br>")}
+      </div>
+    `;
+    tempDiv.innerHTML = renderedHtml;
+
+    // 2. TỰ ĐỘNG LƯU NỘI DUNG CHAT VÀO LOCALSTORAGE
+    const currentPath = window.location.pathname;
+    const storageKey = `ai_chat_${currentPath}_${qId}`;
+    let existingChat = localStorage.getItem(storageKey) || "";
+    existingChat += `<div style="border-top: 1px dashed var(--border-color); padding-top: 12px; margin-top: 12px;">${renderedHtml}</div>`;
+    localStorage.setItem(storageKey, existingChat);
+
+  } catch (err) {
+    clearTimeout(timeoutId);
+    if (err.name === 'AbortError') {
+      tempDiv.innerHTML = `<span style="color: #dc2626;">⏱️ Quá thời gian 90 giây mà AI chưa phản hồi. Server đang bận, em hãy thử lại câu hỏi nhé!</span>`;
+    } else {
+      tempDiv.innerHTML = `<span style="color: #dc2626;">❌ Có lỗi xảy ra khi kết nối với AI. Em hãy thử lại sau!</span>`;
+    }
+  }
+}
+
+// 3. TỰ ĐỘNG TẢI LẠI LỊCH SỬ CHAT KHI MỞ LẠI TRANG WEB
+document.addEventListener("DOMContentLoaded", function () {
+  const currentPath = window.location.pathname;
+  document.querySelectorAll(".ai-response").forEach(box => {
+    const qId = box.id.replace("ai_response_", "");
+    const storageKey = `ai_chat_${currentPath}_${qId}`;
+    const savedChat = localStorage.getItem(storageKey);
+    if (savedChat) {
+      box.style.display = "block";
+      box.innerHTML = savedChat;
+    }
+  });
+});
+
   const prompt = `Bạn là một giáo viên dạy IELTS Reading kỳ cựu và tận tâm.
 Nhiệm vụ: Giải thích trực tiếp, chính xác thắc mắc của học viên.
 
