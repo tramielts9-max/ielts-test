@@ -852,23 +852,11 @@ async function askGeminiAI(qId) {
     questionTextOnly = cloneDiv.innerText.trim();
   }
 
-  const prompt = `Bạn là một giáo viên dạy IELTS Reading kỳ cựu và tận tâm.
-Nhiệm vụ: Giải thích trực tiếp, chính xác thắc mắc của học viên.
+const prompt = `Trợ giảng IELTS Reading: Giải thích ngắn gọn, đi thẳng vào vấn đề.
+Dùng **từ khóa** in đậm, ==bằng chứng== tô vàng đoạn văn.
 
-BẮT BUỘC (QUAN TRỌNG):
-- CHỈ xuất ra câu trả lời giải thích bằng tiếng Việt.
-- KHÔNG lặp lại dòng "[THẮC MẮC CỦA HỌC VIÊN]". KHÔNG lặp lại prompt. KHÔNG lặp lại câu hỏi nhiều lần.
-
-YÊU CẦU ĐỊNH DẠNG:
-- Dùng **từ khóa** để IN ĐẬM các từ quan trọng.
-- Dùng ==bằng chứng== để TÔ VÀNG đoạn thông tin cốt lõi trong bài đọc.
-- Dùng [kw]từ khóa[/kw] để TÔ XANH LÁ CÂY các từ đồng nghĩa (paraphrase).
-
-[CÂU HỎI IELTS]:
-${questionTextOnly}
-
-[HỌC VIÊN HỎI]:
-${userQuestion}`;
+[CÂU HỎI]: ${questionTextOnly}
+[HỌC VIÊN HỎI]: ${userQuestion}`;
 
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 90000);
@@ -908,20 +896,6 @@ ${userQuestion}`;
 targetEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       saveStateToLocalStorage();
 
-      // CẬP NHẬT TRỰC TIẾP VÀO MỤC XEM LẠI LỊCH SỬ (REVIEW MODE)
-      const urlParams = new URLSearchParams(window.location.search);
-      const attemptId = urlParams.get('attemptId');
-      const studentEmailParam = urlParams.get('email');
-      if (attemptId && studentEmailParam) {
-        const db = getHistoryDatabase();
-        const userAttempts = db[studentEmailParam.toLowerCase().trim()] || [];
-        const matchedAttempt = userAttempts.find(a => a.id === attemptId);
-        if (matchedAttempt) {
-          if (!matchedAttempt.aiResponses) matchedAttempt.aiResponses = {};
-          matchedAttempt.aiResponses[`ai_response_${qId}`] = document.getElementById(`ai_response_${qId}`).innerHTML;
-          localStorage.setItem('ielts_history_database', JSON.stringify(db));
-        }
-      }
     } else if (targetEl) {
       targetEl.innerHTML = `⚠️ <b>Trợ giảng AI:</b> Phản hồi trống, em thử gửi lại nhé!`;
     }
