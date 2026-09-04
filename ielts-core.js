@@ -3,12 +3,14 @@
  * IELTS PRACTICE TEST CORE ENGINE (ielts-core.js)
  * Tự động hóa toàn bộ: Bấm giờ, Bôi đen Highlight, Chấm điểm, AI Trợ giảng, Gửi điểm
  * Nâng cấp: Tự động lưu & Khôi phục lịch sử bài làm theo Email (Review Mode)
+ * Tối ưu: Sửa lỗi treo load mãi ở trợ giảng AI & Xử lý sự cố kết nối
  * ==========================================================================
  */
 
 // CẤU HÌNH TOÀN CỤC DÙNG CHUNG CHO TẤT CẢ CÁC BÀI TẬP
 const IELTS_CONFIG = {
   GEMINI_API_KEY: "", 
+  // Hãy đảm bảo URL Web App Google Apps Script này đã được Deploy ở quyền "Anyone"
   GOOGLE_SCRIPT_URL: "https://script.google.com/macros/s/AKfycby7vRFXq_YhjIEq4kN-8NLRFw2sj-7VkVEmTw6IkNkPmidEPnPtxtNkSE-HKfn5mAPfbw/exec"
 };
 
@@ -249,7 +251,7 @@ function restoreStateFromLocalStorage() {
       }
     }
 
-if (state.isSubmitted) {
+    if (state.isSubmitted) {
       applySubmittedUI(state.scoreText);
       showPostSaveButton();
     }
@@ -303,7 +305,7 @@ function restoreAttemptFromSnapshot(attempt) {
     document.querySelectorAll('input[type="radio"]').forEach(r => r.disabled = true);
   }
 
-// Mạch suy nghĩ
+  // Mạch suy nghĩ
   if (attempt.thoughts) {
     for (const textareaId in attempt.thoughts) {
       const el = document.getElementById(textareaId);
@@ -557,7 +559,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!isTimerRunning && seconds === 0 && !isReviewMode) {
       startTimer();
     }
-}, { once: true });
+  }, { once: true });
 
   // Tự động "đánh thức" server ngay khi học viên vừa mở trang web
   if (IELTS_CONFIG.GOOGLE_SCRIPT_URL) {
@@ -716,7 +718,7 @@ async function checkAnswers() {
         })
       });
       alert(`🎉 Chúc mừng ${studentName}! Bài làm đạt ${scoreStr} câu. Kết quả đã được lưu về hệ thống!`);
-} catch (err) {
+    } catch (err) {
       console.error("Lỗi gửi điểm:", err);
       alert(`Bài làm đạt ${scoreStr} câu!`);
     }
@@ -806,7 +808,7 @@ function cleanMetaThoughts(text) {
   return clean.trim();
 }
 
-// AI TRỢ GIẢNG
+// AI TRỢ GIẢNG (ĐÃ TỐI ƯU CHỐNG TREO - TIMEOUT 30 GIÂY)
 async function askGeminiAI(qId) {
   if (isReviewMode) {
     alert("Bạn đang ở chế độ xem lại lịch sử.");
@@ -823,10 +825,9 @@ async function askGeminiAI(qId) {
   }
 
   responseBox.style.display = "block";
-
   const safeQuestionText = userQuestion.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-
   const tempId = "temp_" + Date.now();
+
   const tempDiv = document.createElement('div');
   tempDiv.id = tempId;
   tempDiv.style.borderTop = "1px dashed var(--border-color)";
@@ -836,12 +837,11 @@ async function askGeminiAI(qId) {
     <div style="color: var(--primary-blue); font-weight: 700; font-size: 1.05em; margin-bottom: 6px; background: #e0f2fe; padding: 6px 12px; border-radius: 6px; border-left: 4px solid var(--primary-blue);">
       💬 Thắc mắc: "${safeQuestionText}"
     </div>
-    <i style="color: var(--text-muted); font-size: 0.95em;">⏳ AI đang đọc bài và soạn lời giải thích...</i>
+    <i style="color: var(--text-muted); font-size: 0.95em;">⏳ AI đang xử lý câu hỏi...</i>
   `;
   
   responseBox.appendChild(tempDiv);
   tempDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-
   inputEl.value = "";
 
   const qDiv = document.getElementById(qId);
@@ -870,13 +870,13 @@ ${questionTextOnly}
 [HỌC VIÊN HỎI]:
 ${userQuestion}`;
 
+  // Giảm timeout từ 90s xuống 30s để tránh việc người dùng bị treo chờ lâu
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 90000);
+  const timeoutId = setTimeout(() => controller.abort(), 30000);
 
   try {
     const res = await fetch(IELTS_CONFIG.GOOGLE_SCRIPT_URL, {
       method: "POST",
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
       signal: controller.signal,
       body: JSON.stringify({
         action: "ask_ai",
@@ -885,12 +885,16 @@ ${userQuestion}`;
     });
 
     clearTimeout(timeoutId);
+
+    if (!res.ok) {
+      throw new Error(`Server báo lỗi HTTP Status: ${res.status}`);
+    }
+
     const data = await res.json();
     const targetEl = document.getElementById(tempId);
 
     if (data && data.reply && targetEl) {
       let cleanedReply = cleanMetaThoughts(data.reply);
-      
       let formattedReply = cleanedReply
         .replace(/\n/g, "<br>")
         .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
@@ -905,7 +909,7 @@ ${userQuestion}`;
           <b style="color: var(--primary-blue);">🤖 Trợ giảng AI:</b><br>${formattedReply}
         </div>
       `;
-targetEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      targetEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       saveStateToLocalStorage();
 
       // CẬP NHẬT TRỰC TIẾP VÀO MỤC XEM LẠI LỊCH SỬ (REVIEW MODE)
@@ -923,17 +927,17 @@ targetEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
       }
     } else if (targetEl) {
-      targetEl.innerHTML = `⚠️ <b>Trợ giảng AI:</b> Phản hồi trống, em thử gửi lại nhé!`;
+      targetEl.innerHTML = `⚠️ <b>Trợ giảng AI:</b> Phản hồi từ server bị trống. Vui lòng thử lại!`;
     }
   } catch (err) {
     clearTimeout(timeoutId);
     const targetEl = document.getElementById(tempId);
     if (targetEl) {
       if (err.name === 'AbortError') {
-        targetEl.innerHTML = `⚠️ <b>Trợ giảng AI:</b> Kết nối quá thời gian cho phép (Timeout 90s). Vui lòng bấm gửi lại!`;
+        targetEl.innerHTML = `⚠️ <b>Trợ giảng AI:</b> Kết nối quá thời gian cho phép (Timeout 30s). Vui lòng thử gửi lại!`;
       } else {
-        console.error("Lỗi gọi Apps Script:", err);
-        targetEl.innerHTML = `⚠️ <b>Trợ giảng AI:</b> Lỗi kết nối đến server. Em bấm thử lại lần nữa nhé!`;
+        console.error("Lỗi kết nối AI:", err);
+        targetEl.innerHTML = `⚠️ <b>Trợ giảng AI:</b> Lỗi kết nối (${err.message}). Vui lòng kiểm tra lại cấu hình Web App URL trong Apps Script!`;
       }
     }
   }
