@@ -803,8 +803,23 @@ ${userQuestion}`;
           <b style="color: var(--primary-blue);">🤖 Trợ giảng AI:</b><br>${formattedReply}
         </div>
       `;
-      targetEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      saveAttemptToHistoryDatabase();
+targetEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      saveStateToLocalStorage();
+
+      // CẬP NHẬT TRỰC TIẾP VÀO MỤC XEM LẠI LỊCH SỬ (REVIEW MODE)
+      const urlParams = new URLSearchParams(window.location.search);
+      const attemptId = urlParams.get('attemptId');
+      const studentEmailParam = urlParams.get('email');
+      if (attemptId && studentEmailParam) {
+        const db = getHistoryDatabase();
+        const userAttempts = db[studentEmailParam.toLowerCase().trim()] || [];
+        const matchedAttempt = userAttempts.find(a => a.id === attemptId);
+        if (matchedAttempt) {
+          if (!matchedAttempt.aiResponses) matchedAttempt.aiResponses = {};
+          matchedAttempt.aiResponses[`ai_response_${qId}`] = document.getElementById(`ai_response_${qId}`).innerHTML;
+          localStorage.setItem('ielts_history_database', JSON.stringify(db));
+        }
+      }
     } else if (targetEl) {
       targetEl.innerHTML = `⚠️ <b>Trợ giảng AI:</b> Phản hồi trống, em thử gửi lại nhé!`;
     }
