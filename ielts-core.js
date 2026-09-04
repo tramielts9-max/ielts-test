@@ -760,7 +760,7 @@ ${questionTextOnly}
 ${userQuestion}`;
 
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 30000);
+  const timeoutId = setTimeout(() => controller.abort(), 90000);
 
   try {
     const res = await fetch(IELTS_CONFIG.GOOGLE_SCRIPT_URL, {
@@ -795,7 +795,7 @@ ${userQuestion}`;
         </div>
       `;
       targetEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      saveStateToLocalStorage();
+      saveAttemptToHistoryDatabase();
     } else if (targetEl) {
       targetEl.innerHTML = `⚠️ <b>Trợ giảng AI:</b> Phản hồi trống, em thử gửi lại nhé!`;
     }
@@ -804,7 +804,7 @@ ${userQuestion}`;
     const targetEl = document.getElementById(tempId);
     if (targetEl) {
       if (err.name === 'AbortError') {
-        targetEl.innerHTML = `⚠️ <b>Trợ giảng AI:</b> Kết nối quá thời gian cho phép (Timeout 30s). Vui lòng bấm gửi lại!`;
+        targetEl.innerHTML = `⚠️ <b>Trợ giảng AI:</b> Kết nối quá thời gian cho phép (Timeout 90s). Vui lòng bấm gửi lại!`;
       } else {
         console.error("Lỗi gọi Apps Script:", err);
         targetEl.innerHTML = `⚠️ <b>Trợ giảng AI:</b> Lỗi kết nối đến server. Em bấm thử lại lần nữa nhé!`;
