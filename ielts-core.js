@@ -251,7 +251,6 @@ function restoreStateFromLocalStorage() {
 
 if (state.isSubmitted) {
       applySubmittedUI(state.scoreText);
-      showPostSaveButton();
     }
   } catch (err) {
     console.warn("Không thể khôi phục localStorage:", err);
@@ -902,9 +901,104 @@ targetEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   } catch (err) {
     clearTimeout(timeoutId);
     const targetEl = document.getElementById(tempId);
+  // AI TRỢ GIẢNG
+async function askGeminiAI(qId) {
+  if (isReviewMode) {
+    alert("Bạn đang ở chế độ xem lại lịch sử.");
+    return;
+  }
+  const inputEl = document.getElementById(`ai_ask_${qId}`);
+  const responseBox = document.getElementById(`ai_response_${qId}`);
+  if (!inputEl || !responseBox) return;
+
+  const userQuestion = inputEl.value.trim();
+  if (!userQuestion) {
+    alert("Vui lòng gõ thắc mắc của em trước khi bấm hỏi nhé!");
+    return;
+  }
+
+  responseBox.style.display = "block";
+
+  const safeQuestionText = userQuestion.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+  const tempId = "temp_" + Date.now();
+  const tempDiv = document.createElement('div');
+  tempDiv.id = tempId;
+  tempDiv.style.borderTop = "1px dashed var(--border-color)";
+  tempDiv.style.paddingTop = "12px";
+  tempDiv.style.marginTop = "12px";
+  tempDiv.innerHTML = `
+    <div style="color: var(--primary-blue); font-weight: 700; font-size: 1.05em; margin-bottom: 6px; background: #e0f2fe; padding: 6px 12px; border-radius: 6px; border-left: 4px solid var(--primary-blue);">
+      💬 Thắc mắc: "${safeQuestionText}"
+    </div>
+    <i style="color: var(--text-muted); font-size: 0.95em;">⏳ AI đang đọc bài và soạn lời giải thích...</i>
+  `;
+  
+  responseBox.appendChild(tempDiv);
+  tempDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+  inputEl.value = "";
+
+  const qDiv = document.getElementById(qId);
+  let questionTextOnly = "";
+  if (qDiv) {
+    let cloneDiv = qDiv.cloneNode(true);
+    cloneDiv.querySelectorAll('.explanation, .thought-box, .ai-assistant-box, .result').forEach(el => el.remove());
+    questionTextOnly = cloneDiv.innerText.trim();
+  }
+
+  const prompt = `Trợ giảng IELTS Reading: Giải thích ngắn gọn thắc mắc học viên.
+Dùng **từ khóa** in đậm, ==bằng chứng== tô vàng.
+
+[CÂU HỎI]: ${questionTextOnly}
+[THẮC MẮC]: ${userQuestion}`;
+
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 45000);
+
+  try {
+    const res = await fetch(IELTS_CONFIG.GOOGLE_SCRIPT_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      signal: controller.signal,
+      body: JSON.stringify({
+        action: "ask_ai",
+        prompt: prompt
+      })
+    });
+
+    clearTimeout(timeoutId);
+    const data = await res.json();
+    const targetEl = document.getElementById(tempId);
+
+    if (data && data.reply && targetEl) {
+      let cleanedReply = cleanMetaThoughts(data.reply);
+      
+      let formattedReply = cleanedReply
+        .replace(/\n/g, "<br>")
+        .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+        .replace(/==(.*?)==/g, "<mark style='background-color: #fef08a; color: #854d0e; padding: 2px 5px; border-radius: 4px; font-weight: 600;'>$1</mark>")
+        .replace(/\[kw\](.*?)\[\/kw\]/g, "<span style='background-color: #bbf7d0; color: #14532d; padding: 2px 6px; border-radius: 4px; font-weight: 700;'>$1</span>");
+
+      targetEl.innerHTML = `
+        <div style="color: var(--primary-blue); font-weight: 700; font-size: 1.05em; margin-bottom: 8px; background: #e0f2fe; padding: 6px 12px; border-radius: 6px; border-left: 4px solid var(--primary-blue);">
+          💬 Thắc mắc: "${safeQuestionText}"
+        </div>
+        <div style="font-size: 1em; line-height: 1.7; color: var(--text-main);">
+          <b style="color: var(--primary-blue);">🤖 Trợ giảng AI:</b><br>${formattedReply}
+        </div>
+      `;
+      targetEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      saveStateToLocalStorage();
+    } else if (targetEl) {
+      targetEl.innerHTML = `⚠️ <b>Trợ giảng AI:</b> Phản hồi trống, em thử gửi lại nhé!`;
+    }
+  } catch (err) {
+    clearTimeout(timeoutId);
+    const targetEl = document.getElementById(tempId);
     if (targetEl) {
       if (err.name === 'AbortError') {
-        targetEl.innerHTML = `⚠️ <b>Trợ giảng AI:</b> Kết nối quá thời gian cho phép (Timeout 90s). Vui lòng bấm gửi lại!`;
+        targetEl.innerHTML = `⚠️ <b>Trợ giảng AI:</b> Kết nối quá thời gian cho phép. Vui lòng bấm gửi lại!`;
       } else {
         console.error("Lỗi gọi Apps Script:", err);
         targetEl.innerHTML = `⚠️ <b>Trợ giảng AI:</b> Lỗi kết nối đến server. Em bấm thử lại lần nữa nhé!`;
