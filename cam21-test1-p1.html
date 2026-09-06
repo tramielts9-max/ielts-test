@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>IELTS 21 Test 1 - Passage 1: The Davies Sisters</title>
+  <link rel="stylesheet" href="ielts-core.css">
+</head>
+<body>
+
+<div class="user-info-box">
+  <div class="user-info-field">
+    <label for="studentNameInput">👤 Họ và Tên:</label>
+    <input type="text" id="studentNameInput" placeholder="Nhập họ và tên học viên...">
+  </div>
+  <div class="user-info-field">
+    <label for="studentEmailInput">✉️ Email Google:</label>
+    <input type="email" id="studentEmailInput" placeholder="Nhập Email để lưu kết quả...">
+  </div>
+</div>
+
+<div class="header-bar">
+  <h1>IELTS Academic 21 - Test 1 - Passage 1</h1>
+  
+  <div class="header-nav">
+    <a href="index.html" class="nav-link">🏠 Trang chủ</a>
+    <a href="cam21-test1-p1.html" class="nav-link active">Passage 1</a>
+    <a href="cam21-test1-p2.html" class="nav-link">Passage 2</a>
+    <a href="cam21-test1-p3.html" class="nav-link">Passage 3</a>
+  </div>
+
+  <div class="timer-container">
+    <span>⏱️ Thời gian:</span>
+    <span class="timer-display" id="timerDisplay">00:00</span>
+    <button class="btn-timer" onclick="startTimer()">▶️ Bắt đầu</button>
+    <button class="btn-timer" onclick="pauseTimer()">⏸️ Tạm dừng</button>
+  </div>
+
+  <div class="score-badge" id="scoreBadge">Điểm số: <span id="scoreText">0/13</span></div>
+</div>
+
+<div id="hlPopup" class="hl-popup"><button id="btnDoHighlight">🖍️ Highlight</button></div>
+<div id="removeHlPopup" class="hl-popup"><button id="btnRemoveHighlight">❌ Xóa Highlight</button></div>
+
+<div class="container">
+  <!-- CỘT BÀI ĐỌC -->
+  <div class="passage-box" id="passageBox">
+    <h2>READING PASSAGE 1</h2>
+    <h3>The Davies Sisters</h3>
+    <p><i>Between 1908 and 1924, Gwendoline and Margaret Davies amassed one of the largest collections of late-nineteenth and early-twentieth-century French paintings in Britain</i></p>
+    
+    <p>Gwendoline (1882-1951) and Margaret (1884-1963) Davies were the granddaughters of David Davies, a Welshman who <span class="hl" id="hl-q1" data-q="[Q1]">amassed a fortune in the shipping and <span class="kw">mining</span> industries</span>. In 1907, when Gwendoline came into her inheritance (Margaret would follow in 1909), the sisters were said to be the wealthiest unmarried women in Britain. <span class="hl" id="hl-q8" data-q="[Q8]">Their religious upbringing in rural Wales gave them a deep sense of social responsibility and they chose to use their inheritance for cultural and philanthropic purposes</span>.</p>
+    
+    <p>While there was no real family history of art collecting, <span class="hl" id="hl-q2" data-q="[Q2]">the sisters' <span class="kw">education</span> was rigorously geared toward such pursuits</span>. Their London school focused on cultural rather than academic study, and <span class="hl" id="hl-q3" data-q="[Q3]">they travelled extensively with their governess, Jane Blaker, visiting art galleries and making extensive <span class="kw">notes</span> on the collections there</span>.</p>
+    
+    <p>The sisters began to make regular art purchases from 1908, which roughly coincided with the dates of their inheritance. They took advice from various people, including the art dealer Hugh Blaker (the brother of Jane Blaker) and David Croal Thompson, who was also an art dealer. While it was long assumed that these men were largely responsible for the nature of the sisters' collection, it has recently been accepted that Gwendoline and Margaret retained a far more active role in the process.</p>
+
+    <p><span class="hl" id="hl-q4" data-q="[Q4]">The sisters' <span class="kw">journals</span> reveal their preference for Old Master paintings</span>. Yet they initially made very few attempts to secure any such works. While the sisters were wealthy in relative terms, their income was nothing compared to the fortunes of American art collectors of this period, such as J. Pierpont Morgan. Quite simply, high quality Old Master works were, if not beyond their means, then beyond what they were willing to pay for them. <span class="hl" id="hl-q9" data-q="[Q9]">Instead, their early purchases were of the fashionable, safe variety, and included, for example, paintings by the French artist Jean-Baptiste-Camille Corot</span>.</p>
+    
+    <p>However, it was only a few years before their collecting took a new direction and they turned to the work of the French Impressionists. <span class="hl" id="hl-q10" data-q="[Q10]">We know that Hugh Blaker, as a champion of contemporary French art had a hand in the decision</span>, and we know also that they would have seen examples on their various trips to Paris. Whatever the precise reason for this change, <span class="hl" id="hl-q5" data-q="[Q5]">their first purchases of Impressionist art, made in October 1912, were scenes of <span class="kw">Venice</span> by the French artist Claude Monet</span>. Over the next 12 years, the sisters amassed the bulk of their Impressionist collection, including six further works by Monet, two more by Manet, and three by Renoir, including his well-known painting La Parisienne.</p>
+
+    <p>The First World War (1914-1918) played a part in the development of the sisters' collection. Their initial response to the war effort was to finance the safe passage of artists from occupied Belgium to Wales, as a humanitarian act, but also with the hope of establishing a vibrant artists' community in the area. <span class="hl" id="hl-q6" data-q="[Q6]">Later in the conflict, both sisters decided to volunteer at a <span class="kw">canteen</span> for troops at Troyes, in northern France</span>; Gwendoline in 1916, followed by Margaret in 1917.</p>
+    
+    <p>It was tedious and distressing work, which would have a permanent effect on Gwendoline's health. Yet on one of numerous trips to nearby Paris, she visited the Bernheim-Jeune Gallery. Here she acquired two works by Cézanne - Provençal Landscape and The François Zola Dam. <span class="hl" id="hl-q11" data-q="[Q11]">The paintings were shipped directly to Bath, England, where they became the first works by Cézanne to go on display in a public gallery in Britain</span>.</p>
+    
+    <p>Commentators have often described the sisters as unlikely pioneer collectors. <span class="hl" id="hl-q7" data-q="[Q7]">Much is made of their isolation in rural Wales and the fact that they didn't make <span class="kw">friends</span> with artists or gallery owners</span>. Yet they didn't feel obliged to follow fashionable tastes and were free to pursue their own preferences. Although they relied on a trusted circle of advisers, they made frequent trips to London and Paris, and also regularly had paintings sent to their home for consideration.</p>
+    
+    <p><span class="hl" id="hl-q12" data-q="[Q12]">By the early 1920s, Gwendoline felt increasingly uncomfortable buying art works when faced with the poverty and social upheaval created by the First World War. Her philanthropic pursuits then became focused almost exclusively on social causes</span> and the development of the sisters' home at Gregynog Hall into a conference center and venue for the Gregynog Festival of Music and Poetry. Gwendoline made her final art purchase in March 1926. Margaret also stopped collecting around this time, but started again in the 1930s acquiring, on a relatively small scale, work by contemporary British artists.</p>
+    
+    <p><span class="hl" id="hl-q13" data-q="[Q13]">The sisters collected French Impressionist paintings at a time when such art was routinely ignored by individuals and institutions alike</span>. The Gwendoline and Margaret Davies collection, donated in 1951 and 1963 respectively to the National Museum Wales, contains major examples of work by leading French Impressionists. In collecting paintings that they loved, the sisters created a lasting and meaningful cultural legacy for the people of Wales and beyond.</p>
+  </div>
+
+  <!-- CỘT CÂU HỎI -->
+  <div class="question-box">
+    <div class="section-title">Questions 1-7</div>
+    <p><i>Complete the notes below. Choose <b>ONE WORD ONLY</b> from the passage for each answer.</i></p>
+
+    <!-- Khối Bảng Note Completion -->
+    <div style="background: var(--bg-subcard, #f8fafc); border: 1px solid var(--border-color, #e2e8f0); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+      <h4 style="margin-top: 0;">Gwendoline and Margaret Davies</h4>
+      <p><b>Family and early life</b></p>
+      <ul style="line-height: 1.8; list-style-type: disc; padding-left: 20px;">
+        
+        <!-- Q1 -->
+        <li class="question" id="q1" style="background: transparent; padding: 0; margin-bottom: 15px; border: none;">
+          their grandfather's wealth came from <b>1.</b> <input type="text" id="q1_input" class="fill-input"> and transportation businesses
+          <div class="thought-box" style="margin: 8px 0;"><label>💭 Mạch suy nghĩ của em (Câu 1):</label><textarea id="q1_thought"></textarea></div>
+          <div class="result"></div>
+          <div class="explanation">
+            <h4 style="color: #0369a1; margin-bottom: 8px;">📝 LỜI GIẢI CHI TIẾT 4 BƯỚC:</h4>
+            <div class="exp-step">• <b>Đáp án chốt:</b> <span class="kw-exp">mining</span></div>
+            <div class="exp-step">• <b>Bước 1 (Cắt câu & Khoanh từ / Đoán từ):</b> Cắt câu ghi chú: 'their grandfather's wealth came from 1 ______ and transportation businesses'. Đứng trước từ nối 'and' và danh từ 'transportation', cần một danh từ chỉ ngành công nghiệp/kinh doanh nguồn gốc tài sản của người ông.</div>
+            <div class="exp-step">• <b>Lý do lựa chọn từ khóa định vị:</b> Lựa chọn từ chỉ mối quan hệ gia đình 'grandfather' và cụm từ chỉ tài sản 'wealth / fortune' làm từ khóa định vị. Lý do là trong Đoạn 1, tên của người ông 'David Davies' là danh từ riêng mang tính định danh tuyệt đối. Từ 'wealth' trong đề bài là dạng paraphrase trực tiếp của danh từ 'fortune' (sự giàu có/gia tài) trong bài đọc. Việc khoanh vùng người ông và nguồn gốc gia tài giúp người đọc xác định được cụm từ liệt kê song song đi kèm với 'transportation' (giao thông vận tải = shipping).</div>
+            <div class="exp-step">• <b>Bước 2 (Tìm vị trí trong bài đọc):</b> Quét từ 'granddaughters', 'David Davies', 'fortune' ở Đoạn 1.</div>
+            <div class="exp-step">• <b>Bước 3 (So từ hai bên / Gạch từ trùng nhau):</b> So sánh đối chiếu ngữ nghĩa: Đề bài ghi 'grandfather's wealth came from [1] and transportation businesses'. Bài đọc viết: 'granddaughters of David Davies... amassed a fortune in the shipping and mining industries'. Ta có: 'wealth' = 'fortune'; 'transportation' = 'shipping'.</div>
+            <div class="exp-step">• <b>Bước 4 (So sánh nghĩa & Chốt đáp án):</b> Danh từ đi song song với 'shipping' (transportation) chỉ ngành kinh doanh của người ông là 'mining'. Yêu cầu điền ONE WORD ONLY -> Điền 'mining'.</div>
+            <div class="exp-step" style="background: #f1f5f9; padding: 6px; border-radius: 4px; margin-top: 4px;">
+              🛡️ <b>PHƯƠNG ÁN 2 (DÀNH CHO HỌC SINH MẤT GỐC):</b><br>
+              ▸ <b>Bước 1 (Nhìn từ khoá siêu dễ):</b> Tìm tên người ông 'David Davies' (từ viết hoa dễ thấy nhất đoạn 1) và từ 'wealth' (tiền bạc/tài sản - B1).<br>
+              ▸ <b>Bước 2 (Gạch chân cụm từ trùng):</b> Nhìn vào đoạn văn chứa 'David Davies', gạch cụm 'amassed a fortune' (= wealth: có nhiều tiền) và từ 'shipping' (= transportation: vận tải).<br>
+              ▸ <b>Bước 3 (So cấu trúc 'A and B'):</b> Đề bài viết '______ and transportation'. Bài đọc viết 'shipping and mining'. Ta thấy 'shipping' đã trùng nghĩa với 'transportation'.<br>
+              ▸ <b>Bước 4 (Bắt từ điền):</b> Từ đi kèm còn lại duy nhất đứng sau chữ 'and' là 'mining' (ngành mỏ/khai khoáng). Điền đúng từ 'mining'.
+            </div>
+            <button class="btn-locate" onclick="highlightText('hl-q1')">📍 Định vị vị trí trong bài đọc</button>
+            <div class="ai-assistant-box">
+              <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+              <div class="ai-input-group"><input type="text" id="ai_ask_q1"><button class="ai-btn" onclick="askGeminiAI('q1')">Gửi AI</button></div>
+              <div class="ai-response" id="ai_response_q1"></div>
+            </div>
+          </div>
+        </li>
+
+        <li>their upbringing gave them a sense of social responsibility</li>
+
+        <!-- Q2 -->
+        <li class="question" id="q2" style="background: transparent; padding: 0; margin-bottom: 15px; border: none;">
+          their <b>2.</b> <input type="text" id="q2_input" class="fill-input"> was designed to give them an interest in activities such as collecting art
+          <div class="thought-box" style="margin: 8px 0;"><label>💭 Mạch suy nghĩ của em (Câu 2):</label><textarea id="q2_thought"></textarea></div>
+          <div class="result"></div>
+          <div class="explanation">
+            <h4 style="color: #0369a1; margin-bottom: 8px;">📝 LỜI GIẢI CHI TIẾT 4 BƯỚC:</h4>
+            <div class="exp-step">• <b>Đáp án chốt:</b> <span class="kw-exp">education</span></div>
+            <div class="exp-step">• <b>Bước 1 (Cắt câu & Khoanh từ / Đoán từ):</b> Cắt câu ghi chú: 'their 2 ______ was designed to give them an interest in activities such as collecting art'. Đứng sau tính từ sở hữu 'their' và trước động từ 'was designed', cần một danh từ chỉ phương pháp/sự giáo dục dành cho hai chị em.</div>
+            <div class="exp-step">• <b>Lý do lựa chọn từ khóa định vị:</b> Lựa chọn động từ 'designed' (được thiết kế) và cụm 'activities such as collecting art' làm từ khóa định vị. Lý do là cụm 'was designed to' trong đề bài là cách paraphrase lại của cấu trúc 'was rigorously geared toward' (được hướng tới một cách nghiêm ngặt) ở Đoạn 2. Việc định vị cụm từ chỉ định hướng này giúp tìm ra danh từ đứng làm chủ ngữ của hành động giáo dục.</div>
+            <div class="exp-step">• <b>Bước 2 (Tìm vị trí trong bài đọc):</b> Quét từ 'geared toward', 'school', 'cultural' ở Đoạn 2.</div>
+            <div class="exp-step">• <b>Bước 3 (So từ hai bên / Gạch từ trùng nhau):</b> So sánh đối chiếu ngữ nghĩa: Đề bài ghi 'their [2] was designed to give them an interest...'. Bài đọc viết: 'the sisters' education was rigorously geared toward such pursuits'. Ta có: 'was designed to' = 'was rigorously geared toward'.</div>
+            <div class="exp-step">• <b>Bước 4 (So sánh nghĩa & Chốt đáp án):</b> Danh từ chính làm chủ ngữ cho sự định hướng học tập này là 'education'. Điền chính xác 'education'.</div>
+            <div class="exp-step" style="background: #f1f5f9; padding: 6px; border-radius: 4px; margin-top: 4px;">
+              🛡️ <b>PHƯƠNG ÁN 2 (DÀNH CHO HỌC SINH MẤT GỐC):</b><br>
+              ▸ <b>Bước 1 (Xác định loại từ):</b> Khoanh vị trí 'their 2 ______ was'. Đứng sau 'their' (của họ - A1) bắt buộc phải là một danh từ số ít.<br>
+              ▸ <b>Bước 2 (Tìm từ quen thuộc trong bài):</b> Quét đoạn 2 tìm các từ chỉ việc học hành đơn giản như 'school' (trường học - A1) hoặc 'education' (sự giáo dục - A2).<br>
+              ▸ <b>Bước 3 (Bắt cặp từ đồng nghĩa):</b> Đề bài có 'was designed' (được thiết kế/định hướng). Trong bài có cụm 'was geared toward' (được hướng tới).<br>
+              ▸ <b>Bước 4 (Chốt từ làm chủ ngữ):</b> Danh từ đứng trước cụm 'was geared toward' làm chủ ngữ là 'education'. Điền ngay từ 'education'.
+            </div>
+            <button class="btn-locate" onclick="highlightText('hl-q2')">📍 Định vị vị trí trong bài đọc</button>
+            <div class="ai-assistant-box">
+              <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+              <div class="ai-input-group"><input type="text" id="ai_ask_q2"><button class="ai-btn" onclick="askGeminiAI('q2')">Gửi AI</button></div>
+              <div class="ai-response" id="ai_response_q2"></div>
+            </div>
+          </div>
+        </li>
+
+        <li>their governess took them on trips to art galleries</li>
+
+        <!-- Q3 -->
+        <li class="question" id="q3" style="background: transparent; padding: 0; margin-bottom: 15px; border: none;">
+          they took lengthy <b>3.</b> <input type="text" id="q3_input" class="fill-input"> about the things they saw in art galleries
+          <div class="thought-box" style="margin: 8px 0;"><label>💭 Mạch suy nghĩ của em (Câu 3):</label><textarea id="q3_thought"></textarea></div>
+          <div class="result"></div>
+          <div class="explanation">
+            <h4 style="color: #0369a1; margin-bottom: 8px;">📝 LỜI GIẢI CHI TIẾT 4 BƯỚC:</h4>
+            <div class="exp-step">• <b>Đáp án chốt:</b> <span class="kw-exp">notes</span></div>
+            <div class="exp-step">• <b>Bước 1 (Cắt câu & Khoanh từ / Đoán từ):</b> Cắt câu ghi chú: 'they took lengthy 3 ______ about the things they saw in art galleries'. Đứng sau tính từ 'lengthy' (dài/nhiều) và trước giới từ 'about', cần một danh từ số nhiều chỉ sản phẩm/ghi chép mà họ thực hiện khi thăm triển lãm.</div>
+            <div class="exp-step">• <b>Lý do lựa chọn từ khóa định vị:</b> Lựa chọn từ khóa chỉ người 'governess' (gia sư/bảo mẫu) và cụm từ 'art galleries' làm mốc định vị. Lý do 'governess' là một danh từ chỉ nghề nghiệp cổ mang tính định danh cao ở Đoạn 2. Tính từ 'lengthy' (dài/chi tiết) trong đề bài đồng nghĩa trực tiếp với tính từ 'extensive' trong bài đọc. Việc tìm hai từ bổ nghĩa này giúp xác định chính xác danh từ số nhiều đi kèm.</div>
+            <div class="exp-step">• <b>Bước 2 (Tìm vị trí trong bài đọc):</b> Quét từ 'governess', 'art galleries', 'extensive' ở Đoạn 2.</div>
+            <div class="exp-step">• <b>Bước 3 (So từ hai bên / Gạch từ trùng nhau):</b> So sánh đối chiếu ngữ nghĩa: Đề bài ghi 'took lengthy [3] about the things...'. Bài đọc viết: 'making extensive notes on the collections there'. Ta có: 'took' = 'making'; 'lengthy' = 'extensive'; 'about the things they saw' = 'on the collections there'.</div>
+            <div class="exp-step">• <b>Bước 4 (So sánh nghĩa & Chốt đáp án):</b> Danh từ số nhiều đứng sau 'extensive' (lengthy) chỉ việc ghi chép lại là 'notes'. Điền chính xác 'notes'.</div>
+            <div class="exp-step" style="background: #f1f5f9; padding: 6px; border-radius: 4px; margin-top: 4px;">
+              🛡️ <b>PHƯƠNG ÁN 2 (DÀNH CHO HỌC SINH MẤT GỐC):</b><br>
+              ▸ <b>Bước 1 (Tim địa điểm):</b> Tìm cụm từ 'art galleries' (phòng trưng bày nghệ thuật - A2) ở đoạn 2.<br>
+              ▸ <b>Bước 2 (So sánh động từ & tính từ):</b> Đề bài có 'took lengthy ______' (làm/viết cái gì đó rất dài). Bài đọc có cụm 'making extensive ______' (làm/viết cái gì đó rất rộng/nhiều).<br>
+              ▸ <b>Bước 3 (Nhận diện từ quen thuộc):</b> 'making' tương đương 'took', 'extensive' tương đương 'lengthy'.<br>
+              ▸ <b>Bước 4 (Rút ra danh từ):</b> Danh từ đi kèm với 'making extensive' là 'notes' (các ghi chép - A1). Điền đúng từ 'notes'.
+            </div>
+            <button class="btn-locate" onclick="highlightText('hl-q3')">📍 Định vị vị trí trong bài đọc</button>
+            <div class="ai-assistant-box">
+              <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+              <div class="ai-input-group"><input type="text" id="ai_ask_q3"><button class="ai-btn" onclick="askGeminiAI('q3')">Gửi AI</button></div>
+              <div class="ai-response" id="ai_response_q3"></div>
+            </div>
+          </div>
+        </li>
+
+      </ul>
+
+      <p style="margin-top: 15px;"><b>The sisters as art collectors</b></p>
+      <ul style="line-height: 1.8; list-style-type: disc; padding-left: 20px;">
+        
+        <!-- Q4 -->
+        <li class="question" id="q4" style="background: transparent; padding: 0; margin-bottom: 15px; border: none;">
+          their <b>4.</b> <input type="text" id="q4_input" class="fill-input"> showed they liked Old Master paintings, but they were expensive to buy
+          <div class="thought-box" style="margin: 8px 0;"><label>💭 Mạch suy nghĩ của em (Câu 4):</label><textarea id="q4_thought"></textarea></div>
+          <div class="result"></div>
+          <div class="explanation">
+            <h4 style="color: #0369a1; margin-bottom: 8px;">📝 LỜI GIẢI CHI TIẾT 4 BƯỚC:</h4>
+            <div class="exp-step">• <b>Đáp án chốt:</b> <span class="kw-exp">journals</span></div>
+            <div class="exp-step">• <b>Bước 1 (Cắt câu & Khoanh từ / Đoán từ):</b> Cắt câu ghi chú: 'their 4 ______ showed they liked Old Master paintings...'. Đứng sau tính từ sở hữu 'their' và trước động từ 'showed', cần một danh từ số nhiều chỉ loại tài liệu/nhật ký cá nhân thể hiện sở thích của hai chị em.</div>
+            <div class="exp-step">• <b>Lý do lựa chọn từ khóa định vị:</b> Lựa chọn thuật ngữ nghệ thuật viết hoa 'Old Master paintings' làm từ khóa định vị độc tôn. Lý do 'Old Master' là thuật ngữ chỉ các họa sĩ bậc thầy châu Âu trước năm 1800 (có chú thích chân trang), hoàn toàn không thể bị biến đổi. Động từ 'showed' (hiển thị/cho thấy) là từ viết lại của động từ 'reveal' (hé lộ) ở Đoạn 4. Quét 'Old Master' giúp tìm ra ngay danh từ làm chủ ngữ.</div>
+            <div class="exp-step">• <b>Bước 2 (Tìm vị trí trong bài đọc):</b> Quét cụm thuật ngữ 'Old Master paintings' ở Đoạn 4.</div>
+            <div class="exp-step">• <b>Bước 3 (So từ hai bên / Gạch từ trùng nhau):</b> So sánh đối chiếu ngữ nghĩa: Đề bài ghi 'their [4] showed...'. Bài đọc viết: 'The sisters' journals reveal their preference for Old Master paintings'. Ta có: 'showed' = 'reveal'; 'liked' = 'preference for'.</div>
+            <div class="exp-step">• <b>Bước 4 (So sánh nghĩa & Chốt đáp án):</b> Danh từ số nhiều làm chủ ngữ cho việc hé lộ sở thích tranh cổ là 'journals' (nhật ký). Điền chính xác 'journals'.</div>
+            <div class="exp-step" style="background: #f1f5f9; padding: 6px; border-radius: 4px; margin-top: 4px;">
+              🛡️ <b>PHƯƠNG ÁN 2 (DÀNH CHO HỌC SINH MẤT GỐC):</b><br>
+              ▸ <b>Bước 1 (Bắt từ viết hoa đặc biệt):</b> Dùng mắt quét từ viết hoa nổi bật 'Old Master paintings' ở đoạn 4.<br>
+              ▸ <b>Bước 2 (Tìm động từ đồng nghĩa):</b> Đề bài dùng từ 'showed' (cho thấy - A1). Bài đọc dùng từ 'reveal' (tiết lộ/cho thấy - B2). Hai từ này đứng cùng một vị trí.<br>
+              ▸ <b>Bước 3 (Bắt từ đứng làm chủ ngữ):</b> Tìm danh từ đứng ở đầu câu làm chủ ngữ cho động từ 'reveal'.<br>
+              ▸ <b>Bước 4 (Chốt từ):</b> Từ đứng đầu câu là 'journals' (nhật ký/sổ ghi chép - B1). Điền ngay 'journals'.
+            </div>
+            <button class="btn-locate" onclick="highlightText('hl-q4')">📍 Định vị vị trí trong bài đọc</button>
+            <div class="ai-assistant-box">
+              <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+              <div class="ai-input-group"><input type="text" id="ai_ask_q4"><button class="ai-btn" onclick="askGeminiAI('q4')">Gửi AI</button></div>
+              <div class="ai-response" id="ai_response_q4"></div>
+            </div>
+          </div>
+        </li>
+
+        <li>their early purchases were safe, popular paintings</li>
+
+        <!-- Q5 -->
+        <li class="question" id="q5" style="background: transparent; padding: 0; margin-bottom: 15px; border: none;">
+          the first Impressionist paintings they bought showed places in <b>5.</b> <input type="text" id="q5_input" class="fill-input">
+          <div class="thought-box" style="margin: 8px 0;"><label>💭 Mạch suy nghĩ của em (Câu 5):</label><textarea id="q5_thought"></textarea></div>
+          <div class="result"></div>
+          <div class="explanation">
+            <h4 style="color: #0369a1; margin-bottom: 8px;">📝 LỜI GIẢI CHI TIẾT 4 BƯỚC:</h4>
+            <div class="exp-step">• <b>Đáp án chốt:</b> <span class="kw-exp">Venice</span></div>
+            <div class="exp-step">• <b>Bước 1 (Cắt câu & Khoanh từ / Đoán từ):</b> Cắt câu ghi chú: 'the first Impressionist paintings they bought showed places in 5 ______'. Đứng sau giới từ 'in', cần một danh từ riêng chỉ tên địa danh/thành phố xuất hiện trong các bức tranh Ấn tượng đầu tiên họ mua.</div>
+            <div class="exp-step">• <b>Lý do lựa chọn từ khóa định vị:</b> Lựa chọn cụm từ chỉ mốc thời gian 'first Impressionist paintings' và tên họa sĩ 'Claude Monet' làm từ khóa định vị. Lý do cụm 'first purchases of Impressionist art' xác định thời điểm mua tranh ở Đoạn 5. Cụm 'showed places in' (hiển thị các địa điểm ở...) là dạng paraphrase của 'were scenes of' (là khung cảnh của...). Quét danh từ riêng chỉ địa danh đi sau 'scenes of' sẽ cho ra đáp án.</div>
+            <div class="exp-step">• <b>Bước 2 (Tìm vị trí trong bài đọc):</b> Quét mốc 'October 1912', 'Impressionist art', 'scenes of' ở Đoạn 5.</div>
+            <div class="exp-step">• <b>Bước 3 (So từ hai bên / Gạch từ trùng nhau):</b> So sánh đối chiếu ngữ nghĩa: Đề bài ghi 'showed places in [5]'. Bài đọc viết: 'their first purchases of Impressionist art... were scenes of Venice'. Ta có: 'showed places in' = 'were scenes of'.</div>
+            <div class="exp-step">• <b>Bước 4 (So sánh nghĩa & Chốt đáp án):</b> Danh từ riêng chỉ tên thành phố/địa danh là chủ đề của các bức tranh đầu tiên này là 'Venice'. Điền chính xác 'Venice'.</div>
+            <div class="exp-step" style="background: #f1f5f9; padding: 6px; border-radius: 4px; margin-top: 4px;">
+              🛡️ <b>PHƯƠNG ÁN 2 (DÀNH CHO HỌC SINH MẤT GỐC):</b><br>
+              ▸ <b>Bước 1 (Tìm từ chìa khóa chỉ địa điểm):</b> Nhìn vào chỗ trống 'places in ______' (các địa điểm ở... -> Cần tìm 1 tên riêng chỉ địa danh/thành phố).<br>
+              ▸ <b>Bước 2 (Định vị đoạn mua tranh đầu tiên):</b> Quét cụm 'first purchases' (lần mua đầu tiên) và 'October 1912' ở đoạn 5.<br>
+              ▸ <b>Bước 3 (So sánh cụm từ chỉ cảnh vật):</b> Đề bài có 'showed places in' (chiếu các nơi ở). Bài đọc có 'were scenes of' (là quang cảnh của).<br>
+              ▸ <b>Bước 4 (Bắt tên riêng):</b> Tên thành phố viết hoa đứng ngay sau 'scenes of' là 'Venice' (thành phố Venice). Điền 'Venice'.
+            </div>
+            <button class="btn-locate" onclick="highlightText('hl-q5')">📍 Định vị vị trí trong bài đọc</button>
+            <div class="ai-assistant-box">
+              <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+              <div class="ai-input-group"><input type="text" id="ai_ask_q5"><button class="ai-btn" onclick="askGeminiAI('q5')">Gửi AI</button></div>
+              <div class="ai-response" id="ai_response_q5"></div>
+            </div>
+          </div>
+        </li>
+
+      </ul>
+
+      <p style="margin-top: 15px;"><b>Impact of First World War</b></p>
+      <ul style="line-height: 1.8; list-style-type: disc; padding-left: 20px;">
+        <li>they helped bring artists from Belgium to Wales</li>
+        
+        <!-- Q6 -->
+        <li class="question" id="q6" style="background: transparent; padding: 0; margin-bottom: 15px; border: none;">
+          they worked in a <b>6.</b> <input type="text" id="q6_input" class="fill-input"> for soldiers in France
+          <div class="thought-box" style="margin: 8px 0;"><label>💭 Mạch suy nghĩ của em (Câu 6):</label><textarea id="q6_thought"></textarea></div>
+          <div class="result"></div>
+          <div class="explanation">
+            <h4 style="color: #0369a1; margin-bottom: 8px;">📝 LỜI GIẢI CHI TIẾT 4 BƯỚC:</h4>
+            <div class="exp-step">• <b>Đáp án chốt:</b> <span class="kw-exp">canteen</span></div>
+            <div class="exp-step">• <b>Bước 1 (Cắt câu & Khoanh từ / Đoán từ):</b> Cắt câu ghi chú: 'they worked in a 6 ______ for soldiers in France'. Đứng sau mạo từ 'a' và trước giới từ 'for soldiers', cần một danh từ số ít chỉ địa điểm/cơ sở dịch vụ nơi hai chị em làm tình nguyện.</div>
+            <div class="exp-step">• <b>Lý do lựa chọn từ khóa định vị:</b> Lựa chọn danh từ chỉ đối tượng 'soldiers' (quân lính) và địa danh 'France' làm từ khóa định vị. Lý do 'soldiers' là từ đồng nghĩa trực tiếp của danh từ 'troops' (quân đội/lính) ở Đoạn 6. Khái niệm 'worked' (làm việc) đồng nghĩa với 'decided to volunteer' (quyết định làm tình nguyện). Quét từ chỉ quốc gia 'France' để khoanh vùng chính xác tên cơ sở.</div>
+            <div class="exp-step">• <b>Bước 2 (Tìm vị trí trong bài đọc):</b> Quét từ 'volunteer', 'troops', 'France' ở Đoạn 6.</div>
+            <div class="exp-step">• <b>Bước 3 (So từ hai bên / Gạch từ trùng nhau):</b> So sánh đối chiếu ngữ nghĩa: Đề bài ghi 'worked in a [6] for soldiers in France'. Bài đọc viết: 'volunteer at a canteen for troops at Troyes, in northern France'. Ta có: 'worked' = 'volunteer'; 'soldiers' = 'troops'.</div>
+            <div class="exp-step">• <b>Bước 4 (So sánh nghĩa & Chốt đáp án):</b> Danh từ số ít chỉ nơi họ làm tình nguyện phục vụ quân lính là 'canteen' (quán ăn tự phục vụ/căn-tin). Điền 'canteen'.</div>
+            <div class="exp-step" style="background: #f1f5f9; padding: 6px; border-radius: 4px; margin-top: 4px;">
+              🛡️ <b>PHƯƠNG ÁN 2 (DÀNH CHO HỌC SINH MẤT GỐC):</b><br>
+              ▸ <b>Bước 1 (Sử dụng từ quen thuộc):</b> Tìm từ 'France' (nước Pháp - A1) và từ 'soldiers' (= troops: quân lính - B1) ở đoạn 6.<br>
+              ▸ <b>Bước 2 (Tìm hành động làm việc):</b> Đề bài ghi 'worked' (làm việc - A1). Bài đọc dùng từ 'volunteer' (làm tình nguyện - A2).<br>
+              ▸ <b>Bước 3 (Tìm địa điểm đứng sau mạo từ 'a'):</b> Đề bài yêu cầu điền 'worked in a ______'. Trong bài đọc có cụm 'volunteer at a ______'.<br>
+              ▸ <b>Bước 4 (Chốt danh từ địa điểm):</b> Danh từ số ít đứng sau mạo từ 'a' là 'canteen' (quán ăn/căn-tin - A2). Điền 'canteen'.
+            </div>
+            <button class="btn-locate" onclick="highlightText('hl-q6')">📍 Định vị vị trí trong bài đọc</button>
+            <div class="ai-assistant-box">
+              <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+              <div class="ai-input-group"><input type="text" id="ai_ask_q6"><button class="ai-btn" onclick="askGeminiAI('q6')">Gửi AI</button></div>
+              <div class="ai-response" id="ai_response_q6"></div>
+            </div>
+          </div>
+        </li>
+
+      </ul>
+
+      <p style="margin-top: 15px;"><b>Opinions about the sisters as art collectors</b></p>
+      <ul style="line-height: 1.8; list-style-type: disc; padding-left: 20px;">
+        
+        <!-- Q7 -->
+        <li class="question" id="q7" style="background: transparent; padding: 0; margin-bottom: 15px; border: none;">
+          were not considered typical collectors - they lived in isolation in the countryside and did not have any <b>7.</b> <input type="text" id="q7_input" class="fill-input"> who were artists
+          <div class="thought-box" style="margin: 8px 0;"><label>💭 Mạch suy nghĩ của em (Câu 7):</label><textarea id="q7_thought"></textarea></div>
+          <div class="result"></div>
+          <div class="explanation">
+            <h4 style="color: #0369a1; margin-bottom: 8px;">📝 LỜI GIẢI CHI TIẾT 4 BƯỚC:</h4>
+            <div class="exp-step">• <b>Đáp án chốt:</b> <span class="kw-exp">friends</span></div>
+            <div class="exp-step">• <b>Bước 1 (Cắt câu & Khoanh từ / Đoán từ):</b> Cắt câu ghi chú: 'did not have any 7 ______ who were artists'. Đứng sau từ chỉ định lượng 'any' và trước đại từ quan hệ 'who', cần một danh từ số nhiều chỉ bạn bè/mối quan hệ người quen.</div>
+            <div class="exp-step">• <b>Lý do lựa chọn từ khóa định vị:</b> Lựa chọn cụm từ phủ định 'did not have' và danh từ chỉ nghề nghiệp 'artists' làm từ khóa định vị. Lý do 'artists' là danh từ chỉ ngành nghề xuất hiện ở Đoạn 7. Cụm 'did not have any [7] who were artists' là dạng paraphrase của cấu trúc phủ định 'didn't make friends with artists' (không kết bạn với các họa sĩ). Quét động từ 'make friends' giúp tìm ra từ tương đương.</div>
+            <div class="exp-step">• <b>Bước 2 (Tìm vị trí trong bài đọc):</b> Quét từ 'isolation', 'didn't make friends', 'artists' ở Đoạn 7.</div>
+            <div class="exp-step">• <b>Bước 3 (So từ hai bên / Gạch từ trùng nhau):</b> So sánh đối chiếu ngữ nghĩa: Đề bài ghi 'did not have any [7] who were artists'. Bài đọc viết: 'they didn't make friends with artists'. Ta có: 'did not have... who were artists' = 'didn't make friends with artists'.</div>
+            <div class="exp-step">• <b>Bước 4 (So sánh nghĩa & Chốt đáp án):</b> Danh từ số nhiều đại diện cho mối quan hệ bạn bè ở đây là 'friends'. Điền chính xác 'friends'.</div>
+            <div class="exp-step" style="background: #f1f5f9; padding: 6px; border-radius: 4px; margin-top: 4px;">
+              🛡️ <b>PHƯƠNG ÁN 2 (DÀNH CHO HỌC SINH MẤT GỐC):</b><br>
+              ▸ <b>Bước 1 (Tìm từ chỉ nghề nghiệp):</b> Nhìn từ 'artists' (họa sĩ - A2) ở cuối đoạn 7.<br>
+              ▸ <b>Bước 2 (Bắt dạng phủ định):</b> Đề bài có 'did not have any ______' (không có bất kỳ...). Bài đọc có 'didn't make ______' (không kết...).<br>
+              ▸ <b>Bước 3 (Bắt cụm từ siêu dễ):</b> Ai cũng biết cụm từ 'make friends' (kết bạn - A1). Bài viết 'didn't make friends with artists'.<br>
+              ▸ <b>Bước 4 (Chốt từ điền):</b> Danh từ còn thiếu ghép vào câu đề bài để mang nghĩa 'không có người bạn nào là họa sĩ' là 'friends'. Điền 'friends'.
+            </div>
+            <button class="btn-locate" onclick="highlightText('hl-q7')">📍 Định vị vị trí trong bài đọc</button>
+            <div class="ai-assistant-box">
+              <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+              <div class="ai-input-group"><input type="text" id="ai_ask_q7"><button class="ai-btn" onclick="askGeminiAI('q7')">Gửi AI</button></div>
+              <div class="ai-response" id="ai_response_q7"></div>
+            </div>
+          </div>
+        </li>
+
+      </ul>
+    </div>
+
+    <!-- Questions 8-13 TFNG -->
+    <div class="section-title" style="margin-top: 30px;">Questions 8-13</div>
+    <p><i>Do the following statements agree with the information given in Reading Passage 1? Select TRUE, FALSE, or NOT GIVEN.</i></p>
+
+    <!-- Q8 -->
+    <div class="question" id="q8">
+      <p><b>8.</b> The Davies sisters' childhood influenced the way they decided to use their wealth.</p>
+      <div class="options">
+        <label><input type="radio" name="q8" value="TRUE"> TRUE</label>
+        <label><input type="radio" name="q8" value="FALSE"> FALSE</label>
+        <label><input type="radio" name="q8" value="NOT GIVEN"> NOT GIVEN</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em (Câu 8):</label><textarea id="q8_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <h4 style="color: #0369a1; margin-bottom: 8px;">📝 LỜI GIẢI CHI TIẾT 4 BƯỚC:</h4>
+        <div class="exp-step">• <b>Đáp án chốt:</b> <span class="kw-exp">TRUE</span></div>
+        <div class="exp-step">• <b>Bước 1 (Cắt câu & Khoanh từ / Đoán từ):</b> Cắt câu đề bài làm 2 vế: Tuổi thơ của hai chị em nhà Davies ('The Davies sisters' childhood') / đã ảnh hưởng đến cách họ quyết định sử dụng tài sản của mình ('influenced the way they decided to use their wealth'). Khoanh cụm 'childhood' và 'decided to use their wealth'.</div>
+        <div class="exp-step">• <b>Lý do lựa chọn từ khóa định vị:</b> Lựa chọn danh từ chỉ giai đoạn sống 'childhood' (tuổi thơ) và cụm động từ 'use their wealth' làm từ khóa định vị. Lý do 'childhood' được paraphrase bằng cụm 'religious upbringing' (sự nuôi dưỡng theo tôn giáo lúc nhỏ) ở Đoạn 1. Danh từ 'wealth' (tài sản) đồng nghĩa với 'inheritance' (tài sản thừa kế). Việc khoanh vùng mối quan hệ nguyên nhân - kết quả giữa việc nuôi dạy lúc nhỏ và quyết định dùng tiền giúp xác định tính đúng sai của câu.</div>
+        <div class="exp-step">• <b>Bước 2 (Tìm vị trí trong bài đọc):</b> Quét cụm từ 'upbringing', 'social responsibility', 'use their inheritance' ở Đoạn 1.</div>
+        <div class="exp-step">• <b>Bước 3 (So từ hai bên / Gạch từ trùng nhau):</b> So sánh đối chiếu thông tin: Đề bài bảo tuổi thơ ảnh hưởng đến cách dùng tiền. Bài đọc khẳng định: 'Their religious upbringing [= childhood]... gave them a deep sense of social responsibility and they chose to use their inheritance [= decided to use their wealth] for cultural and philanthropic purposes'.</div>
+        <div class="exp-step">• <b>Bước 4 (So sánh nghĩa & Chốt đáp án):</b> Việc sự nuôi dưỡng từ nhỏ (upbringing/childhood) tạo ra trách nhiệm xã hội khiến họ quyết định dùng tài sản thừa kế (inheritance/wealth) cho từ thiện hoàn toàn trùng khớp với đề bài. Chọn TRUE.</div>
+        <div class="exp-step" style="background: #f1f5f9; padding: 6px; border-radius: 4px; margin-top: 4px;">
+          🛡️ <b>PHƯƠNG ÁN 2 (DÀNH CHO HỌC SINH MẤT GỐC):</b><br>
+          ▸ <b>Bước 1 (So từ vựng hai vế):</b> Đề có 'childhood' (tuổi thơ - A2). Bài đọc có 'upbringing' (sự nuôi dưỡng lúc nhỏ - B1). Hai từ cùng chỉ việc lúc bé.<br>
+          ▸ <b>Bước 2 (So từ chỉ tiền bạc):</b> Đề có 'wealth' (tiền/tài sản - B1). Bài đọc có 'inheritance' (tiền thừa kế - B2). Hai từ cùng chỉ tài sản.<br>
+          ▸ <b>Bước 3 (So sánh hành động):</b> Đề nói 'ảnh hưởng cách dùng tiền' (influenced the way they use). Bài nói 'việc nuôi dạy từ nhỏ cho họ trách nhiệm xã hội nên họ chọn dùng tiền thừa kế cho từ thiện' (chose to use their inheritance).<br>
+          ▸ <b>Bước 4 (Kết luận):</b> Ý hai bên khớp nhau 100%. Chọn TRUE.
+        </div>
+        <button class="btn-locate" onclick="highlightText('hl-q8')">📍 Định vị vị trí trong bài đọc</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q8"><button class="ai-btn" onclick="askGeminiAI('q8')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q8"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q9 -->
+    <div class="question" id="q9">
+      <p><b>9.</b> The Jean-Baptiste-Camille Corot paintings in the Davies sisters' collection were purchased from a gallery in France.</p>
+      <div class="options">
+        <label><input type="radio" name="q9" value="TRUE"> TRUE</label>
+        <label><input type="radio" name="q9" value="FALSE"> FALSE</label>
+        <label><input type="radio" name="q9" value="NOT GIVEN"> NOT GIVEN</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em (Câu 9):</label><textarea id="q9_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <h4 style="color: #0369a1; margin-bottom: 8px;">📝 LỜI GIẢI CHI TIẾT 4 BƯỚC:</h4>
+        <div class="exp-step">• <b>Đáp án chốt:</b> <span class="kw-exp">NOT GIVEN</span></div>
+        <div class="exp-step">• <b>Bước 1 (Cắt câu & Khoanh từ / Đoán từ):</b> Cắt câu đề bài làm 2 vế: Các bức tranh của Jean-Baptiste-Camille Corot trong bộ sưu tập ('The Jean-Baptiste-Camille Corot paintings in the Davies sisters' collection') / được mua từ một phòng triển lãm ở Pháp ('were purchased from a gallery in France'). Khoanh cụm 'purchased from a gallery in France'.</div>
+        <div class="exp-step">• <b>Lý do lựa chọn từ khóa định vị:</b> Lựa chọn tên riêng của họa sĩ 'Jean-Baptiste-Camille Corot' làm từ khóa định vị tuyệt đối. Lý do tên riêng họa sĩ dài 4 chữ mang tính duy nhất, chỉ xuất hiện ở cuối Đoạn 4. Cần đối chiếu vế 'purchased from a gallery in France' (mua từ phòng triển lãm ở Pháp) xem bài đọc có đề cập đến địa điểm mua cụ thể này hay không.</div>
+        <div class="exp-step">• <b>Bước 2 (Tìm vị trí trong bài đọc):</b> Quét tên riêng 'Jean-Baptiste-Camille Corot' ở Đoạn 4.</div>
+        <div class="exp-step">• <b>Bước 3 (So từ hai bên / Gạch từ trùng nhau):</b> So sánh đối chiếu thông tin: Bài đọc có nhắc việc hai chị em mua các bức tranh của họa sĩ người Pháp Jean-Baptiste-Camille Corot ('paintings by the French artist Jean-Baptiste-Camille Corot'). Tuy nhiên, bài đọc KHÔNG HỀ đề cập các bức tranh này được mua chính xác ở đâu hay có phải 'mua từ một triển lãm ở Pháp' hay không.</div>
+        <div class="exp-step">• <b>Bước 4 (So sánh nghĩa & Chốt đáp án):</b> Thiếu hoàn toàn dữ kiện về địa điểm mua tranh (gallery in France). Áp dụng Mẹo 29. Lựa chọn đáp án NOT GIVEN.</div>
+        <div class="exp-step" style="background: #f1f5f9; padding: 6px; border-radius: 4px; margin-top: 4px;">
+          🛡️ <b>PHƯƠNG ÁN 2 (DÀNH CHO HỌC SINH MẤT GỐC):</b><br>
+          ▸ <b>Bước 1 (Tim tên riêng đặc biệt):</b> Dùng mắt quét tên ông họa sĩ dài ngoẵng 'Jean-Baptiste-Camille Corot' ở đoạn 4.<br>
+          ▸ <b>Bước 2 (Tìm thông tin mua hàng):</b> Đề bài bảo tranh được 'purchased from a gallery in France' (mua từ một gallery tại Pháp).<br>
+          ▸ <b>Bước 3 (Đọc kỹ câu chứa tên ông này):</b> Bài đọc chỉ ghi ông này là 'French artist' (họa sĩ người Pháp), hoàn toàn KHÔNG HỀ nói tranh được mua ở địa điểm nào.<br>
+          ▸ <b>Bước 4 (Áp dụng quy tắc thiếu thông tin):</b> Bài đọc không nói mua ở đâu -> Thiếu dữ kiện. Chọn NOT GIVEN.
+        </div>
+        <button class="btn-locate" onclick="highlightText('hl-q9')">📍 Định vị vị trí trong bài đọc</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q9"><button class="ai-btn" onclick="askGeminiAI('q9')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q9"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q10 -->
+    <div class="question" id="q10">
+      <p><b>10.</b> Hugh Blaker opposed the Davies sisters' decision to buy art by French Impressionists.</p>
+      <div class="options">
+        <label><input type="radio" name="q10" value="TRUE"> TRUE</label>
+        <label><input type="radio" name="q10" value="FALSE"> FALSE</label>
+        <label><input type="radio" name="q10" value="NOT GIVEN"> NOT GIVEN</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em (Câu 10):</label><textarea id="q10_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <h4 style="color: #0369a1; margin-bottom: 8px;">📝 LỜI GIẢI CHI TIẾT 4 BƯỚC:</h4>
+        <div class="exp-step">• <b>Đáp án chốt:</b> <span class="kw-exp">FALSE</span></div>
+        <div class="exp-step">• <b>Bước 1 (Cắt câu & Khoanh từ / Đoán từ):</b> Cắt câu đề bài làm 2 vế: Hugh Blaker phản đối ('Hugh Blaker opposed') / quyết định mua tranh Ấn tượng Pháp của chị em nhà Davies ('the Davies sisters' decision to buy art by French Impressionists'). Khoanh động từ phản đối 'opposed'.</div>
+        <div class="exp-step">• <b>Lý do lựa chọn từ khóa định vị:</b> Lựa chọn tên riêng nhân vật 'Hugh Blaker' làm từ khóa định vị độc tôn. Lý do 'Hugh Blaker' xuất hiện ở Đoạn 5 khi hai chị em chuyển sang mua tranh Ấn tượng. Cần khoanh vùng thái độ của ông qua từ 'opposed' (phản đối) để đối chiếu với cụm danh từ khen ngợi 'champion of contemporary French art' (người ủng hộ/cổ vũ nghệ thuật Pháp) trong bài đọc.</div>
+        <div class="exp-step">• <b>Bước 2 (Tìm vị trí trong bài đọc):</b> Quét tên riêng 'Hugh Blaker' ở Đoạn 5.</div>
+        <div class="exp-step">• <b>Bước 3 (So từ hai bên / Gạch từ trùng nhau):</b> So sánh đối chiếu thông tin: Đề bài khẳng định Hugh Blaker 'opposed' (phản đối) việc mua tranh. Bài đọc mô tả Hugh Blaker là 'a champion of contemporary French art' (người hết lòng ủng hộ nghệ thuật Pháp đương đại) và 'had a hand in the decision' (có đóng góp/giúp sức vào quyết định mua tranh này).</div>
+        <div class="exp-step">• <b>Bước 4 (So sánh nghĩa & Chốt đáp án):</b> Một bên bảo ông 'phản đối' (opposed), một bên bài đọc chứng minh ông là 'người cổ vũ/ủng hộ' (champion) và góp phần vào quyết định đó. Hai thái độ mâu thuẫn trực tiếp 100%. Chọn FALSE.</div>
+        <div class="exp-step" style="background: #f1f5f9; padding: 6px; border-radius: 4px; margin-top: 4px;">
+          🛡️ <b>PHƯƠNG ÁN 2 (DÀNH CHO HỌC SINH MẤT GỐC):</b><br>
+          ▸ <b>Bước 1 (Tìm tên riêng):</b> Tìm tên ông 'Hugh Blaker' ở đoạn 5.<br>
+          ▸ <b>Bước 2 (Bắt từ chỉ thái độ ở đề bài):</b> Đề ghi 'opposed' (phản đối - B2).<br>
+          ▸ <b>Bước 3 (Bắt từ chỉ thái độ ở bài đọc):</b> Bài đọc gọi ông là 'champion' (người ủng hộ/cổ vũ - B1) và 'had a hand in decision' (có tham gia giúp đưa ra quyết định).<br>
+          ▸ <b>Bước 4 (So sánh hai thái độ):</b> Một bên nói 'phản đối', một bên nói 'ủng hộ và giúp đỡ'. Hai bên ngược nhau hoàn toàn. Chọn FALSE.
+        </div>
+        <button class="btn-locate" onclick="highlightText('hl-q10')">📍 Định vị vị trí trong bài đọc</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q10"><button class="ai-btn" onclick="askGeminiAI('q10')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q10"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q11 -->
+    <div class="question" id="q11">
+      <p><b>11.</b> The exhibition of Cézanne paintings at the Bath gallery was very popular with the public.</p>
+      <div class="options">
+        <label><input type="radio" name="q11" value="TRUE"> TRUE</label>
+        <label><input type="radio" name="q11" value="FALSE"> FALSE</label>
+        <label><input type="radio" name="q11" value="NOT GIVEN"> NOT GIVEN</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em (Câu 11):</label><textarea id="q11_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <h4 style="color: #0369a1; margin-bottom: 8px;">📝 LỜI GIẢI CHI TIẾT 4 BƯỚC:</h4>
+        <div class="exp-step">• <b>Đáp án chốt:</b> <span class="kw-exp">NOT GIVEN</span></div>
+        <div class="exp-step">• <b>Bước 1 (Cắt câu & Khoanh từ / Đoán từ):</b> Cắt câu đề bài làm 2 vế: Triển lãm tranh Cézanne ở gallery thành phố Bath ('The exhibition of Cézanne paintings at the Bath gallery') / rất phổ biến/được công chúng yêu thích ('was very popular with the public'). Khoanh cụm đánh giá 'very popular with the public'.</div>
+        <div class="exp-step">• <b>Lý do lựa chọn từ khóa định vị:</b> Lựa chọn tên riêng họa sĩ 'Cézanne' và địa danh 'Bath gallery' làm từ khóa định vị. Lý do đây là hai danh từ riêng xuất hiện ở Đoạn 6. Cần kiểm tra xem bài đọc có đề cập đến mức độ yêu thích/phổ biến ('popular') của công chúng đối với triển lãm này hay không.</div>
+        <div class="exp-step">• <b>Bước 2 (Tìm vị trí trong bài đọc):</b> Quét từ 'Cézanne', 'Bath', 'public gallery' ở Đoạn 6.</div>
+        <div class="exp-step">• <b>Bước 3 (So từ hai bên / Gạch từ trùng nhau):</b> So sánh đối chiếu thông tin: Bài đọc ghi hai bức tranh của Cézanne được gửi tới Bath và trở thành những tác phẩm đầu tiên của Cézanne được trưng bày ở một phòng triển lãm công cộng tại Anh ('first works by Cézanne to go on display in a public gallery'). Tuy nhiên, bài đọc KHÔNG HỀ đề cập việc triển lãm này có 'rất phổ biến/được công chúng đón nhận nhiệt tình' (very popular) hay không.</div>
+        <div class="exp-step">• <b>Bước 4 (So sánh nghĩa & Chốt đáp án):</b> Không có thông tin về phản ứng hay mức độ yêu thích của công chúng (popularity). Áp dụng Mẹo 29. Lựa chọn đáp án NOT GIVEN.</div>
+        <div class="exp-step" style="background: #f1f5f9; padding: 6px; border-radius: 4px; margin-top: 4px;">
+          🛡️ <b>PHƯƠNG ÁN 2 (DÀNH CHO HỌC SINH MẤT GỐC):</b><br>
+          ▸ <b>Bước 1 (Tim tên riêng & Địa điểm):</b> Tìm tên ông 'Cézanne' và tên thành phố 'Bath' ở đoạn 6.<br>
+          ▸ <b>Bước 2 (Tìm vế thông tin ở đề bài):</b> Đề bảo triển lãm này 'was very popular' (rất được công chúng yêu thích - A2).<br>
+          ▸ <b>Bước 3 (Đọc toàn bộ câu gốc):</b> Bài chỉ ghi đây là những bức tranh đầu tiên được trưng bày công khai ở Anh ('first works to go on display in a public gallery').<br>
+          ▸ <b>Bước 4 (Kiểm tra dữ kiện):</b> Bài không hề nói công chúng có thích triển lãm này hay không. Thiếu dữ kiện. Chọn NOT GIVEN.
+        </div>
+        <button class="btn-locate" onclick="highlightText('hl-q11')">📍 Định vị vị trí trong bài đọc</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q11"><button class="ai-btn" onclick="askGeminiAI('q11')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q11"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q12 -->
+    <div class="question" id="q12">
+      <p><b>12.</b> The impact of the First World War encouraged Gwendoline to reconsider her interest in collecting art.</p>
+      <div class="options">
+        <label><input type="radio" name="q12" value="TRUE"> TRUE</label>
+        <label><input type="radio" name="q12" value="FALSE"> FALSE</label>
+        <label><input type="radio" name="q12" value="NOT GIVEN"> NOT GIVEN</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em (Câu 12):</label><textarea id="q12_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <h4 style="color: #0369a1; margin-bottom: 8px;">📝 LỜI GIẢI CHI TIẾT 4 BƯỚC:</h4>
+        <div class="exp-step">• <b>Đáp án chốt:</b> <span class="kw-exp">TRUE</span></div>
+        <div class="exp-step">• <b>Bước 1 (Cắt câu & Khoanh từ / Đoán từ):</b> Cắt câu đề bài làm 2 vế: Tác động của Chiến tranh thế giới thứ nhất ('The impact of the First World War') / đã khuyến khích Gwendoline xem xét lại/thay đổi mối quan tâm sưu tầm nghệ thuật ('encouraged Gwendoline to reconsider her interest in collecting art'). Khoanh cụm 'reconsider her interest'.</div>
+        <div class="exp-step">• <b>Lý do lựa chọn từ khóa định vị:</b> Lựa chọn tên riêng 'Gwendoline' và sự kiện lịch sử 'First World War' làm từ khóa định vị. Lý do đây là các từ khóa xuất hiện ở Đoạn 7. Cụm 'reconsider her interest' (xem xét lại/thay đổi mối quan tâm) cần được đối chiếu với cảm xúc 'felt increasingly uncomfortable buying art works' (cảm thấy ngày càng không thoải mái khi mua tranh) và việc chuyển hướng sang hoạt động xã hội trong bài đọc.</div>
+        <div class="exp-step">• <b>Bước 2 (Tìm vị trí trong bài đọc):</b> Quét tên 'Gwendoline', 'First World War', 'uncomfortable' ở Đoạn 7.</div>
+        <div class="exp-step">• <b>Bước 3 (So từ hai bên / Gạch từ trùng nhau):</b> So sánh đối chiếu thông tin: Bài đọc ghi Gwendoline cảm thấy ngày càng không thoải mái khi mua tranh trước cảnh nghèo đói do Thế chiến 1 gây ra, và sau đó chuyển hướng tập trung hoàn toàn vào các mục tiêu xã hội ('focused almost exclusively on social causes'). Mua bức tranh cuối cùng năm 1926.</div>
+        <div class="exp-step">• <b>Bước 4 (So sánh nghĩa & Chốt đáp án):</b> Việc tác động của thế chiến khiến cô thấy không thoải mái với việc mua tranh và dừng lại để làm từ thiện đồng nghĩa với việc nó thúc đẩy cô xem xét lại/thay đổi sự quan tâm với việc sưu tầm tranh (reconsider her interest). Chọn TRUE.</div>
+        <div class="exp-step" style="background: #f1f5f9; padding: 6px; border-radius: 4px; margin-top: 4px;">
+          🛡️ <b>PHƯƠNG ÁN 2 (DÀNH CHO HỌC SINH MẤT GỐC):</b><br>
+          ▸ <b>Bước 1 (Tìm từ chìa khóa chính):</b> Quét tên 'Gwendoline' và 'First World War' (Thế chiến 1 - A2) ở đoạn 7.<br>
+          ▸ <b>Bước 2 (Bắt cảm xúc ở bài đọc):</b> Bài đọc ghi cô thấy 'uncomfortable buying art' (không thoải mái khi mua tranh - B1) vì nghèo đói sau chiến tranh.<br>
+          ▸ <b>Bước 3 (Bắt hành động tiếp theo):</b> Cô ấy chuyển sang tập trung làm việc xã hội/từ thiện ('focused on social causes').<br>
+          ▸ <b>Bước 4 (So sánh với đề bài):</b> Đề bảo chiến tranh làm cô 'reconsider her interest' (xem xét lại/thay đổi sở thích mua tranh - B2). Cả hai bên đều nói về việc cô ấy không muốn mua tranh nữa mà đi làm từ thiện. Đúng nghĩa. Chọn TRUE.
+        </div>
+        <button class="btn-locate" onclick="highlightText('hl-q12')">📍 Định vị vị trí trong bài đọc</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q12"><button class="ai-btn" onclick="askGeminiAI('q12')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q12"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q13 -->
+    <div class="question" id="q13">
+      <p><b>13.</b> The Davies sisters bought French Impressionist art during a period when very few people were doing so.</p>
+      <div class="options">
+        <label><input type="radio" name="q13" value="TRUE"> TRUE</label>
+        <label><input type="radio" name="q13" value="FALSE"> FALSE</label>
+        <label><input type="radio" name="q13" value="NOT GIVEN"> NOT GIVEN</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em (Câu 13):</label><textarea id="q13_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <h4 style="color: #0369a1; margin-bottom: 8px;">📝 LỜI GIẢI CHI TIẾT 4 BƯỚC:</h4>
+        <div class="exp-step">• <b>Đáp án chốt:</b> <span class="kw-exp">TRUE</span></div>
+        <div class="exp-step">• <b>Bước 1 (Cắt câu & Khoanh từ / Đoán từ):</b> Cắt câu đề bài làm 2 vế: Chị em nhà Davies đã mua tranh Ấn tượng Pháp ('The Davies sisters bought French Impressionist art') / trong suốt giai đoạn mà rất ít người làm như vậy ('during a period when very few people were doing so'). Khoanh cụm 'very few people were doing so'.</div>
+        <div class="exp-step">• <b>Lý do lựa chọn từ khóa định vị:</b> Lựa chọn cụm từ chỉ phong cách nghệ thuật 'French Impressionist art' và khoảng thời gian 'period when' làm từ khóa định vị ở Đoạn kết (Đoạn 8). Lý do là cụm 'very few people were doing so' (rất ít người làm vậy) trong đề bài là dạng paraphrase của mệnh đề 'such art was routinely ignored by individuals and institutions alike' (nghệ thuật đó thường xuyên bị ngó lơ bởi cả cá nhân lẫn tổ chức). Quét từ 'ignored' để đối chiếu.</div>
+        <div class="exp-step">• <b>Bước 2 (Tìm vị trí trong bài đọc):</b> Quét cụm 'French Impressionist paintings', 'routinely ignored' ở Đoạn 8.</div>
+        <div class="exp-step">• <b>Bước 3 (So từ hai bên / Gạch từ trùng nhau):</b> So sánh đối chiếu thông tin: Đề bài khẳng định họ mua tranh trong thời kỳ rất ít người mua ('very few people were doing so'). Bài đọc xác nhận họ mua tranh ở thời điểm mà thể loại nghệ thuật đó 'thường xuyên bị phớt lờ/ngó lơ bởi các cá nhân cũng như tổ chức' (routinely ignored by individuals and institutions alike).</div>
+        <div class="exp-step">• <b>Bước 4 (So sánh nghĩa & Chốt đáp án):</b> Khi một thể loại nghệ thuật bị hầu hết cá nhân và tổ chức phớt lờ (ignored), điều đó đồng nghĩa với việc có rất ít người mua nó vào thời điểm đó (very few people doing so). Chọn TRUE.</div>
+        <div class="exp-step" style="background: #f1f5f9; padding: 6px; border-radius: 4px; margin-top: 4px;">
+          🛡️ <b>PHƯƠNG ÁN 2 (DÀNH CHO HỌC SINH MẤT GỐC):</b><br>
+          ▸ <b>Bước 1 (Tìm cụm từ chính):</b> Tìm cụm 'French Impressionist' ở đoạn cuối (đoạn 8).<br>
+          ▸ <b>Bước 2 (So sánh về số lượng người mua):</b> Đề ghi 'very few people were doing so' (rất ít người làm như vậy/rất ít người mua - A2).<br>
+          ▸ <b>Bước 3 (Đọc câu ở bài đọc):</b> Bài đọc ghi loại tranh này bị 'ignored by individuals and institutions' (bị phớt lờ/ngó lơ bởi cả cá nhân lẫn tổ chức - B1).<br>
+          ▸ <b>Bước 4 (suy luận đơn giản):</b> Bị tất cả mọi người và tổ chức ngó lơ = Hầu như không có ai mua = Rất ít người làm vậy. Chọn TRUE.
+        </div>
+        <button class="btn-locate" onclick="highlightText('hl-q13')">📍 Định vị vị trí trong bài đọc</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q13"><button class="ai-btn" onclick="askGeminiAI('q13')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q13"></div>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn-submit" onclick="checkAnswers()">CHẤM BÀI VÀ NỘP KẾT QUẢ</button>
+  </div>
+</div>
+
+<script>
+  window.TEST_DATA = {
+    title: "Cam 21 Test 1 Passage 1",
+    answers: {
+      q1: "mining",
+      q2: "education",
+      q3: "notes",
+      q4: "journals",
+      q5: "Venice",
+      q6: "canteen",
+      q7: "friends",
+      q8: "TRUE",
+      q9: "NOT GIVEN",
+      q10: "FALSE",
+      q11: "NOT GIVEN",
+      q12: "TRUE",
+      q13: "TRUE"
+    }
+  };
+</script>
+<script src="ielts-core.js"></script>
+</body>
+</html>
