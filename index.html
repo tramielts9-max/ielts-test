@@ -9,65 +9,129 @@
     .portal-hero {
       background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
       color: white;
-      padding: 40px 20px;
+      padding: 35px 20px;
       text-align: center;
       border-radius: 12px;
       margin-bottom: 25px;
       box-shadow: 0 10px 25px -5px rgba(0,0,0,0.2);
     }
-    .portal-hero h1 { margin: 0 0 10px 0; font-size: 26px; }
+    .portal-hero h1 { margin: 0 0 8px 0; font-size: 26px; }
     .portal-hero p { margin: 0; color: #93c5fd; font-size: 15px; }
 
-    .history-lookup-box {
+    /* Khung Đăng nhập (Auth Gate) */
+    .auth-gate-card {
       background: var(--bg-card);
       border: 2px solid var(--primary-blue);
-      padding: 20px;
       border-radius: 12px;
-      margin-bottom: 30px;
-      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.1);
+      padding: 30px;
+      max-width: 550px;
+      margin: 0 auto 30px auto;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      text-align: center;
     }
-    .history-lookup-box h3 {
-      margin: 0 0 12px 0;
-      color: var(--primary-blue);
-      font-size: 18px;
+    .auth-gate-card h2 {
+      margin-top: 0;
+      color: var(--text-main);
+      font-size: 22px;
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    .auth-gate-card p {
+      color: var(--text-muted);
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+    .auth-form-group {
       display: flex;
-      align-items: center;
-      gap: 8px;
+      flex-direction: column;
+      gap: 12px;
+      text-align: left;
     }
-    .lookup-input-group {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
+    .auth-form-group label {
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--text-main);
     }
-    .lookup-input-group input {
-      flex: 1;
-      min-width: 250px;
-      padding: 10px 14px;
+    .auth-form-group input {
+      padding: 12px 14px;
       font-size: 15px;
       border: 1.5px solid var(--border-color);
-      border-radius: 6px;
+      border-radius: 8px;
       background: var(--bg-subcard);
       color: var(--text-main);
       outline: none;
     }
-    .btn-lookup {
+    .auth-form-group input:focus {
+      border-color: var(--primary-blue);
+    }
+    .btn-login-gate {
       background: var(--primary-blue);
       color: white;
       border: none;
-      padding: 10px 20px;
-      font-size: 15px;
+      padding: 12px;
+      font-size: 16px;
       font-weight: 700;
-      border-radius: 6px;
+      border-radius: 8px;
       cursor: pointer;
-      white-space: nowrap;
+      margin-top: 10px;
+      transition: all 0.2s;
     }
-    .btn-lookup:hover { background: #0369a1; }
+    .btn-login-gate:hover {
+      filter: brightness(0.9);
+      transform: translateY(-1px);
+    }
 
-    .history-results-list {
-      margin-top: 16px;
+    /* Thanh Dashboard thông tin khi ĐÃ ĐĂNG NHẬP */
+    .user-dashboard-bar {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      padding: 16px 20px;
+      border-radius: 10px;
+      margin-bottom: 25px;
       display: flex;
-      flex-direction: column;
-      gap: 10px;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+    }
+    .user-dashboard-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .user-avatar-circle {
+      width: 42px;
+      height: 42px;
+      background: #e0f2fe;
+      color: #0369a1;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .btn-logout {
+      background: #fee2e2;
+      color: #dc2626;
+      border: 1px solid #fca5a5;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 13.5px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-logout:hover { background: #fecaca; }
+
+    /* Lịch sử làm bài */
+    .history-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 30px;
     }
     .history-card {
       background: var(--bg-subcard);
@@ -79,13 +143,7 @@
       align-items: center;
       flex-wrap: wrap;
       gap: 12px;
-    }
-    .history-card-info h4 { margin: 0 0 4px 0; font-size: 16px; color: var(--text-main); }
-    .history-card-info p { margin: 0; font-size: 13px; color: var(--text-muted); }
-    .history-card-score {
-      display: flex;
-      align-items: center;
-      gap: 12px;
+      margin-top: 10px;
     }
     .score-pill {
       background: #16a34a;
@@ -103,16 +161,14 @@
       border-radius: 6px;
       font-size: 13.5px;
       font-weight: 600;
-      transition: background 0.2s;
     }
-    .btn-review:hover { background: #0369a1; }
 
+    /* Grid danh sách đề thi */
     .test-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
       gap: 20px;
-      max-width: 1200px;
-      margin: auto;
+      margin-bottom: 40px;
     }
     .test-card {
       background: var(--bg-card);
@@ -140,8 +196,6 @@
       border-radius: 20px;
       margin-bottom: 10px;
     }
-    .test-card h3 { margin: 0 0 10px 0; font-size: 17px; color: var(--text-main); }
-    .test-card p { font-size: 13.5px; color: var(--text-muted); line-height: 1.5; margin-bottom: 15px; }
     .btn-start-test {
       display: block;
       text-align: center;
@@ -152,7 +206,6 @@
       border-radius: 6px;
       font-weight: 600;
       font-size: 14px;
-      transition: background 0.2s;
     }
     .btn-start-test:hover { background: #0369a1; }
   </style>
@@ -162,165 +215,200 @@
 <div style="max-width: 1200px; margin: auto;">
   <div class="portal-hero">
     <h1>📚 HỆ THỐNG LUYỆN THI IELTS READING TRỰC TUYẾN</h1>
-    <p>Bộ đề Cambridge 21 Academic mới nhất • Tự động chấm điểm • AI Trợ giảng giải thích chi tiết</p>
+    <p>Bộ đề Cambridge Academic • Tự động chấm điểm • AI Trợ giảng giải thích chi tiết</p>
   </div>
 
-  <!-- KHU VỰC TRA CỨU LỊCH SỬ BÀI LÀM THEO EMAIL -->
-  <div class="history-lookup-box">
-    <h3>📜 TRA CỨU LỊCH SỬ CÁC LẦN LÀM BÀI CỦA HỌC VIÊN</h3>
-    <p style="margin: 0 0 12px 0; font-size: 14px; color: var(--text-muted);">Nhập Email Google của em để xem lại toàn bộ các lần làm bài, đáp án đã điền và lịch sử trao đổi với AI Trợ giảng:</p>
-    <div class="lookup-input-group">
-      <input type="email" id="lookupEmailInput" placeholder="Nhập Email Google của em (ví dụ: student@gmail.com)...">
-      <button class="btn-lookup" onclick="lookupHistory()">🔍 Xem Lịch Sử</button>
-    </div>
-    <div class="history-results-list" id="historyResultsList" style="display: none;"></div>
-  </div>
-
-  <!-- CAMBRIDGE 21 - TEST 1 -->
-  <h2 style="margin-bottom: 20px;">Cambridge IELTS 21 - Academic Test 1</h2>
-
-  <div class="test-grid" style="margin-bottom: 40px;">
-    <!-- Card Passage 1 -->
-    <div class="test-card">
-      <div>
-        <span class="badge">Passage 1 (13 Câu)</span>
-        <h3>The Davies Sisters</h3>
-        <p>• Dạng bài: Note Completion, TRUE / FALSE / NOT GIVEN.<br>• Thời gian khuyến nghị: 15 - 20 phút.</p>
-      </div>
-      <a href="cam21-test1-p1.html" class="btn-start-test">▶️ Làm Bài Passage 1</a>
+  <!-- 1. MÀN HÌNH KHÓA / FORM ĐĂNG NHẬP (Hiển thị khi CHƯA đăng nhập) -->
+  <div class="auth-gate-card" id="authGateBox">
+    <h2>👤 ĐĂNG NHẬP HỌC VIÊN</h2>
+    <p>Vui lòng nhập Họ tên và Email Google <b>1 lần duy nhất</b> để mở khóa danh sách đề và lưu kết quả:</p>
+    
+    <div class="auth-form-group">
+      <label for="loginNameInput">👤 Họ và Tên của em:</label>
+      <input type="text" id="loginNameInput" placeholder="Ví dụ: Nguyễn Văn An...">
+      
+      <label for="loginEmailInput">✉️ Email Google (để lưu bảng điểm & hỏi AI):</label>
+      <input type="email" id="loginEmailInput" placeholder="Ví dụ: student@gmail.com...">
+      
+      <button type="button" class="btn-login-gate" onclick="handleStudentLogin()">🚀 Bắt Đầu Học Ngay</button>
     </div>
   </div>
 
-  <!-- CAMBRIDGE 21 - TEST 3 -->
-  <h2 style="margin-bottom: 20px;">Cambridge IELTS 21 - Academic Test 3</h2>
-
-  <div class="test-grid" style="margin-bottom: 40px;">
-    <!-- Card Passage 1 -->
-    <div class="test-card">
-      <div>
-        <span class="badge">Passage 1 (13 Câu)</span>
-        <h3>Saving the saiga</h3>
-        <p>• Dạng bài: Note Completion, TRUE / FALSE / NOT GIVEN.<br>• Thời gian khuyến nghị: 15 - 20 phút.</p>
+  <!-- 2. NỘI DUNG ĐƯỢC MỞ KHÓA (Ẩn mặc định, chỉ hiện khi ĐÃ đăng nhập) -->
+  <div id="unlockedContentBox" style="display: none;">
+    
+    <!-- Thanh thông tin học viên -->
+    <div class="user-dashboard-bar">
+      <div class="user-dashboard-info">
+        <div class="user-avatar-circle" id="userAvatarText">A</div>
+        <div>
+          <h4 style="margin: 0; font-size: 16px; color: var(--text-main);" id="userNameDisplay">Nguyễn Văn A</h4>
+          <p style="margin: 2px 0 0 0; font-size: 13px; color: var(--text-muted);" id="userEmailDisplay">student@gmail.com</p>
+        </div>
       </div>
-      <a href="cam21-test3-p1.html" class="btn-start-test">▶️ Làm Bài Passage 1</a>
+      <button type="button" class="btn-logout" onclick="handleStudentLogout()">🚪 Đổi tài khoản / Đăng xuất</button>
     </div>
 
-    <!-- Card Passage 2 -->
-    <div class="test-card">
-      <div>
-        <span class="badge">Passage 2 (13 Câu)</span>
-        <h3>The problems of getting around Dar es Salaam</h3>
-        <p>• Dạng bài: TRUE / FALSE / NOT GIVEN, Note Completion.<br>• Thời gian khuyến nghị: 20 phút.</p>
-      </div>
-      <a href="cam21-test3-p2.html" class="btn-start-test">▶️ Làm Bài Passage 2</a>
+    <!-- Khu vực Lịch sử làm bài -->
+    <div class="history-section">
+      <h3 style="margin-top: 0; color: var(--primary-blue);">📜 Lịch sử các lần làm bài của em:</h3>
+      <div id="historyResultsList"></div>
     </div>
 
-    <!-- Card Passage 3 -->
-    <div class="test-card">
-      <div>
-        <span class="badge">Passage 3 (14 Câu)</span>
-        <h3>Rethinking the Past</h3>
-        <p>• Dạng bài: Multiple Choice, Sentence Completion, YES / NO / NOT GIVEN.<br>• Thời gian khuyến nghị: 20 phút.</p>
+    <!-- Danh sách Đề Thi Test 3 -->
+    <h2 style="margin-bottom: 20px;">Cambridge IELTS 21 - Academic Test 3</h2>
+    <div class="test-grid">
+      <div class="test-card">
+        <div>
+          <span class="badge">Passage 1 (13 Câu)</span>
+          <h3 style="margin: 0 0 10px 0; color: var(--text-main);">Saving the saiga</h3>
+          <p style="font-size: 13.5px; color: var(--text-muted);">• Dạng bài: Note Completion, TRUE / FALSE / NOT GIVEN.<br>• Thời gian: 15 - 20 phút.</p>
+        </div>
+        <a href="cam21-test3-p1.html" class="btn-start-test">▶️ Làm Bài Passage 1</a>
       </div>
-      <a href="cam21-test3-p3.html" class="btn-start-test">▶️ Làm Bài Passage 3</a>
-    </div>
-  </div>
-  
-  <!-- CAMBRIDGE 21 - TEST 4 -->
-  <h2 style="margin-bottom: 20px;">Cambridge IELTS 21 - Academic Test 4</h2>
 
-  <div class="test-grid">
-    <!-- Card Passage 1 -->
-    <div class="test-card">
-      <div>
-        <span class="badge">Passage 1 (13 Câu)</span>
-        <h3>The spread of water hyacinth in Kenya</h3>
-        <p>• Dạng bài: TRUE / FALSE / NOT GIVEN, Flow-chart Completion, Notes Completion.<br>• Thời gian khuyến nghị: 15 - 20 phút.</p>
+      <div class="test-card">
+        <div>
+          <span class="badge">Passage 2 (13 Câu)</span>
+          <h3 style="margin: 0 0 10px 0; color: var(--text-main);">The problems of getting around Dar es Salaam</h3>
+          <p style="font-size: 13.5px; color: var(--text-muted);">• Dạng bài: TRUE / FALSE / NOT GIVEN, Note Completion.<br>• Thời gian: 20 phút.</p>
+        </div>
+        <a href="cam21-test3-p2.html" class="btn-start-test">▶️ Làm Bài Passage 2</a>
       </div>
-      <a href="cam21-test4-p1.html" class="btn-start-test">▶️ Làm Bài Passage 1</a>
-    </div>
 
-    <!-- Card Passage 2 -->
-    <div class="test-card">
-      <div>
-        <span class="badge">Passage 2 (13 Câu)</span>
-        <h3>Multilingualism & India's Schoolchildren</h3>
-        <p>• Dạng bài: Summary Completion (Box A-J), YES / NO / NOT GIVEN, Multiple Choice.<br>• Thời gian khuyến nghị: 20 phút.</p>
+      <div class="test-card">
+        <div>
+          <span class="badge">Passage 3 (14 Câu)</span>
+          <h3 style="margin: 0 0 10px 0; color: var(--text-main);">Rethinking the Past</h3>
+          <p style="font-size: 13.5px; color: var(--text-muted);">• Dạng bài: Multiple Choice, Sentence Completion, YES / NO / NOT GIVEN.<br>• Thời gian: 20 phút.</p>
+        </div>
+        <a href="cam21-test3-p3.html" class="btn-start-test">▶️ Làm Bài Passage 3</a>
       </div>
-      <a href="cam21-test4-p2.html" class="btn-start-test">▶️ Làm Bài Passage 2</a>
     </div>
 
-    <!-- Card Passage 3 -->
-    <div class="test-card">
-      <div>
-        <span class="badge">Passage 3 (14 Câu)</span>
-        <h3>The Globemakers: Story of an Ancient Craft</h3>
-        <p>• Dạng bài: Summary Completion (Box A-J), YES / NO / NOT GIVEN, Multiple Choice.<br>• Thời gian khuyến nghị: 20 phút.</p>
+    <!-- Danh sách Đề Thi Test 4 -->
+    <h2 style="margin-bottom: 20px;">Cambridge IELTS 21 - Academic Test 4</h2>
+    <div class="test-grid">
+      <div class="test-card">
+        <div>
+          <span class="badge">Passage 1 (13 Câu)</span>
+          <h3 style="margin: 0 0 10px 0; color: var(--text-main);">The spread of water hyacinth in Kenya</h3>
+          <p style="font-size: 13.5px; color: var(--text-muted);">• Dạng bài: TRUE / FALSE / NOT GIVEN, Flow-chart, Notes Completion.<br>• Thời gian: 15 - 20 phút.</p>
+        </div>
+        <a href="cam21-test4-p1.html" class="btn-start-test">▶️ Làm Bài Passage 1</a>
       </div>
-      <a href="cam21-test4-p3.html" class="btn-start-test">▶️ Làm Bài Passage 3</a>
+
+      <div class="test-card">
+        <div>
+          <span class="badge">Passage 2 (13 Câu)</span>
+          <h3 style="margin: 0 0 10px 0; color: var(--text-main);">Multilingualism & India's Schoolchildren</h3>
+          <p style="font-size: 13.5px; color: var(--text-muted);">• Dạng bài: Summary Completion, YES / NO / NOT GIVEN, Multiple Choice.<br>• Thời gian: 20 phút.</p>
+        </div>
+        <a href="cam21-test4-p2.html" class="btn-start-test">▶️ Làm Bài Passage 2</a>
+      </div>
+
+      <div class="test-card">
+        <div>
+          <span class="badge">Passage 3 (14 Câu)</span>
+          <h3 style="margin: 0 0 10px 0; color: var(--text-main);">The Globemakers: Story of an Ancient Craft</h3>
+          <p style="font-size: 13.5px; color: var(--text-muted);">• Dạng bài: Summary Completion, YES / NO / NOT GIVEN, Multiple Choice.<br>• Thời gian: 20 phút.</p>
+        </div>
+        <a href="cam21-test4-p3.html" class="btn-start-test">▶️ Làm Bài Passage 3</a>
+      </div>
     </div>
+
   </div>
 </div>
 
 <script src="ielts-core.js"></script>
 <script>
-  function lookupHistory() {
-    const emailInput = document.getElementById('lookupEmailInput');
-    const resultsBox = document.getElementById('historyResultsList');
-    if (!emailInput || !resultsBox) return;
+  function handleStudentLogin() {
+    const nameInput = document.getElementById('loginNameInput');
+    const emailInput = document.getElementById('loginEmailInput');
+    const name = nameInput ? nameInput.value.trim() : '';
+    const email = emailInput ? emailInput.value.trim().toLowerCase() : '';
 
-    const email = emailInput.value.trim().toLowerCase();
     if (!email) {
-      alert("⚠️ Vui lòng nhập Email để tra cứu lịch sử làm bài!");
+      alert("⚠️ Em vui lòng nhập Email Google để hệ thống lưu lịch sử nhé!");
       return;
     }
+
+    // Lưu thông tin vào global user
+    setGlobalUser(name || 'Học viên', email);
+    
+    // Nếu có redirect link từ trang đề trước đó
+    const urlParams = new URLSearchParams(window.location.search);
+    const returnUrl = urlParams.get('returnUrl');
+    if (returnUrl) {
+      window.location.href = returnUrl;
+      return;
+    }
+
+    checkPortalAuthStatus();
+  }
+
+  function handleStudentLogout() {
+    if (confirm("Em có chắc chắn muốn đăng xuất tài khoản này không?")) {
+      clearGlobalUser();
+      checkPortalAuthStatus();
+    }
+  }
+
+  function renderStudentHistory(email) {
+    const resultsBox = document.getElementById('historyResultsList');
+    if (!resultsBox) return;
 
     const db = getHistoryDatabase();
     const attempts = db[email] || [];
 
-    resultsBox.style.display = 'flex';
-
     if (attempts.length === 0) {
       resultsBox.innerHTML = `
-        <div style="background: var(--bg-card); padding: 15px; border-radius: 8px; text-align: center; color: var(--text-muted);">
-          ℹ️ Chưa tìm thấy lịch sử làm bài nào dành cho Email: <b>${email}</b>. Em hãy bấm vào các bài làm bên dưới và nộp bài để lưu lịch sử nhé!
+        <div style="background: var(--bg-subcard); padding: 14px; border-radius: 8px; text-align: center; color: var(--text-muted); font-size: 14px;">
+          ℹ️ Em chưa làm bài nào. Hãy chọn một bài test bên dưới để bắt đầu luyện tập nhé!
         </div>
       `;
       return;
     }
 
-    let html = `<h4 style="margin: 5px 0 10px 0; color: var(--primary-blue);">Tìm thấy ${attempts.length} lần làm bài cho "${email}":</h4>`;
-
+    let html = '';
     attempts.forEach(attempt => {
       html += `
         <div class="history-card">
-          <div class="history-card-info">
-            <h4>📖 ${attempt.testTitle}</h4>
-            <p>⏱️ Thời gian nộp bài: <b>${attempt.timestamp}</b> • Làm trong: <b>${attempt.timeSpent}</b></p>
+          <div>
+            <h4 style="margin: 0 0 4px 0; font-size: 15.5px; color: var(--text-main);">📖 ${attempt.testTitle}</h4>
+            <p style="margin: 0; font-size: 13px; color: var(--text-muted);">⏱️ Nộp lúc: <b>${attempt.timestamp}</b> • Thời gian làm: <b>${attempt.timeSpent}</b></p>
           </div>
-          <div class="history-card-score">
+          <div style="display: flex; align-items: center; gap: 12px;">
             <span class="score-pill">Điểm: ${attempt.score}</span>
-            <a href="${attempt.pageUrl}?attemptId=${attempt.id}&email=${encodeURIComponent(email)}" class="btn-review">👁️ Xem lại chi tiết</a>
+            <a href="${attempt.pageUrl}?attemptId=${attempt.id}&email=${encodeURIComponent(email)}" class="btn-review">👁️ Xem lại bài</a>
           </div>
         </div>
       `;
     });
-
     resultsBox.innerHTML = html;
   }
 
-  // Tự động gợi ý Email vừa nộp gần nhất nếu có
-  document.addEventListener('DOMContentLoaded', function() {
-    const db = getHistoryDatabase();
-    const emails = Object.keys(db);
-    if (emails.length > 0) {
-      const emailInput = document.getElementById('lookupEmailInput');
-      if (emailInput) {
-        emailInput.value = emails[0];
-        lookupHistory();
-      }
+  function checkPortalAuthStatus() {
+    const user = getGlobalUser();
+    const gateBox = document.getElementById('authGateBox');
+    const contentBox = document.getElementById('unlockedContentBox');
+
+    if (user && user.email) {
+      gateBox.style.display = 'none';
+      contentBox.style.display = 'block';
+
+      document.getElementById('userNameDisplay').innerText = user.name || 'Học viên';
+      document.getElementById('userEmailDisplay').innerText = user.email;
+      document.getElementById('userAvatarText').innerText = (user.name ? user.name.charAt(0) : 'U').toUpperCase();
+
+      renderStudentHistory(user.email);
+    } else {
+      gateBox.style.display = 'block';
+      contentBox.style.display = 'none';
     }
-  });
+  }
+
+  document.addEventListener('DOMContentLoaded', checkPortalAuthStatus);
 </script>
 </body>
 </html>
