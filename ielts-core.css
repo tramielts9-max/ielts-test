@@ -560,3 +560,18 @@ body.dark-theme .submitted .hl {
   color: var(--text-main);
   font-weight: 600;
 }
+
+/* Hiển thị ô Tên/Email đã được tự động điền và khóa bảo vệ */
+.user-info-field input.input-locked {
+  background-color: #f1f5f9 !important;
+  color: #475569 !important;
+  border-color: #cbd5e1 !important;
+  cursor: not-allowed;
+  font-weight: 600;
+}
+
+body.dark-theme .user-info-field input.input-locked {
+  background-color: #1e293b !important;
+  color: #94a3b8 !important;
+  border-color: #334155 !important;
+}
