@@ -7,10 +7,10 @@
  */
 
 const IELTS_CONFIG = {
-  // 1. LINK SCRIPT CŨ CỦA BẠN (Xử lý AI & Ghi điểm Sheet - GIỮ NGUYÊN)
+  // 1. LINK SCRIPT CŨ (Xử lý AI & Ghi điểm Sheet - GIỮ NGUYÊN)
   AI_AND_SHEET_URL: "https://script.google.com/macros/s/AKfycby7vRFXq_YhjIEq4kN-8NLRFw2sj-7VkVEmTw6IkNkPmidEPnPtxtNkSE-HKfn5mAPfbw/exec",
 
-  // 2. LINK SCRIPT GOOGLE DRIVE MỚI (Dán URL Web App mới của bạn vào đây)
+  // 2. LINK SCRIPT GOOGLE DRIVE MỚI
   DRIVE_STORAGE_URL: "https://script.google.com/macros/s/AKfycbx5HRPHr75RLlcuXvcn1QSTmsLszIhYH6cDrKiGZS4RCoxa0l3NJF4dKWplI1sVKVoCYg/exec"
 };
 
@@ -47,7 +47,16 @@ function autoFillUserInfo() {
   if (emailInput && !emailInput.value && user.email) emailInput.value = user.email;
 }
 
-// ==================== CÁC TIỆN ÍCH GIAO DIỆN ====================
+// ==================== XÓA HẾT ĐỂ LÀM LẠI BÀI ====================
+function resetCurrentTest() {
+  if (confirm("⚠️ Em có chắc chắn muốn XÓA HẾT các câu trả lời để làm lại bài này từ đầu không?\n(Lưu ý: Các bài làm em đã nộp trước đó trên Google Drive vẫn được giữ nguyên an toàn).")) {
+    const key = getStorageKey();
+    localStorage.removeItem(key);
+    window.location.href = window.location.pathname;
+  }
+}
+
+// ==================== TIỆN ÍCH GIAO DIỆN & BẤM GIỜ ====================
 function changeFontSize(delta) {
   currentFontSize += delta;
   if (currentFontSize < 12) currentFontSize = 12;
@@ -98,7 +107,7 @@ function stopTimer() {
   document.querySelectorAll('audio').forEach(a => a.pause());
 }
 
-// ==================== LƯU / PHỤC HỒI TRẠNG THÁI LOCAL ====================
+// ==================== LƯU / PHỤC HỒI BÀI ĐANG LÀM DỞ ====================
 function saveStateToLocalStorage() {
   if (isReviewMode) return;
   try {
@@ -193,8 +202,11 @@ function restoreAttemptFromSnapshot(attempt) {
   const reviewBanner = document.createElement('div');
   reviewBanner.style.cssText = "background: #fef3c7; color: #92400e; border: 1.5px solid #f59e0b; padding: 12px 18px; font-weight: 700; font-size: 14px; text-align: center; border-radius: 8px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05);";
   reviewBanner.innerHTML = `
-    <span>📜 ĐANG XEM LẠI LỊCH SỬ BÀI LÀM (${attempt.timestamp}) — Kết quả: <b>${attempt.score}</b> (Học viên: ${attempt.studentName})</span>
-    <a href="index.html" style="background: #b45309; color: white; padding: 6px 14px; text-decoration: none; border-radius: 6px; font-size: 13px; font-weight: bold;">🔙 Quay lại Danh mục</a>
+    <span>📜 ĐANG XEM LẠI BÀI (${attempt.timestamp}) — Điểm: <b>${attempt.score}</b> (Học viên: ${attempt.studentName})</span>
+    <div style="display: flex; gap: 8px;">
+      <button type="button" onclick="resetCurrentTest()" style="background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: bold; cursor: pointer;">🔄 Làm lại bài này</button>
+      <a href="index.html" style="background: #b45309; color: white; padding: 6px 12px; text-decoration: none; border-radius: 6px; font-size: 13px; font-weight: bold;">🔙 Về Danh mục</a>
+    </div>
   `;
   document.body.insertBefore(reviewBanner, document.body.firstChild);
 
@@ -238,8 +250,6 @@ function restoreAttemptFromSnapshot(attempt) {
 
   const submitBtn = document.querySelector('.btn-submit');
   if (submitBtn) submitBtn.style.display = 'none';
-
-  // Ẩn các ô nhập hỏi AI khi đang xem lại
   document.querySelectorAll('.ai-assistant-box input, .ai-assistant-box button').forEach(el => el.style.display = 'none');
 }
 
@@ -291,7 +301,7 @@ function applySubmittedUI(scoreStr) {
   }
 }
 
-// ==================== NỘP BÀI & LƯU LỊCH SỬ LÊN GOOGLE DRIVE ====================
+// ==================== NỘP BÀI VÀ LƯU DRIVE ====================
 async function checkAnswers() {
   if (isReviewMode) return;
   if (!window.TEST_DATA || !window.TEST_DATA.answers) {
@@ -404,7 +414,7 @@ async function checkAnswers() {
 
   saveStateToLocalStorage();
 
-  // 1. Gửi điểm tóm tắt về Script cũ (Sheets & AI)
+  // Gửi điểm tóm tắt về Script cũ (Sheets)
   if (IELTS_CONFIG.AI_AND_SHEET_URL) {
     fetch(IELTS_CONFIG.AI_AND_SHEET_URL, {
       method: "POST",
@@ -421,7 +431,7 @@ async function checkAnswers() {
     }).catch(() => {});
   }
 
-  // 2. Gửi snapshot chi tiết lên Google Drive Server
+  // Gửi snapshot chi tiết lên Google Drive
   if (IELTS_CONFIG.DRIVE_STORAGE_URL && !IELTS_CONFIG.DRIVE_STORAGE_URL.includes("DÁN_LINK")) {
     fetch(IELTS_CONFIG.DRIVE_STORAGE_URL, {
       method: "POST",
@@ -438,19 +448,24 @@ async function checkAnswers() {
 }
 
 function showPostSaveButton() {
-  if (document.getElementById('btnPostSave')) return;
+  if (document.getElementById('btnPostSaveContainer')) return;
   const questionBox = document.querySelector('.question-box');
   if (!questionBox) return;
 
   const postSaveBox = document.createElement('div');
   postSaveBox.id = 'btnPostSaveContainer';
-  postSaveBox.style.cssText = "margin-top: 15px; padding: 12px; background: #f0fdf4; border: 1.5px solid #22c55e; border-radius: 8px; text-align: center;";
+  postSaveBox.style.cssText = "margin-top: 15px; padding: 14px; background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 8px; text-align: center; display: flex; flex-direction: column; gap: 8px; align-items: center;";
   postSaveBox.innerHTML = `
-    <button type="button" id="btnPostSave" onclick="savePostReviewUpdate()" style="background: #16a34a; color: white; border: none; padding: 10px 20px; font-weight: 700; font-size: 14.5px; border-radius: 6px; cursor: pointer;">
-      💾 Lưu vào lịch sử bài làm (Bản Sau sửa)
-    </button>
-    <p style="margin: 6px 0 0 0; font-size: 13px; color: #15803d; font-style: italic;">
-      💡 Bấm nút này sau khi em đã hỏi AI xong và điền xong Mạch suy nghĩ để cập nhật lại phiên bản bài làm mới nhất nhé!
+    <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
+      <button type="button" id="btnPostSave" onclick="savePostReviewUpdate()" style="background: #16a34a; color: white; border: none; padding: 10px 18px; font-weight: 700; font-size: 14px; border-radius: 6px; cursor: pointer;">
+        💾 Lưu vào lịch sử (Bản Sau sửa)
+      </button>
+      <button type="button" onclick="resetCurrentTest()" style="background: #ef4444; color: white; border: none; padding: 10px 18px; font-weight: 700; font-size: 14px; border-radius: 6px; cursor: pointer;">
+        🔄 Xóa hết để làm lại bài này
+      </button>
+    </div>
+    <p style="margin: 0; font-size: 12.5px; color: #64748b; font-style: italic;">
+      💡 Bấm "Lưu" nếu em vừa hỏi AI/viết mạch nghĩ xong. Bấm "Xóa hết" nếu muốn làm lại từ đầu.
     </p>
   `;
   questionBox.appendChild(postSaveBox);
@@ -520,7 +535,7 @@ function highlightText(elementId) {
   }
 }
 
-// ==================== TRỢ GIẢNG AI (GỌI SERVER CŨ) ====================
+// ==================== TRỢ GIẢNG AI ====================
 async function askGeminiAI(qId) {
   if (isReviewMode) {
     alert("Bạn đang ở chế độ xem lại lịch sử.");
@@ -604,7 +619,7 @@ document.addEventListener('DOMContentLoaded', async function() {
   const attemptId = urlParams.get('attemptId');
   const emailParam = urlParams.get('email');
 
-  // Nếu đường link chứa cờ xem lại từ Google Drive
+  // Khôi phục Review Mode từ Google Drive
   if (attemptId && emailParam && IELTS_CONFIG.DRIVE_STORAGE_URL && !IELTS_CONFIG.DRIVE_STORAGE_URL.includes("DÁN_LINK")) {
     try {
       const res = await fetch(IELTS_CONFIG.DRIVE_STORAGE_URL, {
@@ -624,7 +639,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     } catch (e) {}
   }
 
-  // Chế độ làm bài thông thường
+  // Khôi phục bài đang làm dở cục bộ
   restoreStateFromLocalStorage();
   document.addEventListener('input', saveStateToLocalStorage);
   document.addEventListener('change', saveStateToLocalStorage);
