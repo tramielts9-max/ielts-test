@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>IELTS 21 Listening Test 1 - Part 1: Oyster Bay Sailing Club</title>
+  <link rel="stylesheet" href="ielts-core.css">
+</head>
+<body>
+
+<div class="user-info-box">
+  <div class="user-info-field">
+    <label for="studentNameInput">👤 Họ và Tên:</label>
+    <input type="text" id="studentNameInput" placeholder="Đang đồng bộ họ tên...">
+  </div>
+  <div class="user-info-field">
+    <label for="studentEmailInput">✉️ Email Google:</label>
+    <input type="email" id="studentEmailInput" placeholder="Đang đồng bộ Email...">
+  </div>
+</div>
+
+<div class="header-bar">
+  <h1>IELTS Academic 21 - Listening Test 1 - Part 1</h1>
+  
+  <div class="header-nav">
+    <a href="index.html" class="nav-link">🏠 Trang chủ</a>
+    <a href="cam21-lis-test1-p1.html" class="nav-link active">Part 1</a>
+  </div>
+
+  <div class="timer-container">
+    <span>⏱️ Thời gian:</span>
+    <span class="timer-display" id="timerDisplay">00:00</span>
+    <button class="btn-timer" onclick="startTimer()">▶️ Bắt đầu</button>
+    <button class="btn-timer" onclick="pauseTimer()">⏸️ Tạm dừng</button>
+  </div>
+
+  <div class="score-badge" id="scoreBadge">Điểm số: <span id="scoreText">0/10</span></div>
+</div>
+
+<div id="hlPopup" class="hl-popup"><button id="btnDoHighlight">🖍️ Highlight</button></div>
+<div id="removeHlPopup" class="hl-popup"><button id="btnRemoveHighlight">❌ Xóa Highlight</button></div>
+
+<div class="container">
+  <!-- CỘT BÊN TRÁI: TRANSCRIPT (Tự động mở sau khi nộp bài để đối chiếu) -->
+  <div class="passage-box" id="passageBox">
+    <h2>LISTENING TRANSCRIPT - PART 1</h2>
+    <h3>Oyster Bay Sailing Club</h3>
+    <p><i>Transcript sẽ hiển thị vị trí đáp án được highlight màu vàng sau khi em bấm nộp bài để đối chiếu lời giải!</i></p>
+
+    <p><b>WOMAN:</b> Hello, Oyster Bay Sailing Club. How can I help you?</p>
+    <p><b>MAN:</b> Oh hi. I'd like to find out about sailing courses for beginners.</p>
+    <p><b>WOMAN:</b> No problem. Is it for yourself?</p>
+    <p><b>MAN:</b> Yes. I had a look online but I'm not sure which course would be best.</p>
+    <p><b>WOMAN:</b> OK. Well you might be interested in our Taster Days?</p>
+    <p><b>MAN:</b> Possibly.</p>
+    <p><b>WOMAN:</b> So these are for people who've never sailed before - it's basically an introduction to sailing to find out whether you enjoy it and want to carry on with it.</p>
+    <p><b>MAN:</b> And how much is that?</p>
+    <p><b>WOMAN:</b> It's £120 for the day - but it's reduced to £110 each if there are two of you.</p>
+    <p><b>MAN:</b> No, it would just be me.</p>
+    <p><b>WOMAN:</b> Oh that's fine. <span class="hl" id="hl-q1" data-q="[Q1]">You'd be in a small group, usually about eight people but no more than <span class="kw">ten</span></span> - and everyone's always very friendly.</p>
+    <p><b>MAN:</b> Uh huh. And are there any other suitable courses?</p>
+    <p><b>WOMAN:</b> The other option is the Level 1 course. These are two-day weekend courses and we run those all year round.</p>
+    <p><b>MAN:</b> OK. And what do you learn on that course?</p>
+    <p><b>WOMAN:</b> This is a mix of theory and practical skills. <span class="hl" id="hl-q2" data-q="[Q2]">So you learn about things like the <span class="kw">weather</span>, which is obviously really important and also the tides</span>, <span class="hl" id="hl-q3" data-q="[Q3]">as well as learning basic sailing skills. You go out into the harbour in special training dinghies for beginners, two people in each dinghy and an instructor. He or she will make sure you understand everything you need to know about <span class="kw">safety</span></span>.</p>
+    <p><b>MAN:</b> It sounds like hard work!</p>
+    <p><b>WOMAN:</b> Yes, but you'll have a lot of fun too.</p>
+    <p><b>MAN:</b> And the cost of that one is ... ?</p>
+    <p><b>WOMAN:</b> <span class="hl" id="hl-q4" data-q="[Q4]">£200. But it's a bit cheaper if you decide to join the club. There's a <span class="kw">discount</span> for members</span>.</p>
+    <p><b>MAN:</b> Well, I'm not sure about that yet.</p>
+    <p><b>WOMAN:</b> You've got plenty of time to decide.</p>
+    <p><b>MAN:</b> And does the cost include everything?</p>
+    <p><b>WOMAN:</b> <span class="hl" id="hl-q5" data-q="[Q5]">Yes, everything's included and you also get a really good <span class="kw">dictionary</span> explaining all the sailing terminology</span>. A lot of people struggle with this at first. It's got lots of pictures, so I'm sure you'd find it really helpful. <span class="hl" id="hl-q6" data-q="[Q6]">And on completion of the course you get a <span class="kw">certificate</span></span>. Then you're ready to move on to the Level 2 course.</p>
+    <p><b>MAN:</b> Sounds good.</p>
+    <p><b>WOMAN:</b> I think that's all the info you need for now. Just a couple of general things. For example, it's really important that you know how to swim.</p>
+    <p><b>MAN:</b> Yes, I'm pretty confident in the water.</p>
+    <p><b>WOMAN:</b> Great. <span class="hl" id="hl-q7" data-q="[Q7]">The other thing I should tell you is that we provide wetsuits and life jackets but you need to bring swimming trunks and some old trainers. MAN: And a <span class="kw">towel</span>? WOMAN: Yes definitely</span>. And you might want to bring your own toiletries, things like shampoo.</p>
+    <p><b>MAN:</b> <span class="hl" id="hl-q8" data-q="[Q8]">OK. What about food and drink? Do I need to bring that or is there a <span class="kw">café</span> at the club? WOMAN: Yes, you can get sandwiches, cakes and snacks there</span>. The food's pretty reasonable.</p>
+    <p><b>MAN:</b> OK good. Well I think I'm interested in the Level 1 course. But I know absolutely nothing about sailing so is there anything I can do to prepare myself a bit?</p>
+    <p><b>WOMAN:</b> <span class="hl" id="hl-q9" data-q="[Q9]">I recommend you watch some <span class="kw">videos</span> we use for training. They're available online</span>. I can send you the link. They'll give you an idea of what to expect.</p>
+    <p><b>MAN:</b> Perfect, thanks. That would be very helpful. <span class="hl" id="hl-q10" data-q="[Q10]">Oh and just one other thing - I'll be cycling to the club and will need somewhere to put valuables. I'm just wondering if there are <span class="kw">lockers</span> for people to use? WOMAN: Yes, there are plenty in the changing rooms</span>.</p>
+    <p><b>MAN:</b> Great. OK well could you book me onto...</p>
+  </div>
+
+  <!-- CỘT BÊN PHẢI: AUDIO PLAYER & CÂU HỎI -->
+  <div class="question-box">
+    
+    <!-- THANH PHÁT AUDIO PLAYER -->
+    <div class="audio-player-container">
+      <div class="audio-player-header">
+        🎧 <b>Part 1:</b> Listen and answer questions 1-10
+      </div>
+      <audio class="audio-player-element" controls preload="metadata">
+        <source src="https://archive.org/download/cambridge-ielts-21-academic/Cambridge%2021%20-%20Test%201.mp3" type="audio/mpeg">
+        Trình duyệt của bạn không hỗ trợ phát âm thanh.
+      </audio>
+    </div>
+
+    <!-- KHỐI CÂU HỎI 1-6 -->
+    <div class="section-title">Questions 1-6</div>
+    <p><i>Complete the table below. Write <b>ONE WORD AND/OR A NUMBER</b> for each answer.</i></p>
+
+    <div style="background: var(--bg-subcard, #f8fafc); border: 1px solid var(--border-color, #e2e8f0); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+      <h3 style="margin-top: 0; color: var(--primary-blue);">Oyster Bay Sailing Club Courses</h3>
+      
+      <!-- Table Question Layout -->
+      <table style="width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.95em;">
+        <thead>
+          <tr style="border-bottom: 2px solid var(--border-color); text-align: left;">
+            <th style="padding: 8px;">Name of course</th>
+            <th style="padding: 8px;">What you learn</th>
+            <th style="padding: 8px;">Cost</th>
+            <th style="padding: 8px;">Other information</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Row 1: Taster day -->
+          <tr style="border-bottom: 1px solid var(--border-color);">
+            <td style="padding: 10px 8px; vertical-align: top;"><b>Taster day</b></td>
+            <td style="padding: 10px 8px; vertical-align: top;">introduction to sailing</td>
+            <td style="padding: 10px 8px; vertical-align: top;">£120 if booking one place</td>
+            <td style="padding: 10px 8px; vertical-align: top;">
+              <div class="question" id="q1" style="background: transparent; padding: 0; margin: 0; border: none;">
+                small groups (max <b>1.</b> <input type="text" id="q1_input" class="fill-input" style="min-width: 60px;"> people)
+                <div class="thought-box" style="margin: 6px 0;"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q1_thought"></textarea></div>
+                <div class="result"></div>
+                <div class="explanation">
+                  <h4 style="color: #0369a1; margin-bottom: 6px;">📝 LỜI GIẢI CHI TIẾT:</h4>
+                  <div class="exp-step">• <b>Đáp án đúng:</b> <span class="kw-exp">10</span> hoặc <span class="kw-exp">ten</span></div>
+                  <div class="exp-step">• <b>Dấu hiệu nhận biết:</b> Người phụ nữ mô tả nhóm học: "You'd be in a small group, usually about eight people but no more than ten". Cụm "no more than" đồng nghĩa với "max" (tối đa).</div>
+                  <button class="btn-locate" onclick="highlightText('hl-q1')">📍 Xem vị trí trong Transcript</button>
+                  <div class="ai-assistant-box">
+                    <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+                    <div class="ai-input-group"><input type="text" id="ai_ask_q1"><button class="ai-btn" onclick="askGeminiAI('q1')">Gửi AI</button></div>
+                    <div class="ai-response" id="ai_response_q1"></div>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Row 2: Level 1 -->
+          <tr>
+            <td style="padding: 10px 8px; vertical-align: top;" rowspan="2"><b>Level 1</b></td>
+            <td style="padding: 10px 8px; vertical-align: top;">
+              basic theory e.g. understanding the 
+              <div class="question" id="q2" style="background: transparent; padding: 0; margin: 6px 0; border: none;">
+                <b>2.</b> <input type="text" id="q2_input" class="fill-input"> and tides
+                <div class="thought-box" style="margin: 6px 0;"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q2_thought"></textarea></div>
+                <div class="result"></div>
+                <div class="explanation">
+                  <h4 style="color: #0369a1; margin-bottom: 6px;">📝 LỜI GIẢI CHI TIẾT:</h4>
+                  <div class="exp-step">• <b>Đáp án đúng:</b> <span class="kw-exp">weather</span></div>
+                  <div class="exp-step">• <b>Dấu hiệu nhận biết:</b> Người nói nêu nội dung lý thuyết: "So you learn about things like the weather, which is obviously really important and also the tides". Danh từ đi cùng 'tides' là 'weather'.</div>
+                  <button class="btn-locate" onclick="highlightText('hl-q2')">📍 Xem vị trí trong Transcript</button>
+                  <div class="ai-assistant-box">
+                    <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+                    <div class="ai-input-group"><input type="text" id="ai_ask_q2"><button class="ai-btn" onclick="askGeminiAI('q2')">Gửi AI</button></div>
+                    <div class="ai-response" id="ai_response_q2"></div>
+                  </div>
+                </div>
+              </div>
+              <br>
+              basic sailing skills including 
+              <div class="question" id="q3" style="background: transparent; padding: 0; margin: 6px 0; border: none;">
+                <b>3.</b> <input type="text" id="q3_input" class="fill-input"> information
+                <div class="thought-box" style="margin: 6px 0;"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q3_thought"></textarea></div>
+                <div class="result"></div>
+                <div class="explanation">
+                  <h4 style="color: #0369a1; margin-bottom: 6px;">📝 LỜI GIẢI CHI TIẾT:</h4>
+                  <div class="exp-step">• <b>Đáp án đúng:</b> <span class="kw-exp">safety</span></div>
+                  <div class="exp-step">• <b>Dấu hiệu nhận biết:</b> Người hướng dẫn: "He or she will make sure you understand everything you need to know about safety". Cần điền danh từ 'safety'.</div>
+                  <button class="btn-locate" onclick="highlightText('hl-q3')">📍 Xem vị trí trong Transcript</button>
+                  <div class="ai-assistant-box">
+                    <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+                    <div class="ai-input-group"><input type="text" id="ai_ask_q3"><button class="ai-btn" onclick="askGeminiAI('q3')">Gửi AI</button></div>
+                    <div class="ai-response" id="ai_response_q3"></div>
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td style="padding: 10px 8px; vertical-align: top;">
+              £200<br><br>
+              <div class="question" id="q4" style="background: transparent; padding: 0; margin: 6px 0; border: none;">
+                <b>4.</b> <input type="text" id="q4_input" class="fill-input"> available for club members
+                <div class="thought-box" style="margin: 6px 0;"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q4_thought"></textarea></div>
+                <div class="result"></div>
+                <div class="explanation">
+                  <h4 style="color: #0369a1; margin-bottom: 6px;">📝 LỜI GIẢI CHI TIẾT:</h4>
+                  <div class="exp-step">• <b>Đáp án đúng:</b> <span class="kw-exp">discount</span></div>
+                  <div class="exp-step">• <b>Dấu hiệu nhận biết:</b> Người phụ nữ bảo: "There's a discount for members". Cần điền 'discount'.</div>
+                  <button class="btn-locate" onclick="highlightText('hl-q4')">📍 Xem vị trí trong Transcript</button>
+                  <div class="ai-assistant-box">
+                    <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+                    <div class="ai-input-group"><input type="text" id="ai_ask_q4"><button class="ai-btn" onclick="askGeminiAI('q4')">Gửi AI</button></div>
+                    <div class="ai-response" id="ai_response_q4"></div>
+                  </div>
+                </div>
+              </div>
+              <br>
+              all inclusive (plus a useful 
+              <div class="question" id="q5" style="background: transparent; padding: 0; margin: 6px 0; border: none;">
+                <b>5.</b> <input type="text" id="q5_input" class="fill-input"> )
+                <div class="thought-box" style="margin: 6px 0;"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q5_thought"></textarea></div>
+                <div class="result"></div>
+                <div class="explanation">
+                  <h4 style="color: #0369a1; margin-bottom: 6px;">📝 LỜI GIẢI CHI TIẾT:</h4>
+                  <div class="exp-step">• <b>Đáp án đúng:</b> <span class="kw-exp">dictionary</span></div>
+                  <div class="exp-step">• <b>Dấu hiệu nhận biết:</b> Người phụ nữ nói: "you also get a really good dictionary explaining all the sailing terminology... you'd find it really helpful". Helpful = useful. Điền 'dictionary'.</div>
+                  <button class="btn-locate" onclick="highlightText('hl-q5')">📍 Xem vị trí trong Transcript</button>
+                  <div class="ai-assistant-box">
+                    <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+                    <div class="ai-input-group"><input type="text" id="ai_ask_q5"><button class="ai-btn" onclick="askGeminiAI('q5')">Gửi AI</button></div>
+                    <div class="ai-response" id="ai_response_q5"></div>
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td style="padding: 10px 8px; vertical-align: top;">
+              <div class="question" id="q6" style="background: transparent; padding: 0; margin: 6px 0; border: none;">
+                a <b>6.</b> <input type="text" id="q6_input" class="fill-input"> at the end of the course for all participants
+                <div class="thought-box" style="margin: 6px 0;"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q6_thought"></textarea></div>
+                <div class="result"></div>
+                <div class="explanation">
+                  <h4 style="color: #0369a1; margin-bottom: 6px;">📝 LỜI GIẢI CHI TIẾT:</h4>
+                  <div class="exp-step">• <b>Đáp án đúng:</b> <span class="kw-exp">certificate</span></div>
+                  <div class="exp-step">• <b>Dấu hiệu nhận biết:</b> "And on completion of the course you get a certificate". Completion of the course = end of the course. Điền 'certificate'.</div>
+                  <button class="btn-locate" onclick="highlightText('hl-q6')">📍 Xem vị trí trong Transcript</button>
+                  <div class="ai-assistant-box">
+                    <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+                    <div class="ai-input-group"><input type="text" id="ai_ask_q6"><button class="ai-btn" onclick="askGeminiAI('q6')">Gửi AI</button></div>
+                    <div class="ai-response" id="ai_response_q6"></div>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- KHỐI CÂU HỎI 7-10 -->
+    <div class="section-title" style="margin-top: 30px;">Questions 7-10</div>
+    <p><i>Complete the notes below. Write <b>ONE WORD ONLY</b> for each answer.</i></p>
+
+    <div style="background: var(--bg-subcard, #f8fafc); border: 1px solid var(--border-color, #e2e8f0); padding: 18px; border-radius: 8px;">
+      <h3 style="margin-top: 0; color: var(--primary-blue);">General information</h3>
+      <ul style="line-height: 2; padding-left: 20px;">
+        <li>Participants must be able to swim.</li>
+        
+        <!-- Q7 -->
+        <li class="question" id="q7" style="background: transparent; padding: 0; margin-bottom: 12px; border: none;">
+          Bring suitable clothing, a <b>7.</b> <input type="text" id="q7_input" class="fill-input"> and toiletries (e.g. shampoo).
+          <div class="thought-box" style="margin: 6px 0;"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q7_thought"></textarea></div>
+          <div class="result"></div>
+          <div class="explanation">
+            <h4 style="color: #0369a1; margin-bottom: 6px;">📝 LỜI GIẢI CHI TIẾT:</h4>
+            <div class="exp-step">• <b>Đáp án đúng:</b> <span class="kw-exp">towel</span></div>
+            <div class="exp-step">• <b>Dấu hiệu nhận biết:</b> Người đàn ông hỏi: "And a towel?", người phụ nữ trả lời "Yes definitely". Điền 'towel'.</div>
+            <button class="btn-locate" onclick="highlightText('hl-q7')">📍 Xem vị trí trong Transcript</button>
+            <div class="ai-assistant-box">
+              <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+              <div class="ai-input-group"><input type="text" id="ai_ask_q7"><button class="ai-btn" onclick="askGeminiAI('q7')">Gửi AI</button></div>
+              <div class="ai-response" id="ai_response_q7"></div>
+            </div>
+          </div>
+        </li>
+
+        <!-- Q8 -->
+        <li class="question" id="q8" style="background: transparent; padding: 0; margin-bottom: 12px; border: none;">
+          There is a <b>8.</b> <input type="text" id="q8_input" class="fill-input"> at the club.
+          <div class="thought-box" style="margin: 6px 0;"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q8_thought"></textarea></div>
+          <div class="result"></div>
+          <div class="explanation">
+            <h4 style="color: #0369a1; margin-bottom: 6px;">📝 LỜI GIẢI CHI TIẾT:</h4>
+            <div class="exp-step">• <b>Đáp án đúng:</b> <span class="kw-exp">café</span> hoặc <span class="kw-exp">cafe</span></div>
+            <div class="exp-step">• <b>Dấu hiệu nhận biết:</b> Người đàn ông hỏi: "Do I need to bring that or is there a café at the club? WOMAN: Yes, you can get sandwiches...". Điền 'café' hoặc 'cafe'.</div>
+            <button class="btn-locate" onclick="highlightText('hl-q8')">📍 Xem vị trí trong Transcript</button>
+            <div class="ai-assistant-box">
+              <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+              <div class="ai-input-group"><input type="text" id="ai_ask_q8"><button class="ai-btn" onclick="askGeminiAI('q8')">Gửi AI</button></div>
+              <div class="ai-response" id="ai_response_q8"></div>
+            </div>
+          </div>
+        </li>
+
+        <!-- Q9 -->
+        <li class="question" id="q9" style="background: transparent; padding: 0; margin-bottom: 12px; border: none;">
+          Online training <b>9.</b> <input type="text" id="q9_input" class="fill-input"> are recommended.
+          <div class="thought-box" style="margin: 6px 0;"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q9_thought"></textarea></div>
+          <div class="result"></div>
+          <div class="explanation">
+            <h4 style="color: #0369a1; margin-bottom: 6px;">📝 LỜI GIẢI CHI TIẾT:</h4>
+            <div class="exp-step">• <b>Đáp án đúng:</b> <span class="kw-exp">videos</span></div>
+            <div class="exp-step">• <b>Dấu hiệu nhận biết:</b> Người phụ nữ khuyên: "I recommend you watch some videos we use for training. They're available online". Điền 'videos'.</div>
+            <button class="btn-locate" onclick="highlightText('hl-q9')">📍 Xem vị trí trong Transcript</button>
+            <div class="ai-assistant-box">
+              <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+              <div class="ai-input-group"><input type="text" id="ai_ask_q9"><button class="ai-btn" onclick="askGeminiAI('q9')">Gửi AI</button></div>
+              <div class="ai-response" id="ai_response_q9"></div>
+            </div>
+          </div>
+        </li>
+
+        <!-- Q10 -->
+        <li class="question" id="q10" style="background: transparent; padding: 0; margin-bottom: 12px; border: none;">
+          <b>10.</b> <input type="text" id="q10_input" class="fill-input"> are available for course participants.
+          <div class="thought-box" style="margin: 6px 0;"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q10_thought"></textarea></div>
+          <div class="result"></div>
+          <div class="explanation">
+            <h4 style="color: #0369a1; margin-bottom: 6px;">📝 LỜI GIẢI CHI TIẾT:</h4>
+            <div class="exp-step">• <b>Đáp án đúng:</b> <span class="kw-exp">lockers</span> hoặc <span class="kw-exp">Lockers</span></div>
+            <div class="exp-step">• <b>Dấu hiệu nhận biết:</b> Người đàn ông hỏi chỗ để đồ quý giá: "I'm just wondering if there are lockers for people to use? WOMAN: Yes, there are plenty...". Điền 'lockers'.</div>
+            <button class="btn-locate" onclick="highlightText('hl-q10')">📍 Xem vị trí trong Transcript</button>
+            <div class="ai-assistant-box">
+              <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+              <div class="ai-input-group"><input type="text" id="ai_ask_q10"><button class="ai-btn" onclick="askGeminiAI('q10')">Gửi AI</button></div>
+              <div class="ai-response" id="ai_response_q10"></div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <button class="btn-submit" onclick="checkAnswers()">CHẤM BÀI VÀ NỘP KẾT QUẢ</button>
+  </div>
+</div>
+
+<script>
+  window.TEST_DATA = {
+    title: "Cam 21 Listening Test 1 - Part 1",
+    answers: {
+      q1: ["10", "ten"],
+      q2: "weather",
+      q3: "safety",
+      q4: "discount",
+      q5: "dictionary",
+      q6: "certificate",
+      q7: "towel",
+      q8: ["café", "cafe"],
+      q9: "videos",
+      q10: ["lockers", "Lockers"]
+    }
+  };
+</script>
+<script src="ielts-core.js"></script>
+</body>
+</html>
