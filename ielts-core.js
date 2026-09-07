@@ -1,41 +1,20 @@
 /**
  * ==========================================================================
  * IELTS PRACTICE TEST CORE ENGINE (ielts-core.js)
- * Tự động hóa: Auth Gate, Đồng bộ Tên/Email, Bấm giờ, Highlight, Chấm điểm, AI Trợ giảng
+ * Tự động hóa: Bấm giờ, Highlight, Chấm điểm, AI Trợ giảng, Đăng nhập 1 lần
+ * HỆ THỐNG 2 SERVER ĐỘC LẬP: AI Server & Google Drive Server
  * ==========================================================================
  */
 
 const IELTS_CONFIG = {
-  GEMINI_API_KEY: "", 
-  GOOGLE_SCRIPT_URL: "https://script.google.com/macros/s/AKfycby7vRFXq_YhjIEq4kN-8NLRFw2sj-7VkVEmTw6IkNkPmidEPnPtxtNkSE-HKfn5mAPfbw/exec"
+  // 1. LINK SCRIPT CŨ CỦA BẠN (Xử lý AI & Ghi điểm Sheet - GIỮ NGUYÊN)
+  AI_AND_SHEET_URL: "https://script.google.com/macros/s/AKfycby7vRFXq_YhjIEq4kN-8NLRFw2sj-7VkVEmTw6IkNkPmidEPnPtxtNkSE-HKfn5mAPfbw/exec",
+
+  // 2. LINK SCRIPT MỚI TẠO Ở BƯỚC 1 (Chuyên lưu bài lên Google Drive)
+  // 👉 Hãy thay đường link dưới đây bằng link Web App bạn vừa tạo ở Bước 1 nhé:
+  DRIVE_STORAGE_URL: "https://script.google.com/macros/s/AKfycbx5HRPHr75RLlcuXvcn1QSTmsLszIhYH6cDrKiGZS4RCoxa0l3NJF4dKWplI1sVKVoCYg/exec"
 };
 
-// Quản lý thông tin tài khoản dùng chung
-const GLOBAL_USER_KEY = 'ielts_current_user';
-
-function getGlobalUser() {
-  try {
-    const raw = localStorage.getItem(GLOBAL_USER_KEY);
-    return raw ? JSON.parse(raw) : null;
-  } catch (e) {
-    return null;
-  }
-}
-
-function setGlobalUser(name, email) {
-  if (!email) return;
-  const user = {
-    name: name ? name.trim() : 'Học viên',
-    email: email.trim().toLowerCase()
-  };
-  localStorage.setItem(GLOBAL_USER_KEY, JSON.stringify(user));
-}
-
-function clearGlobalUser() {
-  localStorage.removeItem(GLOBAL_USER_KEY);
-}
-
-// Quản lý đồng hồ & Cỡ chữ
 let seconds = 0;
 let timerInterval = null;
 let isTimerRunning = false;
@@ -46,6 +25,27 @@ let isReviewMode = false;
 function getStorageKey() {
   const pageName = window.location.pathname.split('/').pop() || 'default_test';
   return 'ielts_state_' + pageName;
+}
+
+// ĐỒNG BỘ THÔNG TIN HỌC VIÊN TỰ ĐỘNG GIỮA TẤT CẢ CÁC BÀI TEST
+function getSavedUserInfo() {
+  return {
+    name: localStorage.getItem('ielts_student_name') || '',
+    email: localStorage.getItem('ielts_student_email') || ''
+  };
+}
+
+function saveUserInfo(name, email) {
+  if (name) localStorage.setItem('ielts_student_name', name.trim());
+  if (email) localStorage.setItem('ielts_student_email', email.trim().toLowerCase());
+}
+
+function autoFillUserInfo() {
+  const user = getSavedUserInfo();
+  const nameInput = document.getElementById('studentNameInput');
+  const emailInput = document.getElementById('studentEmailInput');
+  if (nameInput && !nameInput.value && user.name) nameInput.value = user.name;
+  if (emailInput && !emailInput.value && user.email) emailInput.value = user.email;
 }
 
 function changeFontSize(delta) {
@@ -71,7 +71,6 @@ function updateTimerDisplay() {
   const timerDisplay = document.getElementById('timerDisplay');
   if (timerDisplay) {
     timerDisplay.innerText = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-    if (mins >= 20) timerDisplay.classList.add('timer-overtime');
   }
 }
 
@@ -96,39 +95,22 @@ function pauseTimer() {
 
 function stopTimer() {
   pauseTimer();
+  const audios = document.querySelectorAll('audio');
+  audios.forEach(a => a.pause());
 }
 
-// TỰ ĐỘNG LƯU DỮ LIỆU
 function saveStateToLocalStorage() {
-  if (isReviewMode) {
-    const urlParams = new URLSearchParams(window.location.search);
-    const attemptId = urlParams.get('attemptId');
-    const studentEmailParam = urlParams.get('email');
-    if (attemptId && studentEmailParam) {
-      const db = getHistoryDatabase();
-      const emailKey = studentEmailParam.toLowerCase().trim();
-      const userAttempts = db[emailKey] || [];
-      const matchedAttempt = userAttempts.find(a => a.id === attemptId);
-      if (matchedAttempt) {
-        document.querySelectorAll('.thought-box textarea').forEach(textarea => {
-          if (!matchedAttempt.thoughts) matchedAttempt.thoughts = {};
-          matchedAttempt.thoughts[textarea.id] = textarea.value;
-        });
-        document.querySelectorAll('.ai-response').forEach(aiBox => {
-          if (aiBox.innerHTML.trim() !== '') {
-            if (!matchedAttempt.aiResponses) matchedAttempt.aiResponses = {};
-            matchedAttempt.aiResponses[aiBox.id] = aiBox.innerHTML;
-          }
-        });
-        localStorage.setItem('ielts_history_database', JSON.stringify(db));
-      }
-    }
-    return;
-  }
+  if (isReviewMode) return;
   try {
     const key = getStorageKey();
+    const nameVal = document.getElementById('studentNameInput') ? document.getElementById('studentNameInput').value : '';
+    const emailVal = document.getElementById('studentEmailInput') ? document.getElementById('studentEmailInput').value : '';
+    saveUserInfo(nameVal, emailVal);
+
     const state = {
       seconds: seconds,
+      studentName: nameVal,
+      studentEmail: emailVal,
       isDarkTheme: document.body.classList.contains('dark-theme'),
       fontSize: currentFontSize,
       isSubmitted: document.getElementById('passageBox') ? document.getElementById('passageBox').classList.contains('submitted') : false,
@@ -139,70 +121,26 @@ function saveStateToLocalStorage() {
       aiResponses: {}
     };
 
-    document.querySelectorAll('input[type="text"].fill-input').forEach(input => {
-      state.inputs[input.id] = input.value;
-    });
-    document.querySelectorAll('input[type="radio"]:checked').forEach(radio => {
-      state.radios[radio.name] = radio.value;
-    });
-    document.querySelectorAll('.thought-box textarea').forEach(textarea => {
-      state.thoughts[textarea.id] = textarea.value;
-    });
+    document.querySelectorAll('input[type="text"].fill-input').forEach(input => { state.inputs[input.id] = input.value; });
+    document.querySelectorAll('input[type="radio"]:checked').forEach(radio => { state.radios[radio.name] = radio.value; });
+    document.querySelectorAll('.thought-box textarea').forEach(textarea => { state.thoughts[textarea.id] = textarea.value; });
     document.querySelectorAll('.ai-response').forEach(aiBox => {
-      if (aiBox.innerHTML.trim() !== '') {
-        state.aiResponses[aiBox.id] = aiBox.innerHTML;
-      }
+      if (aiBox.innerHTML.trim() !== '') state.aiResponses[aiBox.id] = aiBox.innerHTML;
     });
 
     localStorage.setItem(key, JSON.stringify(state));
-
-    const saveIndicator = document.getElementById('saveIndicator');
-    if (saveIndicator) {
-      saveIndicator.style.display = 'inline-block';
-      saveIndicator.innerText = '✓ Đã tự động lưu';
-    }
-  } catch (err) {
-    console.warn("Lỗi lưu localStorage:", err);
-  }
+  } catch (err) {}
 }
 
-// DATABASE LỊCH SỬ
-function getHistoryDatabase() {
-  try {
-    const raw = localStorage.getItem('ielts_history_database');
-    return raw ? JSON.parse(raw) : {};
-  } catch (e) {
-    return {};
-  }
-}
-
-function saveAttemptToHistoryDatabase(attemptData) {
-  try {
-    const db = getHistoryDatabase();
-    const email = attemptData.studentEmail.toLowerCase().trim();
-    if (!email) return;
-
-    if (!db[email]) db[email] = [];
-    db[email].unshift(attemptData);
-    localStorage.setItem('ielts_history_database', JSON.stringify(db));
-  } catch (e) {
-    console.warn("Lỗi lưu history database:", e);
-  }
-}
-
-// KHÔI PHỤC VÀ ĐỒNG BỘ THÔNG TIN
 function restoreStateFromLocalStorage() {
   try {
+    autoFillUserInfo();
     const key = getStorageKey();
     const savedData = localStorage.getItem(key);
     if (!savedData) return;
 
     const state = JSON.parse(savedData);
-
-    if (state.seconds) {
-      seconds = state.seconds;
-      updateTimerDisplay();
-    }
+    if (state.seconds) { seconds = state.seconds; updateTimerDisplay(); }
 
     if (state.isDarkTheme) {
       document.body.classList.add('dark-theme');
@@ -220,7 +158,6 @@ function restoreStateFromLocalStorage() {
         if (el) el.value = state.inputs[inputId];
       }
     }
-
     if (state.radios) {
       for (const radioName in state.radios) {
         const val = state.radios[radioName];
@@ -228,21 +165,16 @@ function restoreStateFromLocalStorage() {
         if (radioEl) radioEl.checked = true;
       }
     }
-
     if (state.thoughts) {
       for (const textareaId in state.thoughts) {
         const el = document.getElementById(textareaId);
         if (el) el.value = state.thoughts[textareaId];
       }
     }
-
     if (state.aiResponses) {
       for (const boxId in state.aiResponses) {
         const el = document.getElementById(boxId);
-        if (el) {
-          el.style.display = 'block';
-          el.innerHTML = state.aiResponses[boxId];
-        }
+        if (el) { el.style.display = 'block'; el.innerHTML = state.aiResponses[boxId]; }
       }
     }
 
@@ -250,12 +182,9 @@ function restoreStateFromLocalStorage() {
       applySubmittedUI(state.scoreText);
       showPostSaveButton();
     }
-  } catch (err) {
-    console.warn("Lỗi khôi phục localStorage:", err);
-  }
+  } catch (err) {}
 }
 
-// REVIEW MODE
 function restoreAttemptFromSnapshot(attempt) {
   isReviewMode = true;
   stopTimer();
@@ -264,7 +193,7 @@ function restoreAttemptFromSnapshot(attempt) {
   reviewBanner.style.cssText = "background: #f59e0b; color: #78350f; padding: 10px 16px; font-weight: 700; font-size: 14px; text-align: center; border-radius: 8px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;";
   reviewBanner.innerHTML = `
     <span>📜 ĐANG XEM LẠI LỊCH SỬ BÀI LÀM (${attempt.timestamp}) — Điểm: ${attempt.score} (Học viên: ${attempt.studentName})</span>
-    <a href="index.html" style="background: #78350f; color: white; padding: 4px 12px; text-decoration: none; border-radius: 4px; font-size: 13px;">🔙 Quay lại Trang Chủ</a>
+    <a href="index.html" style="background: #78350f; color: white; padding: 5px 14px; text-decoration: none; border-radius: 4px; font-size: 13px;">🔙 Quay lại Danh mục</a>
   `;
   document.body.insertBefore(reviewBanner, document.body.firstChild);
 
@@ -277,10 +206,7 @@ function restoreAttemptFromSnapshot(attempt) {
   if (attempt.inputs) {
     for (const inputId in attempt.inputs) {
       const el = document.getElementById(inputId);
-      if (el) {
-        el.value = attempt.inputs[inputId];
-        el.disabled = true;
-      }
+      if (el) { el.value = attempt.inputs[inputId]; el.disabled = true; }
     }
   }
 
@@ -303,10 +229,7 @@ function restoreAttemptFromSnapshot(attempt) {
   if (attempt.aiResponses) {
     for (const boxId in attempt.aiResponses) {
       const el = document.getElementById(boxId);
-      if (el) {
-        el.style.display = 'block';
-        el.innerHTML = attempt.aiResponses[boxId];
-      }
+      if (el) { el.style.display = 'block'; el.innerHTML = attempt.aiResponses[boxId]; }
     }
   }
 
@@ -324,9 +247,7 @@ function applySubmittedUI(scoreStr) {
   if (scoreBadge) scoreBadge.style.display = 'block';
   if (scoreText && scoreStr) scoreText.innerText = scoreStr;
 
-  document.querySelectorAll('.explanation').forEach(exp => {
-    exp.style.display = 'block';
-  });
+  document.querySelectorAll('.explanation').forEach(exp => { exp.style.display = 'block'; });
 
   if (window.TEST_DATA && window.TEST_DATA.answers) {
     const answers = window.TEST_DATA.answers;
@@ -365,246 +286,27 @@ function applySubmittedUI(scoreStr) {
   }
 }
 
-function resetTestProgress() {
-  if (confirm("⚠️ Bạn có chắc chắn muốn xóa bài làm để BẮT ĐẦU LẠI không?")) {
-    const key = getStorageKey();
-    localStorage.removeItem(key);
-    
-    const currentPath = window.location.pathname;
-    document.querySelectorAll('.ai-response').forEach(box => {
-      const qId = box.id.replace("ai_response_", "");
-      localStorage.removeItem(`ai_chat_${currentPath}_${qId}`);
-    });
-
-    window.location.href = window.location.pathname;
-  }
-}
-
-// KHỞI TẠO DOM & BẢO VỆ ĐỀ THI
-let currentSelectedRange = null;
-let currentTargetSpan = null;
-
-document.addEventListener('DOMContentLoaded', function() {
-  const isIndexPage = window.location.pathname.endsWith('index.html') || window.location.pathname.endsWith('/') || window.location.pathname === '';
-  const urlParams = new URLSearchParams(window.location.search);
-  const isReview = urlParams.get('attemptId');
-  const globalUser = getGlobalUser();
-
-  // 1. KIỂM TRA BẢO VỆ: Nếu vào thẳng trang đề mà chưa đăng nhập ở trang chủ -> Chuyển về index.html
-  if (!isIndexPage && !isReview) {
-    if (!globalUser || !globalUser.email) {
-      alert("⚠️ Em cần đăng nhập Tên và Email ở Trang chủ trước khi làm bài nhé!");
-      const currentPage = window.location.pathname.split('/').pop();
-      window.location.href = `index.html?returnUrl=${encodeURIComponent(currentPage)}`;
-      return;
-    }
-
-    // Tự động điền và khóa cố định trường Tên/Email trong bài thi
-    const nameInput = document.getElementById('studentNameInput');
-    const emailInput = document.getElementById('studentEmailInput');
-    if (nameInput) {
-      nameInput.value = globalUser.name;
-      nameInput.readOnly = true;
-      nameInput.classList.add('input-locked');
-    }
-    if (emailInput) {
-      emailInput.value = globalUser.email;
-      emailInput.readOnly = true;
-      emailInput.classList.add('input-locked');
-    }
-  }
-
-  // 2. Chèn Nút Control vào Header bài thi
-  const headerBar = document.querySelector('.header-bar');
-  if (headerBar && !document.getElementById('btnThemeToggle')) {
-    const controlsDiv = document.createElement('div');
-    controlsDiv.className = 'header-controls';
-    controlsDiv.innerHTML = `
-      <span id="saveIndicator" style="font-size: 12px; background: rgba(34, 197, 94, 0.2); color: #4ade80; padding: 4px 10px; border-radius: 20px; font-weight: 600;">✓ Đã tự động lưu</span>
-      <button class="btn-header" onclick="changeFontSize(-1)">🔍 A-</button>
-      <button class="btn-header" onclick="changeFontSize(1)">🔍 A+</button>
-      <button class="btn-header" id="btnThemeToggle" onclick="toggleTheme()">🌙 Chế độ tối</button>
-      <button class="btn-header" style="background: rgba(239,68,68,0.2); border-color: rgba(239,68,68,0.4);" onclick="resetTestProgress()">🗑️ Làm lại bài</button>
-    `;
-    headerBar.appendChild(controlsDiv);
-  }
-
-  // 3. Resizer 2 Cột
-  const container = document.querySelector('.container');
-  const passageBox = document.getElementById('passageBox');
-  const questionBox = document.querySelector('.question-box');
-
-  if (container && passageBox && questionBox && !document.getElementById('dragResizer')) {
-    const resizer = document.createElement('div');
-    resizer.className = 'resizer';
-    resizer.id = 'dragResizer';
-    container.insertBefore(resizer, questionBox);
-
-    let isResizing = false;
-    resizer.addEventListener('mousedown', function(e) {
-      isResizing = true;
-      resizer.classList.add('resizing');
-      document.body.style.cursor = 'col-resize';
-      document.body.style.userSelect = 'none';
-    });
-
-    document.addEventListener('mousemove', function(e) {
-      if (!isResizing) return;
-      const containerRect = container.getBoundingClientRect();
-      let pointerRelativeX = e.clientX - containerRect.left;
-      let minWidthPx = 250;
-      let maxWidthPx = containerRect.width - 250;
-
-      if (pointerRelativeX < minWidthPx) pointerRelativeX = minWidthPx;
-      if (pointerRelativeX > maxWidthPx) pointerRelativeX = maxWidthPx;
-
-      let passageWidthPercent = (pointerRelativeX / containerRect.width) * 100;
-      passageBox.style.width = passageWidthPercent + '%';
-      questionBox.style.width = (100 - passageWidthPercent) + '%';
-    });
-
-    document.addEventListener('mouseup', function() {
-      if (isResizing) {
-        isResizing = false;
-        resizer.classList.remove('resizing');
-        document.body.style.cursor = 'default';
-        document.body.style.userSelect = 'auto';
-      }
-    });
-  }
-
-  // 4. Khôi phục bài làm
-  const attemptId = urlParams.get('attemptId');
-  const studentEmailParam = urlParams.get('email');
-
-  if (attemptId && studentEmailParam) {
-    const db = getHistoryDatabase();
-    const userAttempts = db[studentEmailParam.toLowerCase().trim()] || [];
-    const matchedAttempt = userAttempts.find(a => a.id === attemptId);
-    if (matchedAttempt) {
-      restoreAttemptFromSnapshot(matchedAttempt);
-    } else {
-      restoreStateFromLocalStorage();
-    }
-  } else {
-    restoreStateFromLocalStorage();
-  }
-
-  // 5. Lưu tự động
-  if (!isReviewMode) {
-    document.addEventListener('input', saveStateToLocalStorage);
-    document.addEventListener('change', saveStateToLocalStorage);
-  }
-
-  // 6. Highlight Popup
-  const hlPopup = document.getElementById('hlPopup');
-  const removeHlPopup = document.getElementById('removeHlPopup');
-
-  if (hlPopup && removeHlPopup) {
-    document.addEventListener('mouseup', function(e) {
-      if (hlPopup.contains(e.target) || removeHlPopup.contains(e.target)) return;
-      const selection = window.getSelection();
-
-      if (e.target.classList.contains('user-highlight')) {
-        currentTargetSpan = e.target;
-        hlPopup.style.display = 'none';
-        removeHlPopup.style.left = (e.pageX + 5) + 'px';
-        removeHlPopup.style.top = (e.pageY - 35) + 'px';
-        removeHlPopup.style.display = 'block';
-        return;
-      } else {
-        removeHlPopup.style.display = 'none';
-      }
-
-      if (selection && !selection.isCollapsed && selection.toString().trim().length > 0) {
-        currentSelectedRange = selection.getRangeAt(0);
-        hlPopup.style.left = (e.pageX + 5) + 'px';
-        hlPopup.style.top = (e.pageY - 35) + 'px';
-        hlPopup.style.display = 'block';
-      } else {
-        hlPopup.style.display = 'none';
-      }
-    });
-
-    const btnDoHighlight = document.getElementById('btnDoHighlight');
-    if (btnDoHighlight) {
-      btnDoHighlight.addEventListener('click', function() {
-        if (currentSelectedRange) {
-          const span = document.createElement('span');
-          span.className = 'user-highlight';
-          try {
-            currentSelectedRange.surroundContents(span);
-          } catch (e) {
-            console.warn("Lỗi highlight");
-          }
-          window.getSelection().removeAllRanges();
-          hlPopup.style.display = 'none';
-          currentSelectedRange = null;
-        }
-      });
-    }
-
-    const btnRemoveHighlight = document.getElementById('btnRemoveHighlight');
-    if (btnRemoveHighlight) {
-      btnRemoveHighlight.addEventListener('click', function() {
-        if (currentTargetSpan) {
-          const parent = currentTargetSpan.parentNode;
-          while (currentTargetSpan.firstChild) {
-            parent.insertBefore(currentTargetSpan.firstChild, currentTargetSpan);
-          }
-          parent.removeChild(currentTargetSpan);
-          removeHlPopup.style.display = 'none';
-          currentTargetSpan = null;
-        }
-      });
-    }
-  }
-
-  // Tự bật timer
-  document.body.addEventListener('click', function() {
-    if (!isTimerRunning && seconds === 0 && !isReviewMode) {
-      startTimer();
-    }
-  }, { once: true });
-
-  // Ping Google Script
-  if (IELTS_CONFIG.GOOGLE_SCRIPT_URL) {
-    fetch(IELTS_CONFIG.GOOGLE_SCRIPT_URL, {
-      method: "POST",
-      mode: "no-cors",
-      body: JSON.stringify({ action: "ping" })
-    }).catch(() => {});
-  }
-});
-
-function highlightText(elementId) {
-  document.querySelectorAll('.hl-active').forEach(el => el.classList.remove('hl-active'));
-  const target = document.getElementById(elementId);
-  if (target) {
-    target.classList.add('hl-active');
-    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }
-}
-
-// CHẤM ĐIỂM
+// XỬ LÝ NỘP BÀI: GỬI LÊN CẢ 2 SERVER RIÊNG BIỆT
 async function checkAnswers() {
   if (isReviewMode) return;
   if (!window.TEST_DATA || !window.TEST_DATA.answers) {
-    alert("Lỗi cấu hình TEST_DATA.answers!");
+    alert("Lỗi cấu hình: Chưa khai báo TEST_DATA.answers cho bài tập này!");
     return;
   }
 
-  const globalUser = getGlobalUser();
-  const studentName = globalUser ? globalUser.name : "Học viên";
-  const studentEmail = globalUser ? globalUser.email : "";
+  const studentNameInput = document.getElementById('studentNameInput');
+  const studentEmailInput = document.getElementById('studentEmailInput');
+  const studentName = studentNameInput ? studentNameInput.value.trim() : "";
+  const studentEmail = studentEmailInput ? studentEmailInput.value.trim().toLowerCase() : "";
 
-  if (!studentEmail) {
-    alert("⚠️ Không tìm thấy phiên đăng nhập. Vui lòng quay lại Trang Chủ để đăng nhập!");
-    window.location.href = "index.html";
+  if (!studentName || !studentEmail) {
+    alert("⚠️ Em vui lòng nhập đầy đủ 'Họ và Tên' và 'Email' ở góc trên trước khi nộp bài nhé!");
     return;
   }
 
+  saveUserInfo(studentName, studentEmail);
   stopTimer();
+  
   let score = 0;
   const answers = window.TEST_DATA.answers;
   const totalQuestions = Object.keys(answers).length;
@@ -626,7 +328,6 @@ async function checkAnswers() {
     const expDiv = qDiv.querySelector('.explanation');
     const thoughtInput = document.getElementById(`${qKey}_thought`);
     const thought = thoughtInput ? thoughtInput.value.trim() : '';
-
     if (thoughtInput) snapshotThoughts[`${qKey}_thought`] = thought;
 
     qDiv.classList.remove('correct-border', 'incorrect-border');
@@ -634,7 +335,6 @@ async function checkAnswers() {
     let userVal = "";
     let isCorrect = false;
     const expectedAns = answers[qKey];
-
     const radioSelected = qDiv.querySelector(`input[name="${qKey}"]:checked`);
     const textInput = document.getElementById(`${qKey}_input`);
 
@@ -646,7 +346,6 @@ async function checkAnswers() {
       userVal = textInput.value.trim();
       snapshotInputs[`${qKey}_input`] = userVal;
       const cleanUserVal = userVal.toLowerCase().replace(/\s+/g, ' ');
-
       if (Array.isArray(expectedAns)) {
         isCorrect = expectedAns.map(a => a.toLowerCase().trim()).includes(cleanUserVal);
       } else {
@@ -675,12 +374,10 @@ async function checkAnswers() {
 
   userFinalScore = score;
   const timeSpentText = document.getElementById('timerDisplay') ? document.getElementById('timerDisplay').innerText : '00:00';
-  
-  const scoreText = document.getElementById('scoreText');
-  const scoreBadge = document.getElementById('scoreBadge');
   const scoreStr = `${score}/${totalQuestions}`;
-  if (scoreText) scoreText.innerText = scoreStr;
-  if (scoreBadge) scoreBadge.style.display = 'block';
+  
+  if (document.getElementById('scoreText')) document.getElementById('scoreText').innerText = scoreStr;
+  if (document.getElementById('scoreBadge')) document.getElementById('scoreBadge').style.display = 'block';
 
   const now = new Date();
   const timeStr = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')} - ${String(now.getDate()).padStart(2,'0')}/${String(now.getMonth()+1).padStart(2,'0')}/${now.getFullYear()}`;
@@ -700,38 +397,45 @@ async function checkAnswers() {
     aiResponses: snapshotAI
   };
 
-  saveAttemptToHistoryDatabase(attemptSnapshot);
   saveStateToLocalStorage();
 
-  if (IELTS_CONFIG.GOOGLE_SCRIPT_URL) {
-    try {
-      await fetch(IELTS_CONFIG.GOOGLE_SCRIPT_URL, {
-        method: "POST",
-        mode: "no-cors",
-        body: JSON.stringify({
-          action: "submit_score",
-          testTitle: window.TEST_DATA.title || document.title,
-          studentName: studentName,
-          studentEmail: studentEmail,
-          score: scoreStr,
-          timeSpent: timeSpentText,
-          details: detailsSummary
-        })
-      });
-      alert(`🎉 Chúc mừng ${studentName}! Bài làm đạt ${scoreStr} câu. Kết quả đã được lưu!`);
-    } catch (err) {
-      alert(`Bài làm đạt ${scoreStr} câu!`);
-    }
+  // 1. Gửi bản tóm tắt điểm về Google Sheet (Server Cũ)
+  if (IELTS_CONFIG.AI_AND_SHEET_URL) {
+    fetch(IELTS_CONFIG.AI_AND_SHEET_URL, {
+      method: "POST",
+      mode: "no-cors",
+      body: JSON.stringify({
+        action: "submit_score",
+        testTitle: window.TEST_DATA.title || document.title,
+        studentName: studentName,
+        studentEmail: studentEmail,
+        score: scoreStr,
+        timeSpent: timeSpentText,
+        details: detailsSummary
+      })
+    }).catch(() => {});
   }
 
+  // 2. Gửi toàn bộ bài làm chi tiết lên Google Drive (Server Mới)
+  if (IELTS_CONFIG.DRIVE_STORAGE_URL && !IELTS_CONFIG.DRIVE_STORAGE_URL.includes("DÁN_LINK")) {
+    fetch(IELTS_CONFIG.DRIVE_STORAGE_URL, {
+      method: "POST",
+      mode: "no-cors",
+      body: JSON.stringify({
+        action: "save_attempt",
+        attempt: attemptSnapshot
+      })
+    }).catch(() => {});
+  }
+
+  alert(`🎉 Chúc mừng ${studentName}! Bài làm đạt ${scoreStr} câu. Toàn bộ bài làm đã được lưu trữ an toàn trên hệ thống!`);
   showPostSaveButton();
 }
 
 function showPostSaveButton() {
   if (document.getElementById('btnPostSave')) return;
-
-  const actionBar = document.querySelector('.action-bar') || document.querySelector('.question-box');
-  if (!actionBar) return;
+  const questionBox = document.querySelector('.question-box');
+  if (!questionBox) return;
 
   const postSaveBox = document.createElement('div');
   postSaveBox.id = 'btnPostSaveContainer';
@@ -741,25 +445,18 @@ function showPostSaveButton() {
       💾 Lưu vào lịch sử bài làm (Bản Sau sửa)
     </button>
     <p style="margin: 6px 0 0 0; font-size: 13px; color: #15803d; font-style: italic;">
-      💡 Chú thích: Bấm nút này sau khi đã hỏi AI xong và cập nhật Mạch suy nghĩ để lưu trọn vẹn vào Lịch sử nhé!
+      💡 Hãy bấm nút này sau khi em đã hỏi AI xong và điền xong Mạch suy nghĩ để lưu bản cập nhật mới nhất lên Google Drive nhé!
     </p>
   `;
-  actionBar.appendChild(postSaveBox);
+  questionBox.appendChild(postSaveBox);
 }
 
 function savePostReviewUpdate() {
-  const globalUser = getGlobalUser();
-  const email = globalUser ? globalUser.email : "";
+  const studentEmail = document.getElementById('studentEmailInput') ? document.getElementById('studentEmailInput').value.trim().toLowerCase() : "";
+  const studentName = document.getElementById('studentNameInput') ? document.getElementById('studentNameInput').value.trim() : "";
 
-  if (!email) {
+  if (!studentEmail) {
     alert("⚠️ Không tìm thấy Email học viên để lưu!");
-    return;
-  }
-
-  const db = getHistoryDatabase();
-  const userAttempts = db[email] || [];
-  if (userAttempts.length === 0) {
-    alert("⚠️ Em chưa nộp bài lần nào để ghi nhận lịch sử!");
     return;
   }
 
@@ -771,39 +468,54 @@ function savePostReviewUpdate() {
   });
 
   document.querySelectorAll('.ai-response').forEach(aiBox => {
-    if (aiBox.innerHTML.trim() !== '') {
-      snapshotAI[aiBox.id] = aiBox.innerHTML;
-    }
+    if (aiBox.innerHTML.trim() !== '') snapshotAI[aiBox.id] = aiBox.innerHTML;
   });
 
-  const latestAttempt = userAttempts[0];
-  latestAttempt.thoughts = snapshotThoughts;
-  latestAttempt.aiResponses = snapshotAI;
-  
-  if (!latestAttempt.testTitle.includes("(Sau sửa)")) {
-    latestAttempt.testTitle += " (Sau sửa)";
+  const now = new Date();
+  const timeStr = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')} - ${String(now.getDate()).padStart(2,'0')}/${String(now.getMonth()+1).padStart(2,'0')}/${now.getFullYear()}`;
+
+  const attemptSnapshot = {
+    id: "attempt_" + Date.now(),
+    timestamp: timeStr + " (Sau sửa)",
+    testTitle: (window.TEST_DATA.title || document.title) + " (Sau sửa)",
+    pageUrl: window.location.pathname.split('/').pop(),
+    studentName: studentName,
+    studentEmail: studentEmail,
+    score: document.getElementById('scoreText') ? document.getElementById('scoreText').innerText : '',
+    timeSpent: document.getElementById('timerDisplay') ? document.getElementById('timerDisplay').innerText : '',
+    inputs: {},
+    radios: {},
+    thoughts: snapshotThoughts,
+    aiResponses: snapshotAI
+  };
+
+  document.querySelectorAll('input[type="text"].fill-input').forEach(i => { attemptSnapshot.inputs[i.id] = i.value; });
+  document.querySelectorAll('input[type="radio"]:checked').forEach(r => { attemptSnapshot.radios[r.name] = r.value; });
+
+  if (IELTS_CONFIG.DRIVE_STORAGE_URL && !IELTS_CONFIG.DRIVE_STORAGE_URL.includes("DÁN_LINK")) {
+    fetch(IELTS_CONFIG.DRIVE_STORAGE_URL, {
+      method: "POST",
+      mode: "no-cors",
+      body: JSON.stringify({
+        action: "save_attempt",
+        attempt: attemptSnapshot
+      })
+    });
   }
 
-  localStorage.setItem('ielts_history_database', JSON.stringify(db));
-  saveStateToLocalStorage();
-
-  alert("✅ Đã cập nhật thành công Mạch suy nghĩ & Chat AI vào Lịch sử làm bài!");
+  alert("✅ Đã cập nhật thành công toàn bộ Mạch suy nghĩ & Chat AI mới nhất lên Google Drive!");
 }
 
-function cleanMetaThoughts(text) {
-  if (!text) return "";
-  let clean = text;
-  clean = clean.replace(/\[THẮC MẮC CỦA HỌC VIÊN\]:\s*".*?"/gi, "");
-  clean = clean.replace(/\[THÔNG TIN CÂU HỎI\]:.*/gi, "");
-  clean = clean.replace(/💬 Trả lời:/gi, "");
-  if (clean.includes("Check constraints:") || clean.includes("Self-Correction")) {
-    const parts = clean.split(/(Check constraints:|Self-Correction|Proceeds|Output Generation)/i);
-    clean = parts[0];
+function highlightText(elementId) {
+  document.querySelectorAll('.hl-active').forEach(el => el.classList.remove('hl-active'));
+  const target = document.getElementById(elementId);
+  if (target) {
+    target.classList.add('hl-active');
+    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
-  return clean.trim();
 }
 
-// AI TRỢ GIẢNG
+// AI TRỢ GIẢNG (GỌI ĐẾN SERVER AI CŨ)
 async function askGeminiAI(qId) {
   if (isReviewMode) {
     alert("Bạn đang ở chế độ xem lại lịch sử.");
@@ -815,13 +527,12 @@ async function askGeminiAI(qId) {
 
   const userQuestion = inputEl.value.trim();
   if (!userQuestion) {
-    alert("Vui lòng gõ thắc mắc trước khi gửi nhé!");
+    alert("Vui lòng gõ thắc mắc của em trước khi bấm hỏi nhé!");
     return;
   }
 
   responseBox.style.display = "block";
   const safeQuestionText = userQuestion.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-
   const tempId = "temp_" + Date.now();
   const tempDiv = document.createElement('div');
   tempDiv.id = tempId;
@@ -834,7 +545,6 @@ async function askGeminiAI(qId) {
     </div>
     <i style="color: var(--text-muted); font-size: 0.95em;">⏳ AI đang đọc bài và soạn lời giải thích...</i>
   `;
-  
   responseBox.appendChild(tempDiv);
   tempDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   inputEl.value = "";
@@ -847,46 +557,21 @@ async function askGeminiAI(qId) {
     questionTextOnly = cloneDiv.innerText.trim();
   }
 
-  const prompt = `Bạn là một giáo viên dạy IELTS Reading kỳ cựu và tận tâm.
-Nhiệm vụ: Giải thích trực tiếp, chính xác thắc mắc của học viên.
-
-BẮT BUỘC:
-- CHỈ xuất ra câu trả lời giải thích bằng tiếng Việt.
-- KHÔNG lặp lại dòng "[THẮC MẮC CỦA HỌC VIÊN]". KHÔNG lặp lại prompt.
-
-YÊU CẦU ĐỊNH DẠNG:
-- Dùng **từ khóa** để IN ĐẬM.
-- Dùng ==bằng chứng== để TÔ VÀNG.
-- Dùng [kw]từ khóa[/kw] để TÔ XANH LÁ CÂY các từ paraphrase.
-
-[CÂU HỎI IELTS]:
-${questionTextOnly}
-
-[HỌC VIÊN HỎI]:
-${userQuestion}`;
-
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 90000);
+  const prompt = `Bạn là giáo viên IELTS. Giải thích trực tiếp, ngắn gọn bằng tiếng Việt thắc mắc của học viên.
+Dùng **từ khóa** để IN ĐẬM, ==bằng chứng== để TÔ VÀNG đoạn thông tin cốt lõi, [kw]từ khóa[/kw] để TÔ XANH LÁ CÂY.
+[CÂU HỎI]: ${questionTextOnly}
+[HỌC VIÊN HỎI]: ${userQuestion}`;
 
   try {
-    const res = await fetch(IELTS_CONFIG.GOOGLE_SCRIPT_URL, {
+    const res = await fetch(IELTS_CONFIG.AI_AND_SHEET_URL, {
       method: "POST",
       headers: { "Content-Type": "text/plain;charset=utf-8" },
-      signal: controller.signal,
-      body: JSON.stringify({
-        action: "ask_ai",
-        prompt: prompt
-      })
+      body: JSON.stringify({ action: "ask_ai", prompt: prompt })
     });
-
-    clearTimeout(timeoutId);
     const data = await res.json();
     const targetEl = document.getElementById(tempId);
-
     if (data && data.reply && targetEl) {
-      let cleanedReply = cleanMetaThoughts(data.reply);
-      
-      let formattedReply = cleanedReply
+      let formattedReply = data.reply
         .replace(/\n/g, "<br>")
         .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
         .replace(/==(.*?)==/g, "<mark style='background-color: #fef08a; color: #854d0e; padding: 2px 5px; border-radius: 4px; font-weight: 600;'>$1</mark>")
@@ -900,34 +585,44 @@ ${userQuestion}`;
           <b style="color: var(--primary-blue);">🤖 Trợ giảng AI:</b><br>${formattedReply}
         </div>
       `;
-      targetEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       saveStateToLocalStorage();
-
-      const urlParams = new URLSearchParams(window.location.search);
-      const attemptId = urlParams.get('attemptId');
-      const studentEmailParam = urlParams.get('email');
-      if (attemptId && studentEmailParam) {
-        const db = getHistoryDatabase();
-        const userAttempts = db[studentEmailParam.toLowerCase().trim()] || [];
-        const matchedAttempt = userAttempts.find(a => a.id === attemptId);
-        if (matchedAttempt) {
-          if (!matchedAttempt.aiResponses) matchedAttempt.aiResponses = {};
-          matchedAttempt.aiResponses[`ai_response_${qId}`] = document.getElementById(`ai_response_${qId}`).innerHTML;
-          localStorage.setItem('ielts_history_database', JSON.stringify(db));
-        }
-      }
-    } else if (targetEl) {
-      targetEl.innerHTML = `⚠️ <b>Trợ giảng AI:</b> Phản hồi trống, em thử gửi lại nhé!`;
     }
   } catch (err) {
-    clearTimeout(timeoutId);
     const targetEl = document.getElementById(tempId);
-    if (targetEl) {
-      if (err.name === 'AbortError') {
-        targetEl.innerHTML = `⚠️ <b>Trợ giảng AI:</b> Hết thời gian chờ (Timeout 90s). Vui lòng thử lại!`;
-      } else {
-        targetEl.innerHTML = `⚠️ <b>Trợ giảng AI:</b> Lỗi kết nối đến server. Em thử lại nhé!`;
-      }
-    }
+    if (targetEl) targetEl.innerHTML = `⚠️ <b>Trợ giảng AI:</b> Lỗi kết nối. Em bấm hỏi lại nhé!`;
   }
 }
+
+// KHỞI TẠO VÀ XEM LẠI BÀI LÀM TRÊN THIẾT BỊ BẤT KỲ
+document.addEventListener('DOMContentLoaded', async function() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const attemptId = urlParams.get('attemptId');
+  const emailParam = urlParams.get('email');
+
+  if (attemptId && emailParam && IELTS_CONFIG.DRIVE_STORAGE_URL && !IELTS_CONFIG.DRIVE_STORAGE_URL.includes("DÁN_LINK")) {
+    try {
+      const res = await fetch(IELTS_CONFIG.DRIVE_STORAGE_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({
+          action: "get_single_attempt",
+          email: emailParam,
+          attemptId: attemptId
+        })
+      });
+      const data = await res.json();
+      if (data && data.attempt) {
+        restoreAttemptFromSnapshot(data.attempt);
+        return;
+      }
+    } catch (e) {}
+  }
+
+  restoreStateFromLocalStorage();
+  document.addEventListener('input', saveStateToLocalStorage);
+  document.addEventListener('change', saveStateToLocalStorage);
+
+  if (IELTS_CONFIG.AI_AND_SHEET_URL) {
+    fetch(IELTS_CONFIG.AI_AND_SHEET_URL, { method: "POST", mode: "no-cors", body: JSON.stringify({ action: "ping" }) }).catch(() => {});
+  }
+});
