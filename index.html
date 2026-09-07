@@ -65,7 +65,7 @@
       border-color: var(--primary-blue);
     }
     .btn-login-gate {
-      background: var(--primary-blue);
+      background: #8b0000;
       color: white;
       border: none;
       padding: 12px;
@@ -77,11 +77,11 @@
       transition: all 0.2s;
     }
     .btn-login-gate:hover {
-      filter: brightness(0.9);
+      filter: brightness(1.1);
       transform: translateY(-1px);
     }
 
-    /* Thanh Dashboard thông tin khi ĐÃ ĐĂNG NHẬP */
+    /* Dashboard thông tin khi ĐÃ ĐĂNG NHẬP */
     .user-dashboard-bar {
       background: var(--bg-card);
       border: 1px solid var(--border-color);
@@ -128,40 +128,29 @@
     /* Lịch sử làm bài */
     .history-section {
       background: var(--bg-card);
-      border: 1px solid var(--border-color);
+      border: 1.5px solid var(--border-color);
       border-radius: 10px;
-      padding: 20px;
+      padding: 18px;
       margin-bottom: 30px;
-    }
-    .history-card {
-      background: var(--bg-subcard);
-      border: 1px solid var(--border-color);
-      padding: 14px 18px;
-      border-radius: 8px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 10px;
     }
     .score-pill {
       background: #16a34a;
       color: white;
-      padding: 4px 12px;
+      padding: 3px 10px;
       border-radius: 20px;
       font-weight: 700;
-      font-size: 14px;
+      font-size: 13px;
     }
     .btn-review {
       background: #0284c7;
       color: white;
       text-decoration: none;
-      padding: 6px 14px;
+      padding: 5px 12px;
       border-radius: 6px;
-      font-size: 13.5px;
+      font-size: 13px;
       font-weight: 600;
     }
+    .btn-review:hover { background: #0369a1; }
 
     /* Grid danh sách đề thi */
     .test-grid {
@@ -212,13 +201,13 @@
 </head>
 <body>
 
-<div style="max-width: 1200px; margin: auto;">
+<div style="max-width: 1200px; margin: auto; padding: 15px;">
   <div class="portal-hero">
     <h1>📚 HỆ THỐNG LUYỆN THI IELTS READING TRỰC TUYẾN</h1>
     <p>Bộ đề Cambridge Academic • Tự động chấm điểm • AI Trợ giảng giải thích chi tiết</p>
   </div>
 
-  <!-- 1. MÀN HÌNH KHÓA / FORM ĐĂNG NHẬP (Hiển thị khi CHƯA đăng nhập) -->
+  <!-- 1. MÀN HÌNH KHÓA / ĐĂNG NHẬP -->
   <div class="auth-gate-card" id="authGateBox">
     <h2>👤 ĐĂNG NHẬP HỌC VIÊN</h2>
     <p>Vui lòng nhập Họ tên và Email Google <b>1 lần duy nhất</b> để mở khóa danh sách đề và lưu kết quả:</p>
@@ -234,7 +223,7 @@
     </div>
   </div>
 
-  <!-- 2. NỘI DUNG ĐƯỢC MỞ KHÓA (Ẩn mặc định, chỉ hiện khi ĐÃ đăng nhập) -->
+  <!-- 2. NỘI DUNG ĐƯỢC MỞ KHÓA -->
   <div id="unlockedContentBox" style="display: none;">
     
     <!-- Thanh thông tin học viên -->
@@ -242,35 +231,47 @@
       <div class="user-dashboard-info">
         <div class="user-avatar-circle" id="userAvatarText">A</div>
         <div>
-          <h4 style="margin: 0; font-size: 16px; color: var(--text-main);" id="userNameDisplay">Nguyễn Văn A</h4>
+          <h4 style="margin: 0; font-size: 16px; color: var(--text-main);" id="userNameDisplay">Học viên</h4>
           <p style="margin: 2px 0 0 0; font-size: 13px; color: var(--text-muted);" id="userEmailDisplay">student@gmail.com</p>
         </div>
       </div>
       <button type="button" class="btn-logout" onclick="handleStudentLogout()">🚪 Đổi tài khoản / Đăng xuất</button>
     </div>
 
-    <!-- Khu vực Lịch sử làm bài -->
+    <!-- Khu vực Lịch sử làm bài (Accordion theo Ngày + Thu gọn/Mở rộng) -->
     <div class="history-section">
-      <h3 style="margin-top: 0; color: var(--primary-blue);">📜 Lịch sử các lần làm bài của em:</h3>
-      <div id="historyResultsList"></div>
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; margin-bottom: 12px;">
+        <h3 style="margin: 0; color: var(--primary-blue); font-size: 18px; display: flex; align-items: center; gap: 8px;">
+          📜 Lịch sử các lần làm bài của em
+          <span id="totalAttemptsBadge" style="font-size: 12px; background: #e0f2fe; color: #0284c7; padding: 2px 8px; border-radius: 12px;">0 bài</span>
+        </h3>
+        <button type="button" id="btnToggleAllHistory" onclick="toggleGlobalHistoryBox()" style="background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; padding: 5px 12px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer;">
+          🔼 Thu gọn mục này
+        </button>
+      </div>
+
+      <div id="historyCollapsibleContainer" style="max-height: 420px; overflow-y: auto; padding-right: 5px;">
+        <div id="historyResultsList"></div>
+      </div>
     </div>
 
+    <!-- Cambridge 21 Listening -->
     <h2 style="margin-bottom: 20px;">Cambridge IELTS 21 - Listening Test 1</h2>
-<div class="test-grid" style="margin-bottom: 40px;">
-  <div class="test-card">
-    <div>
-      <span class="badge" style="background: #fef3c7; color: #b45309;">Listening Part 1 (10 Câu)</span>
-      <h3 style="margin: 0 0 10px 0; color: var(--text-main);">Oyster Bay Sailing Club</h3>
-      <p style="font-size: 13.5px; color: var(--text-muted);">
-        • Dạng bài: Table Completion, Notes Completion.<br>
-        • Thời gian nghe: ~7 phút.
-      </p>
+    <div class="test-grid" style="margin-bottom: 40px;">
+      <div class="test-card">
+        <div>
+          <span class="badge" style="background: #fef3c7; color: #b45309;">Listening Part 1 (10 Câu)</span>
+          <h3 style="margin: 0 0 10px 0; color: var(--text-main);">Oyster Bay Sailing Club</h3>
+          <p style="font-size: 13.5px; color: var(--text-muted);">
+            • Dạng bài: Table Completion, Notes Completion.<br>
+            • Thời gian nghe: ~7 phút.
+          </p>
+        </div>
+        <a href="cam21-lis-test1-p1.html" class="btn-start-test" style="background: #d97706;">🎧 Làm Bài Listening Part 1</a>
+      </div>
     </div>
-    <a href="cam21-lis-test1-p1.html" class="btn-start-test" style="background: #d97706;">🎧 Làm Bài Listening Part 1</a>
-  </div>
-</div>
     
-    <!-- Danh sách Đề Thi Test 3 -->
+    <!-- Cambridge 21 Academic Test 3 -->
     <h2 style="margin-bottom: 20px;">Cambridge IELTS 21 - Academic Test 3</h2>
     <div class="test-grid">
       <div class="test-card">
@@ -301,7 +302,7 @@
       </div>
     </div>
 
-    <!-- Danh sách Đề Thi Test 4 -->
+    <!-- Cambridge 21 Academic Test 4 -->
     <h2 style="margin-bottom: 20px;">Cambridge IELTS 21 - Academic Test 4</h2>
     <div class="test-grid">
       <div class="test-card">
@@ -337,12 +338,10 @@
 
 <script src="ielts-core.js"></script>
 <script>
-  // Cấu hình URL Google Drive (đồng bộ với file ielts-core.js)
   const DRIVE_STORAGE_URL = (typeof IELTS_CONFIG !== 'undefined' && IELTS_CONFIG.DRIVE_STORAGE_URL) 
     ? IELTS_CONFIG.DRIVE_STORAGE_URL 
     : "https://script.google.com/macros/s/AKfycbx5HRPHr75RLlcuXvcn1QSTmsLszIhYH6cDrKiGZS4RCoxa0l3NJF4dKWplI1sVKVoCYg/exec";
 
-  // Hàm lưu dữ liệu độc lập (tránh lỗi lệch hàm giữa các file)
   function saveUserDirect(name, email) {
     localStorage.setItem('ielts_student_name', name.trim());
     localStorage.setItem('ielts_student_email', email.trim().toLowerCase());
@@ -355,7 +354,6 @@
     };
   }
 
-  // Tương thích ngược nếu các file khác có gọi
   window.setGlobalUser = saveUserDirect;
   window.getGlobalUser = getUserDirect;
   window.clearGlobalUser = function() {
@@ -363,7 +361,6 @@
     localStorage.removeItem('ielts_student_email');
   };
 
-  // XỬ LÝ ĐĂNG NHẬP
   function handleStudentLogin() {
     const nameInput = document.getElementById('loginNameInput');
     const emailInput = document.getElementById('loginEmailInput');
@@ -375,13 +372,9 @@
       return;
     }
 
-    // 1. Lưu trực tiếp vào LocalStorage
     saveUserDirect(name || 'Học viên', email);
-
-    // 2. Chuyển màn hình ngay lập tức (Ưu tiên UX, không để kẹt nút)
     showUnlockedView(name || 'Học viên', email);
 
-    // 3. Nếu có link điều hướng từ trang trước
     const urlParams = new URLSearchParams(window.location.search);
     const returnUrl = urlParams.get('returnUrl');
     if (returnUrl) {
@@ -389,11 +382,9 @@
       return;
     }
 
-    // 4. Tải lịch sử ngầm từ Google Drive
     fetchAndRenderHistory(email);
   }
 
-  // XỬ LÝ ĐĂNG XUẤT
   function handleStudentLogout() {
     if (confirm("Em có chắc chắn muốn đăng xuất / đổi tài khoản khác không?")) {
       clearGlobalUser();
@@ -403,7 +394,6 @@
     }
   }
 
-  // HÀM HIỂN THỊ MÀN HÌNH CHÍNH
   function showUnlockedView(name, email) {
     const gateBox = document.getElementById('authGateBox');
     const contentBox = document.getElementById('unlockedContentBox');
@@ -419,14 +409,41 @@
     if (avatarEl) avatarEl.innerText = (name ? name.charAt(0) : 'U').toUpperCase();
   }
 
-  // HÀM LẤY LỊCH SỬ TỪ GOOGLE DRIVE SERVER
+  function toggleGlobalHistoryBox() {
+    const box = document.getElementById('historyCollapsibleContainer');
+    const btn = document.getElementById('btnToggleAllHistory');
+    if (!box || !btn) return;
+
+    if (box.style.display === 'none') {
+      box.style.display = 'block';
+      btn.innerText = '🔼 Thu gọn mục này';
+    } else {
+      box.style.display = 'none';
+      btn.innerText = '🔽 Mở rộng mục này';
+    }
+  }
+
+  function toggleDateGroup(dateKey) {
+    const content = document.getElementById('group_content_' + dateKey);
+    const icon = document.getElementById('group_icon_' + dateKey);
+    if (!content) return;
+
+    if (content.style.display === 'none') {
+      content.style.display = 'block';
+      if (icon) icon.innerText = '▾';
+    } else {
+      content.style.display = 'none';
+      if (icon) icon.innerText = '▸';
+    }
+  }
+
   async function fetchAndRenderHistory(email) {
     const resultsBox = document.getElementById('historyResultsList');
     if (!resultsBox) return;
 
     resultsBox.innerHTML = `
-      <div style="background: var(--bg-subcard); padding: 14px; border-radius: 8px; text-align: center; color: var(--text-muted); font-size: 14px;">
-        ⏳ Đang đồng bộ lịch sử làm bài từ Google Drive...
+      <div style="padding: 14px; text-align: center; color: var(--text-muted); font-size: 14px;">
+        ⏳ Đang đồng bộ lịch sử bài làm từ Google Drive...
       </div>
     `;
 
@@ -434,53 +451,94 @@
       const res = await fetch(DRIVE_STORAGE_URL, {
         method: "POST",
         headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify({
-          action: "get_history",
-          email: email
-        })
+        body: JSON.stringify({ action: "get_history", email: email })
       });
       const data = await res.json();
       const attempts = (data && data.attempts) ? data.attempts : [];
 
+      const badgeEl = document.getElementById('totalAttemptsBadge');
+      if (badgeEl) badgeEl.innerText = `${attempts.length} bài`;
+
       if (attempts.length === 0) {
         resultsBox.innerHTML = `
           <div style="background: var(--bg-subcard); padding: 14px; border-radius: 8px; text-align: center; color: var(--text-muted); font-size: 14px;">
-            ℹ️ Em chưa có bài làm nào trên hệ thống. Hãy chọn bài bên dưới để bắt đầu làm nhé!
+            ℹ️ Em chưa có bài làm nào trên hệ thống. Hãy chọn đề bên dưới để luyện tập nhé!
           </div>
         `;
         return;
       }
 
+      const groups = {};
+      attempts.forEach(att => {
+        let datePart = "Khác";
+        if (att.timestamp) {
+          const match = att.timestamp.match(/(\d{2}\/\d{2}\/\d{4})/);
+          if (match) datePart = match[1];
+        }
+        if (!groups[datePart]) groups[datePart] = [];
+        groups[datePart].push(att);
+      });
+
       let html = '';
-      attempts.forEach(attempt => {
+      let isFirstDate = true;
+
+      for (const date in groups) {
+        const dateKey = date.replace(/\//g, '_');
+        const items = groups[date];
+        const displayStyle = isFirstDate ? 'block' : 'none';
+        const arrowIcon = isFirstDate ? '▾' : '▸';
+
         html += `
-          <div class="history-card">
-            <div>
-              <h4 style="margin: 0 0 4px 0; font-size: 15px; color: var(--text-main);">📖 ${attempt.testTitle}</h4>
-              <p style="margin: 0; font-size: 13px; color: var(--text-muted);">
-                ⏱️ Nộp lúc: <b>${attempt.timestamp}</b> • Thời gian: <b>${attempt.timeSpent || 'N/A'}</b>
-              </p>
+          <div style="margin-bottom: 12px; border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; background: var(--bg-subcard);">
+            <div onclick="toggleDateGroup('${dateKey}')" style="padding: 10px 14px; background: #f8fafc; cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none;">
+              <span style="font-weight: 700; font-size: 14px; color: var(--text-main);">
+                <span id="group_icon_${dateKey}" style="margin-right: 6px; color: #0284c7;">${arrowIcon}</span> 📅 Ngày ${date}
+              </span>
+              <span style="font-size: 12.5px; background: #e2e8f0; color: #334155; padding: 2px 8px; border-radius: 10px; font-weight: 600;">
+                ${items.length} bài
+              </span>
             </div>
-            <div style="display: flex; align-items: center; gap: 12px;">
-              <span class="score-pill">Điểm: ${attempt.score}</span>
-              <a href="${attempt.pageUrl}?attemptId=${attempt.id}&email=${encodeURIComponent(email)}" class="btn-review">
-                👁️ Xem lại bài
-              </a>
+
+            <div id="group_content_${dateKey}" style="display: ${displayStyle}; padding: 8px 12px;">
+        `;
+
+        items.forEach(attempt => {
+          html += `
+            <div class="history-card" style="background: var(--bg-card); border: 1px solid var(--border-color); padding: 10px 14px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin: 6px 0;">
+              <div>
+                <h4 style="margin: 0 0 3px 0; font-size: 14px; color: var(--text-main);">📖 ${attempt.testTitle}</h4>
+                <p style="margin: 0; font-size: 12.5px; color: var(--text-muted);">
+                  ⏱️ Nộp lúc: <b>${attempt.timestamp}</b> • Thời gian: <b>${attempt.timeSpent || 'N/A'}</b>
+                </p>
+              </div>
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <span class="score-pill">Điểm: ${attempt.score}</span>
+                <a href="${attempt.pageUrl}?attemptId=${attempt.id}&email=${encodeURIComponent(email)}" class="btn-review">
+                  👁️ Xem lại bài
+                </a>
+              </div>
+            </div>
+          `;
+        });
+
+        html += `
             </div>
           </div>
         `;
-      });
+        isFirstDate = false;
+      }
+
       resultsBox.innerHTML = html;
+
     } catch (err) {
       resultsBox.innerHTML = `
-        <div style="background: var(--bg-subcard); padding: 14px; border-radius: 8px; text-align: center; color: var(--text-muted); font-size: 14px;">
-          ℹ️ Chưa thể tải lịch sử lúc này (hoặc em chưa làm bài nào). Em hãy bấm vào đề bên dưới để làm bài nhé!
+        <div style="padding: 12px; text-align: center; color: var(--text-muted); font-size: 13.5px;">
+          ℹ️ Tạm thời chưa đồng bộ được lịch sử. Em vẫn có thể làm các đề bên dưới bình thường nhé!
         </div>
       `;
     }
   }
 
-  // TỰ ĐỘNG KIỂM TRA ĐĂNG NHẬP KHI MỞ TRANG
   function checkPortalAuthStatus() {
     const user = getUserDirect();
     if (user && user.email) {
