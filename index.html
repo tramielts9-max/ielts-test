@@ -337,6 +337,33 @@
 
 <script src="ielts-core.js"></script>
 <script>
+  // Cấu hình URL Google Drive (đồng bộ với file ielts-core.js)
+  const DRIVE_STORAGE_URL = (typeof IELTS_CONFIG !== 'undefined' && IELTS_CONFIG.DRIVE_STORAGE_URL) 
+    ? IELTS_CONFIG.DRIVE_STORAGE_URL 
+    : "https://script.google.com/macros/s/AKfycbx5HRPHr75RLlcuXvcn1QSTmsLszIhYH6cDrKiGZS4RCoxa0l3NJF4dKWplI1sVKVoCYg/exec";
+
+  // Hàm lưu dữ liệu độc lập (tránh lỗi lệch hàm giữa các file)
+  function saveUserDirect(name, email) {
+    localStorage.setItem('ielts_student_name', name.trim());
+    localStorage.setItem('ielts_student_email', email.trim().toLowerCase());
+  }
+
+  function getUserDirect() {
+    return {
+      name: localStorage.getItem('ielts_student_name') || '',
+      email: localStorage.getItem('ielts_student_email') || ''
+    };
+  }
+
+  // Tương thích ngược nếu các file khác có gọi
+  window.setGlobalUser = saveUserDirect;
+  window.getGlobalUser = getUserDirect;
+  window.clearGlobalUser = function() {
+    localStorage.removeItem('ielts_student_name');
+    localStorage.removeItem('ielts_student_email');
+  };
+
+  // XỬ LÝ ĐĂNG NHẬP
   function handleStudentLogin() {
     const nameInput = document.getElementById('loginNameInput');
     const emailInput = document.getElementById('loginEmailInput');
@@ -344,14 +371,17 @@
     const email = emailInput ? emailInput.value.trim().toLowerCase() : '';
 
     if (!email) {
-      alert("⚠️ Em vui lòng nhập Email Google để hệ thống lưu lịch sử nhé!");
+      alert("⚠️ Em vui lòng nhập Email Google để hệ thống lưu kết quả nhé!");
       return;
     }
 
-    // Lưu thông tin vào global user
-    setGlobalUser(name || 'Học viên', email);
-    
-    // Nếu có redirect link từ trang đề trước đó
+    // 1. Lưu trực tiếp vào LocalStorage
+    saveUserDirect(name || 'Học viên', email);
+
+    // 2. Chuyển màn hình ngay lập tức (Ưu tiên UX, không để kẹt nút)
+    showUnlockedView(name || 'Học viên', email);
+
+    // 3. Nếu có link điều hướng từ trang trước
     const urlParams = new URLSearchParams(window.location.search);
     const returnUrl = urlParams.get('returnUrl');
     if (returnUrl) {
@@ -359,67 +389,108 @@
       return;
     }
 
-    checkPortalAuthStatus();
+    // 4. Tải lịch sử ngầm từ Google Drive
+    fetchAndRenderHistory(email);
   }
 
+  // XỬ LÝ ĐĂNG XUẤT
   function handleStudentLogout() {
-    if (confirm("Em có chắc chắn muốn đăng xuất tài khoản này không?")) {
+    if (confirm("Em có chắc chắn muốn đăng xuất / đổi tài khoản khác không?")) {
       clearGlobalUser();
-      checkPortalAuthStatus();
+      document.getElementById('authGateBox').style.display = 'block';
+      document.getElementById('unlockedContentBox').style.display = 'none';
+      if (document.getElementById('loginEmailInput')) document.getElementById('loginEmailInput').value = '';
     }
   }
 
-  function renderStudentHistory(email) {
+  // HÀM HIỂN THỊ MÀN HÌNH CHÍNH
+  function showUnlockedView(name, email) {
+    const gateBox = document.getElementById('authGateBox');
+    const contentBox = document.getElementById('unlockedContentBox');
+    if (gateBox) gateBox.style.display = 'none';
+    if (contentBox) contentBox.style.display = 'block';
+
+    const nameEl = document.getElementById('userNameDisplay');
+    const emailEl = document.getElementById('userEmailDisplay');
+    const avatarEl = document.getElementById('userAvatarText');
+
+    if (nameEl) nameEl.innerText = name;
+    if (emailEl) emailEl.innerText = email;
+    if (avatarEl) avatarEl.innerText = (name ? name.charAt(0) : 'U').toUpperCase();
+  }
+
+  // HÀM LẤY LỊCH SỬ TỪ GOOGLE DRIVE SERVER
+  async function fetchAndRenderHistory(email) {
     const resultsBox = document.getElementById('historyResultsList');
     if (!resultsBox) return;
 
-    const db = getHistoryDatabase();
-    const attempts = db[email] || [];
+    resultsBox.innerHTML = `
+      <div style="background: var(--bg-subcard); padding: 14px; border-radius: 8px; text-align: center; color: var(--text-muted); font-size: 14px;">
+        ⏳ Đang đồng bộ lịch sử làm bài từ Google Drive...
+      </div>
+    `;
 
-    if (attempts.length === 0) {
+    try {
+      const res = await fetch(DRIVE_STORAGE_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({
+          action: "get_history",
+          email: email
+        })
+      });
+      const data = await res.json();
+      const attempts = (data && data.attempts) ? data.attempts : [];
+
+      if (attempts.length === 0) {
+        resultsBox.innerHTML = `
+          <div style="background: var(--bg-subcard); padding: 14px; border-radius: 8px; text-align: center; color: var(--text-muted); font-size: 14px;">
+            ℹ️ Em chưa có bài làm nào trên hệ thống. Hãy chọn bài bên dưới để bắt đầu làm nhé!
+          </div>
+        `;
+        return;
+      }
+
+      let html = '';
+      attempts.forEach(attempt => {
+        html += `
+          <div class="history-card">
+            <div>
+              <h4 style="margin: 0 0 4px 0; font-size: 15px; color: var(--text-main);">📖 ${attempt.testTitle}</h4>
+              <p style="margin: 0; font-size: 13px; color: var(--text-muted);">
+                ⏱️ Nộp lúc: <b>${attempt.timestamp}</b> • Thời gian: <b>${attempt.timeSpent || 'N/A'}</b>
+              </p>
+            </div>
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <span class="score-pill">Điểm: ${attempt.score}</span>
+              <a href="${attempt.pageUrl}?attemptId=${attempt.id}&email=${encodeURIComponent(email)}" class="btn-review">
+                👁️ Xem lại bài
+              </a>
+            </div>
+          </div>
+        `;
+      });
+      resultsBox.innerHTML = html;
+    } catch (err) {
       resultsBox.innerHTML = `
         <div style="background: var(--bg-subcard); padding: 14px; border-radius: 8px; text-align: center; color: var(--text-muted); font-size: 14px;">
-          ℹ️ Em chưa làm bài nào. Hãy chọn một bài test bên dưới để bắt đầu luyện tập nhé!
+          ℹ️ Chưa thể tải lịch sử lúc này (hoặc em chưa làm bài nào). Em hãy bấm vào đề bên dưới để làm bài nhé!
         </div>
       `;
-      return;
     }
-
-    let html = '';
-    attempts.forEach(attempt => {
-      html += `
-        <div class="history-card">
-          <div>
-            <h4 style="margin: 0 0 4px 0; font-size: 15.5px; color: var(--text-main);">📖 ${attempt.testTitle}</h4>
-            <p style="margin: 0; font-size: 13px; color: var(--text-muted);">⏱️ Nộp lúc: <b>${attempt.timestamp}</b> • Thời gian làm: <b>${attempt.timeSpent}</b></p>
-          </div>
-          <div style="display: flex; align-items: center; gap: 12px;">
-            <span class="score-pill">Điểm: ${attempt.score}</span>
-            <a href="${attempt.pageUrl}?attemptId=${attempt.id}&email=${encodeURIComponent(email)}" class="btn-review">👁️ Xem lại bài</a>
-          </div>
-        </div>
-      `;
-    });
-    resultsBox.innerHTML = html;
   }
 
+  // TỰ ĐỘNG KIỂM TRA ĐĂNG NHẬP KHI MỞ TRANG
   function checkPortalAuthStatus() {
-    const user = getGlobalUser();
-    const gateBox = document.getElementById('authGateBox');
-    const contentBox = document.getElementById('unlockedContentBox');
-
+    const user = getUserDirect();
     if (user && user.email) {
-      gateBox.style.display = 'none';
-      contentBox.style.display = 'block';
-
-      document.getElementById('userNameDisplay').innerText = user.name || 'Học viên';
-      document.getElementById('userEmailDisplay').innerText = user.email;
-      document.getElementById('userAvatarText').innerText = (user.name ? user.name.charAt(0) : 'U').toUpperCase();
-
-      renderStudentHistory(user.email);
+      showUnlockedView(user.name || 'Học viên', user.email);
+      fetchAndRenderHistory(user.email);
     } else {
-      gateBox.style.display = 'block';
-      contentBox.style.display = 'none';
+      const gateBox = document.getElementById('authGateBox');
+      const contentBox = document.getElementById('unlockedContentBox');
+      if (gateBox) gateBox.style.display = 'block';
+      if (contentBox) contentBox.style.display = 'none';
     }
   }
 
