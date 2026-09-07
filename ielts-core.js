@@ -2,7 +2,7 @@
  * ==========================================================================
  * IELTS PRACTICE TEST CORE ENGINE (ielts-core.js)
  * Tự động hóa: Bấm giờ, Highlight, Chấm điểm, AI Trợ giảng, Đăng nhập 1 lần
- * HỆ THỐNG 2 SERVER ĐỘC LẬP: AI Server & Google Drive Server
+ * HỆ THỐNG 2 SERVER ĐỘC LẬP: AI Server (Google Sheets) & Google Drive Storage
  * ==========================================================================
  */
 
@@ -10,8 +10,7 @@ const IELTS_CONFIG = {
   // 1. LINK SCRIPT CŨ CỦA BẠN (Xử lý AI & Ghi điểm Sheet - GIỮ NGUYÊN)
   AI_AND_SHEET_URL: "https://script.google.com/macros/s/AKfycby7vRFXq_YhjIEq4kN-8NLRFw2sj-7VkVEmTw6IkNkPmidEPnPtxtNkSE-HKfn5mAPfbw/exec",
 
-  // 2. LINK SCRIPT MỚI TẠO Ở BƯỚC 1 (Chuyên lưu bài lên Google Drive)
-  // 👉 Hãy thay đường link dưới đây bằng link Web App bạn vừa tạo ở Bước 1 nhé:
+  // 2. LINK SCRIPT GOOGLE DRIVE MỚI (Dán URL Web App mới của bạn vào đây)
   DRIVE_STORAGE_URL: "https://script.google.com/macros/s/AKfycbx5HRPHr75RLlcuXvcn1QSTmsLszIhYH6cDrKiGZS4RCoxa0l3NJF4dKWplI1sVKVoCYg/exec"
 };
 
@@ -27,7 +26,7 @@ function getStorageKey() {
   return 'ielts_state_' + pageName;
 }
 
-// ĐỒNG BỘ THÔNG TIN HỌC VIÊN TỰ ĐỘNG GIỮA TẤT CẢ CÁC BÀI TEST
+// ==================== QUẢN LÝ THÔNG TIN HỌC VIÊN ====================
 function getSavedUserInfo() {
   return {
     name: localStorage.getItem('ielts_student_name') || '',
@@ -48,6 +47,7 @@ function autoFillUserInfo() {
   if (emailInput && !emailInput.value && user.email) emailInput.value = user.email;
 }
 
+// ==================== CÁC TIỆN ÍCH GIAO DIỆN ====================
 function changeFontSize(delta) {
   currentFontSize += delta;
   if (currentFontSize < 12) currentFontSize = 12;
@@ -95,10 +95,10 @@ function pauseTimer() {
 
 function stopTimer() {
   pauseTimer();
-  const audios = document.querySelectorAll('audio');
-  audios.forEach(a => a.pause());
+  document.querySelectorAll('audio').forEach(a => a.pause());
 }
 
+// ==================== LƯU / PHỤC HỒI TRẠNG THÁI LOCAL ====================
 function saveStateToLocalStorage() {
   if (isReviewMode) return;
   try {
@@ -185,15 +185,16 @@ function restoreStateFromLocalStorage() {
   } catch (err) {}
 }
 
+// ==================== CHẾ ĐỘ XEM LẠI BÀI LÀM (REVIEW MODE) ====================
 function restoreAttemptFromSnapshot(attempt) {
   isReviewMode = true;
   stopTimer();
 
   const reviewBanner = document.createElement('div');
-  reviewBanner.style.cssText = "background: #f59e0b; color: #78350f; padding: 10px 16px; font-weight: 700; font-size: 14px; text-align: center; border-radius: 8px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;";
+  reviewBanner.style.cssText = "background: #fef3c7; color: #92400e; border: 1.5px solid #f59e0b; padding: 12px 18px; font-weight: 700; font-size: 14px; text-align: center; border-radius: 8px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05);";
   reviewBanner.innerHTML = `
-    <span>📜 ĐANG XEM LẠI LỊCH SỬ BÀI LÀM (${attempt.timestamp}) — Điểm: ${attempt.score} (Học viên: ${attempt.studentName})</span>
-    <a href="index.html" style="background: #78350f; color: white; padding: 5px 14px; text-decoration: none; border-radius: 4px; font-size: 13px;">🔙 Quay lại Danh mục</a>
+    <span>📜 ĐANG XEM LẠI LỊCH SỬ BÀI LÀM (${attempt.timestamp}) — Kết quả: <b>${attempt.score}</b> (Học viên: ${attempt.studentName})</span>
+    <a href="index.html" style="background: #b45309; color: white; padding: 6px 14px; text-decoration: none; border-radius: 6px; font-size: 13px; font-weight: bold;">🔙 Quay lại Danh mục</a>
   `;
   document.body.insertBefore(reviewBanner, document.body.firstChild);
 
@@ -222,7 +223,7 @@ function restoreAttemptFromSnapshot(attempt) {
   if (attempt.thoughts) {
     for (const textareaId in attempt.thoughts) {
       const el = document.getElementById(textareaId);
-      if (el) el.value = attempt.thoughts[textareaId];
+      if (el) { el.value = attempt.thoughts[textareaId]; el.disabled = true; }
     }
   }
 
@@ -234,8 +235,12 @@ function restoreAttemptFromSnapshot(attempt) {
   }
 
   applySubmittedUI(attempt.score);
+
   const submitBtn = document.querySelector('.btn-submit');
   if (submitBtn) submitBtn.style.display = 'none';
+
+  // Ẩn các ô nhập hỏi AI khi đang xem lại
+  document.querySelectorAll('.ai-assistant-box input, .ai-assistant-box button').forEach(el => el.style.display = 'none');
 }
 
 function applySubmittedUI(scoreStr) {
@@ -263,14 +268,14 @@ function applySubmittedUI(scoreStr) {
       let isCorrect = false;
       if (radioSelected) {
         userVal = radioSelected.value.trim();
-        isCorrect = (userVal.toUpperCase() === expectedAns.toUpperCase());
+        isCorrect = (userVal.toUpperCase() === String(expectedAns).trim().toUpperCase());
       } else if (textInput) {
         userVal = textInput.value.trim();
         const cleanUserVal = userVal.toLowerCase().replace(/\s+/g, ' ');
         if (Array.isArray(expectedAns)) {
           isCorrect = expectedAns.map(a => a.toLowerCase().trim()).includes(cleanUserVal);
         } else {
-          isCorrect = (cleanUserVal === expectedAns.toLowerCase().trim());
+          isCorrect = (cleanUserVal === String(expectedAns).toLowerCase().trim());
         }
       }
 
@@ -286,7 +291,7 @@ function applySubmittedUI(scoreStr) {
   }
 }
 
-// XỬ LÝ NỘP BÀI: GỬI LÊN CẢ 2 SERVER RIÊNG BIỆT
+// ==================== NỘP BÀI & LƯU LỊCH SỬ LÊN GOOGLE DRIVE ====================
 async function checkAnswers() {
   if (isReviewMode) return;
   if (!window.TEST_DATA || !window.TEST_DATA.answers) {
@@ -341,7 +346,7 @@ async function checkAnswers() {
     if (radioSelected) {
       userVal = radioSelected.value.trim();
       snapshotRadios[qKey] = userVal;
-      isCorrect = (userVal.toUpperCase() === expectedAns.toUpperCase());
+      isCorrect = (userVal.toUpperCase() === String(expectedAns).trim().toUpperCase());
     } else if (textInput) {
       userVal = textInput.value.trim();
       snapshotInputs[`${qKey}_input`] = userVal;
@@ -349,7 +354,7 @@ async function checkAnswers() {
       if (Array.isArray(expectedAns)) {
         isCorrect = expectedAns.map(a => a.toLowerCase().trim()).includes(cleanUserVal);
       } else {
-        isCorrect = (cleanUserVal === expectedAns.toLowerCase().trim());
+        isCorrect = (cleanUserVal === String(expectedAns).toLowerCase().trim());
       }
     }
 
@@ -369,7 +374,7 @@ async function checkAnswers() {
     }
 
     if (expDiv) expDiv.style.display = "block";
-    detailsSummary += `${qKey.toUpperCase()}: ${userVal || 'Để trống'} | Suy nghĩ: ${thought || 'N/A'}\n`;
+    detailsSummary += `${qKey.toUpperCase()}: ${userVal || 'Trống'} | Mạch nghĩ: ${thought || 'N/A'}\n`;
   }
 
   userFinalScore = score;
@@ -399,7 +404,7 @@ async function checkAnswers() {
 
   saveStateToLocalStorage();
 
-  // 1. Gửi bản tóm tắt điểm về Google Sheet (Server Cũ)
+  // 1. Gửi điểm tóm tắt về Script cũ (Sheets & AI)
   if (IELTS_CONFIG.AI_AND_SHEET_URL) {
     fetch(IELTS_CONFIG.AI_AND_SHEET_URL, {
       method: "POST",
@@ -416,7 +421,7 @@ async function checkAnswers() {
     }).catch(() => {});
   }
 
-  // 2. Gửi toàn bộ bài làm chi tiết lên Google Drive (Server Mới)
+  // 2. Gửi snapshot chi tiết lên Google Drive Server
   if (IELTS_CONFIG.DRIVE_STORAGE_URL && !IELTS_CONFIG.DRIVE_STORAGE_URL.includes("DÁN_LINK")) {
     fetch(IELTS_CONFIG.DRIVE_STORAGE_URL, {
       method: "POST",
@@ -428,7 +433,7 @@ async function checkAnswers() {
     }).catch(() => {});
   }
 
-  alert(`🎉 Chúc mừng ${studentName}! Bài làm đạt ${scoreStr} câu. Toàn bộ bài làm đã được lưu trữ an toàn trên hệ thống!`);
+  alert(`🎉 Chúc mừng ${studentName}! Em đã đạt ${scoreStr} câu. Bài làm đã được lưu an toàn lên Google Drive!`);
   showPostSaveButton();
 }
 
@@ -445,7 +450,7 @@ function showPostSaveButton() {
       💾 Lưu vào lịch sử bài làm (Bản Sau sửa)
     </button>
     <p style="margin: 6px 0 0 0; font-size: 13px; color: #15803d; font-style: italic;">
-      💡 Hãy bấm nút này sau khi em đã hỏi AI xong và điền xong Mạch suy nghĩ để lưu bản cập nhật mới nhất lên Google Drive nhé!
+      💡 Bấm nút này sau khi em đã hỏi AI xong và điền xong Mạch suy nghĩ để cập nhật lại phiên bản bài làm mới nhất nhé!
     </p>
   `;
   questionBox.appendChild(postSaveBox);
@@ -515,7 +520,7 @@ function highlightText(elementId) {
   }
 }
 
-// AI TRỢ GIẢNG (GỌI ĐẾN SERVER AI CŨ)
+// ==================== TRỢ GIẢNG AI (GỌI SERVER CŨ) ====================
 async function askGeminiAI(qId) {
   if (isReviewMode) {
     alert("Bạn đang ở chế độ xem lại lịch sử.");
@@ -593,12 +598,13 @@ Dùng **từ khóa** để IN ĐẬM, ==bằng chứng== để TÔ VÀNG đoạn
   }
 }
 
-// KHỞI TẠO VÀ XEM LẠI BÀI LÀM TRÊN THIẾT BỊ BẤT KỲ
+// ==================== KHỞI TẠO HỆ THỐNG ====================
 document.addEventListener('DOMContentLoaded', async function() {
   const urlParams = new URLSearchParams(window.location.search);
   const attemptId = urlParams.get('attemptId');
   const emailParam = urlParams.get('email');
 
+  // Nếu đường link chứa cờ xem lại từ Google Drive
   if (attemptId && emailParam && IELTS_CONFIG.DRIVE_STORAGE_URL && !IELTS_CONFIG.DRIVE_STORAGE_URL.includes("DÁN_LINK")) {
     try {
       const res = await fetch(IELTS_CONFIG.DRIVE_STORAGE_URL, {
@@ -618,6 +624,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     } catch (e) {}
   }
 
+  // Chế độ làm bài thông thường
   restoreStateFromLocalStorage();
   document.addEventListener('input', saveStateToLocalStorage);
   document.addEventListener('change', saveStateToLocalStorage);
