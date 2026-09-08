@@ -1,10 +1,12 @@
 /**
  * ==========================================================================
- * IELTS PRACTICE TEST CORE ENGINE (ielts-core.js) - UNIFIED HYBRID ENGINE
- * Hỗ trợ đồng thời 100%:
- * 1. READING: 2 cột từ đầu, highlight văn bản, chọn radio, resizer drag.
- * 2. LISTENING: To tràn viền lúc làm bài, chia 2 cột khi nộp bài, Audio Sync,
- *    Bottom Nav Bar, Result Modal, Đổi cỡ chữ A-/A+, Dark Theme, AI Gemini.
+ * IELTS PRACTICE TEST CORE ENGINE (ielts-core.js) - UNIVERSAL VẠN NĂNG 100%
+ * Tự động hóa:
+ * 1. Tự phát hiện Listening/Reading qua <audio> hoặc tên file.
+ * 2. Tự động sinh (inject) thanh điều hướng đáy và bảng Modal kết quả.
+ * 3. Tự bóc tách số câu chính xác (1-10, 11-20, 21-30, 31-40...).
+ * 4. Bắt mượt cả điền từ (input) lẫn trắc nghiệm khoanh tròn (radio/change).
+ * 5. Giữ nguyên 100% tính năng Reading gốc, AI Gemini, Drive Storage, Audio Sync.
  * ==========================================================================
  */
 
@@ -19,9 +21,12 @@ let isTimerRunning = false;
 let userFinalScore = 0;
 let isReviewMode = false;
 
-// Tự động nhận diện bài thi: Listening hay Reading
+// TỰ ĐỘNG PHÁT HIỆN ĐỀ LISTENING HAY READING
 function isListeningTest() {
-  return document.body.classList.contains('listening-test') || !!document.getElementById('mainAudioElement');
+  return !!document.querySelector('audio') || 
+         !!document.getElementById('mainAudioElement') ||
+         (window.TEST_DATA && window.TEST_DATA.title && window.TEST_DATA.title.toLowerCase().includes('listening')) ||
+         window.location.pathname.toLowerCase().includes('lis');
 }
 
 let currentFontSize = isListeningTest() ? 22 : 15;
@@ -29,6 +34,83 @@ let currentFontSize = isListeningTest() ? 22 : 15;
 function getStorageKey() {
   const pageName = window.location.pathname.split('/').pop() || 'default_test';
   return 'ielts_state_' + pageName;
+}
+
+// ==================== TỰ ĐỘNG SINH THANH ĐIỀU HƯỚNG & MODAL ====================
+function injectUniversalListeningUI() {
+  if (!isListeningTest() || document.getElementById('bottomNavBar')) return;
+
+  // 1. Tự động thêm class vào body
+  document.body.classList.add('listening-test');
+
+  const answers = (window.TEST_DATA && window.TEST_DATA.answers) ? window.TEST_DATA.answers : {};
+  const qKeys = Object.keys(answers);
+  if (qKeys.length === 0) return;
+
+  // Xác định câu đầu tiên để biết Part mấy (1-10: P1, 11-20: P2, 21-30: P3, 31-40: P4)
+  let firstQNum = 1;
+  const matchNum = qKeys[0].match(/\d+/);
+  if (matchNum) firstQNum = parseInt(matchNum[0]);
+
+  let currentPart = 1;
+  if (firstQNum >= 31) currentPart = 4;
+  else if (firstQNum >= 21) currentPart = 3;
+  else if (firstQNum >= 11) currentPart = 2;
+
+  // Sinh các nút số câu hỏi
+  let badgesHtml = '';
+  qKeys.forEach(qKey => {
+    const num = qKey.replace(/\D/g, '');
+    badgesHtml += `<button type="button" class="q-badge-btn" id="badge_${qKey}" onclick="scrollToQuestion('${qKey}')">${num}</button>`;
+  });
+
+  // Sinh các Tab Part 1, 2, 3, 4
+  const partsHtml = [1, 2, 3, 4].map(p => {
+    if (p === currentPart) {
+      return `<div class="part-tab-item active"><span>Part ${p}:</span><div class="part-q-badges">${badgesHtml}</div></div>`;
+    } else {
+      return `<div class="part-tab-item" style="color: #94a3b8; font-weight: normal;">Part ${p}: 10 questions</div>`;
+    }
+  }).join('');
+
+  // 2. Tạo thanh điều hướng dưới đáy (Bottom Bar)
+  const bottomBar = document.createElement('div');
+  bottomBar.id = 'bottomNavBar';
+  bottomBar.className = 'bottom-nav-bar';
+  bottomBar.innerHTML = `
+    <div class="bottom-nav-left">${partsHtml}</div>
+    <div class="bottom-nav-right">
+      <button type="button" class="btn-open-modal-list" onclick="toggleResultModal(true)">📋 Bảng đáp án</button>
+    </div>
+  `;
+  document.body.appendChild(bottomBar);
+
+  // 3. Tạo Popup Modal bảng kết quả
+  const modalDiv = document.createElement('div');
+  modalDiv.id = 'resultModal';
+  modalDiv.className = 'modal-backdrop';
+  modalDiv.innerHTML = `
+    <div class="modal-content-card">
+      <button type="button" class="btn-close-modal" onclick="toggleResultModal(false)">✕</button>
+      <div class="modal-score-summary" id="modalScoreSummaryBox">
+        <h2 id="modalBandScoreText">Band Score: Đang làm bài</h2>
+        <p style="margin: 6px 0 0 0; color: #475569; font-weight: 600;" id="modalScoreDetailText">
+          Hãy điền các câu hỏi và bấm nộp bài để xem điểm chi tiết!
+        </p>
+      </div>
+      <table class="modal-table">
+        <thead>
+          <tr>
+            <th style="width: 15%;">#</th>
+            <th style="width: 45%;">Câu trả lời của bạn</th>
+            <th style="width: 40%;">Đáp án đúng</th>
+          </tr>
+        </thead>
+        <tbody id="modalTableBody"></tbody>
+      </table>
+    </div>
+  `;
+  document.body.appendChild(modalDiv);
 }
 
 // ==================== ĐIỀU CHỈNH CỠ CHỮ & THEME ====================
@@ -114,52 +196,7 @@ function stopTimer() {
   document.querySelectorAll('audio').forEach(a => a.pause());
 }
 
-// ==================== RESIZER KÉO THẢ CHIA 2 CỘT ====================
-function initResizableDivider() {
-  const resizer = document.getElementById('dragResizer') || document.querySelector('.resizer');
-  const passageBox = document.getElementById('passageBox');
-  const questionBox = document.querySelector('.question-box');
-  const container = document.querySelector('.container');
-
-  if (!resizer || !passageBox || !container) return;
-
-  let isDragging = false;
-
-  resizer.addEventListener('mousedown', function() {
-    isDragging = true;
-    resizer.classList.add('resizing');
-    document.body.style.cursor = 'col-resize';
-    document.body.style.userSelect = 'none';
-  });
-
-  document.addEventListener('mousemove', function(e) {
-    if (!isDragging) return;
-    const containerRect = container.getBoundingClientRect();
-    const offsetLeft = e.clientX - containerRect.left;
-    const containerWidth = containerRect.width;
-
-    let leftPercent = (offsetLeft / containerWidth) * 100;
-    if (leftPercent < 20) leftPercent = 20;
-    if (leftPercent > 80) leftPercent = 80;
-
-    passageBox.style.width = `${leftPercent}%`;
-    if (questionBox) {
-      const resizerWidth = resizer.offsetWidth || 12;
-      questionBox.style.width = `calc(${100 - leftPercent}% - ${resizerWidth}px)`;
-    }
-  });
-
-  document.addEventListener('mouseup', function() {
-    if (isDragging) {
-      isDragging = false;
-      resizer.classList.remove('resizing');
-      document.body.style.cursor = '';
-      document.body.style.userSelect = '';
-    }
-  });
-}
-
-// ==================== BOTTOM BADGES & AUDIO SYNC (CHO LISTENING) ====================
+// ==================== BOTTOM BADGES & CUỘN MƯỢT ====================
 function updateBottomBadgesRealtime() {
   if (!isListeningTest() || !window.TEST_DATA || !window.TEST_DATA.answers) return;
   const answers = window.TEST_DATA.answers;
@@ -184,8 +221,9 @@ function scrollToQuestion(qId) {
   }
 }
 
+// ==================== AUDIO TRACKING & CLICK TRANSCRIPT ====================
 function initAudioTranscriptSync() {
-  const audio = document.getElementById('mainAudioElement');
+  const audio = document.getElementById('mainAudioElement') || document.querySelector('audio');
   const transcriptLines = Array.from(document.querySelectorAll('.transcript-line'));
   if (!audio || transcriptLines.length === 0) return;
 
@@ -218,6 +256,51 @@ function initAudioTranscriptSync() {
   });
 }
 
+// ==================== RESIZER KÉO THẢ CHIA 2 CỘT ====================
+function initResizableDivider() {
+  const resizer = document.getElementById('dragResizer') || document.querySelector('.resizer');
+  const passageBox = document.getElementById('passageBox');
+  const questionBox = document.querySelector('.question-box');
+  const container = document.querySelector('.container');
+
+  if (!resizer || !passageBox || !container) return;
+
+  let isDragging = false;
+
+  resizer.addEventListener('mousedown', function() {
+    isDragging = true;
+    resizer.classList.add('resizing');
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+  });
+
+  document.addEventListener('mousemove', function(e) {
+    if (!isDragging) return;
+    const containerRect = container.getBoundingClientRect();
+    const offsetLeft = e.clientX - containerRect.left;
+    const containerWidth = containerRect.width;
+
+    let leftPercent = (offsetLeft / containerWidth) * 100;
+    if (leftPercent < 20) leftPercent = 20;
+    if (leftPercent > 80) leftPercent = 80;
+
+    passageBox.style.width = `${leftPercent}%`;
+    if (questionBox) {
+      const resizerWidth = resizer.offsetWidth || 14;
+      questionBox.style.width = `calc(${100 - leftPercent}% - ${resizerWidth}px)`;
+    }
+  });
+
+  document.addEventListener('mouseup', function() {
+    if (isDragging) {
+      isDragging = false;
+      resizer.classList.remove('resizing');
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+    }
+  });
+}
+
 // ==================== MODAL KẾT QUẢ ====================
 function toggleResultModal(show) {
   const modal = document.getElementById('resultModal');
@@ -235,8 +318,8 @@ function renderModalTable() {
   const isSubmitted = document.body.classList.contains('submitted-mode') || document.getElementById('passageBox')?.classList.contains('submitted');
   let html = '';
 
-  let idx = 1;
   for (const qKey in answers) {
+    const qNum = qKey.replace(/\D/g, ''); // Bóc tách câu 11, 21, 31 chuẩn 100%
     const input = document.getElementById(`${qKey}_input`);
     const radio = document.querySelector(`input[name="${qKey}"]:checked`);
     const expected = answers[qKey];
@@ -247,28 +330,31 @@ function renderModalTable() {
 
     if (isSubmitted) {
       let isCorrect = false;
-      const cleanUserVal = userVal.toLowerCase().replace(/\s+/g, ' ');
-      if (Array.isArray(expected)) {
-        isCorrect = expected.map(a => a.toLowerCase().trim()).includes(cleanUserVal);
+      if (radio) {
+        isCorrect = (userVal.toUpperCase() === String(expected).trim().toUpperCase());
       } else {
-        isCorrect = (cleanUserVal === String(expected).toLowerCase().trim());
+        const cleanUserVal = userVal.toLowerCase().replace(/\s+/g, ' ');
+        if (Array.isArray(expected)) {
+          isCorrect = expected.map(a => a.toLowerCase().trim()).includes(cleanUserVal);
+        } else {
+          isCorrect = (cleanUserVal === String(expected).toLowerCase().trim());
+        }
       }
       statusClass = isCorrect ? 'ans-correct-tag' : 'ans-incorrect-tag';
     }
 
     html += `
       <tr>
-        <td><b>${idx}</b></td>
+        <td><b>${qNum}</b></td>
         <td class="${statusClass}">${userVal || '<i style="color:#94a3b8;">Chưa trả lời</i>'}</td>
         <td>${isSubmitted ? `<b>${correctStr}</b>` : '<span style="color:#94a3b8;">Ẩn khi đang làm</span>'}</td>
       </tr>
     `;
-    idx++;
   }
   tbody.innerHTML = html;
 }
 
-// ==================== LƯU & PHỤC HỒI STATE ====================
+// ==================== LƯU / PHỤC HỒI STATE ====================
 function saveStateToLocalStorage() {
   if (isReviewMode) return;
   try {
@@ -358,7 +444,7 @@ function restoreStateFromLocalStorage() {
   } catch (err) {}
 }
 
-// ==================== REVIEW MODE TỪ DRIVE ====================
+// ==================== REVIEW MODE TỪ GOOGLE DRIVE ====================
 function restoreAttemptFromSnapshot(attempt) {
   isReviewMode = true;
   stopTimer();
@@ -410,7 +496,7 @@ function restoreAttemptFromSnapshot(attempt) {
   if (submitBtn) submitBtn.style.display = 'none';
 }
 
-// ==================== NỘP BÀI & GIAO DIỆN KẾT QUẢ ====================
+// ==================== ÁP DỤNG KẾT QUẢ KHI NỘP ====================
 function applySubmittedUI(scoreStr) {
   document.body.classList.add('submitted-mode');
   const passageBox = document.getElementById('passageBox');
@@ -465,6 +551,7 @@ function applySubmittedUI(scoreStr) {
   }
 }
 
+// ==================== CHẤM BÀI VÀ NỘP BÀI ====================
 async function checkAnswers() {
   if (isReviewMode) return;
   if (!window.TEST_DATA || !window.TEST_DATA.answers) return;
@@ -578,6 +665,7 @@ async function checkAnswers() {
 
   saveStateToLocalStorage();
 
+  // Gửi Google Sheets
   if (IELTS_CONFIG.AI_AND_SHEET_URL) {
     fetch(IELTS_CONFIG.AI_AND_SHEET_URL, {
       method: "POST",
@@ -594,6 +682,7 @@ async function checkAnswers() {
     }).catch(() => {});
   }
 
+  // Gửi Google Drive
   if (IELTS_CONFIG.DRIVE_STORAGE_URL && !IELTS_CONFIG.DRIVE_STORAGE_URL.includes("DÁN_LINK")) {
     fetch(IELTS_CONFIG.DRIVE_STORAGE_URL, {
       method: "POST",
@@ -602,7 +691,6 @@ async function checkAnswers() {
     }).catch(() => {});
   }
 
-  // Nếu là bài Listening thì bật Modal bảng điểm tổng hợp
   if (isListeningTest()) {
     const modalBand = document.getElementById('modalBandScoreText');
     const modalDetail = document.getElementById('modalScoreDetailText');
@@ -775,13 +863,20 @@ Dùng **từ khóa** để IN ĐẬM, ==bằng chứng== để TÔ VÀNG đoạn
   }
 }
 
-// ==================== KHỞI ĐỘNG ====================
+// ==================== KHỞI ĐỘNG HỆ THỐNG ====================
 document.addEventListener('DOMContentLoaded', async function() {
+  // 1. Tự động tiêm thanh đáy và popup modal nếu là Listening
+  injectUniversalListeningUI();
+
+  // 2. Kích hoạt Resizer chia cột
   initResizableDivider();
+
+  // 3. Kích hoạt Audio Sync
   if (isListeningTest()) {
     initAudioTranscriptSync();
   }
 
+  // 4. Khôi phục bài thi từ Review Mode nếu có query params
   const urlParams = new URLSearchParams(window.location.search);
   const attemptId = urlParams.get('attemptId');
   const emailParam = urlParams.get('email');
@@ -801,11 +896,16 @@ document.addEventListener('DOMContentLoaded', async function() {
     } catch (e) {}
   }
 
+  // 5. Khôi phục bài đang làm dở cục bộ
   restoreStateFromLocalStorage();
 
+  // 6. LẮNG NGHE ĐỒNG THỜI CẢ INPUT (GÕ PHÍM) VÀ CHANGE (CLICK RADIO TRẮC NGHIỆM)
   document.addEventListener('input', function() {
     updateBottomBadgesRealtime();
     saveStateToLocalStorage();
   });
-  document.addEventListener('change', saveStateToLocalStorage);
+  document.addEventListener('change', function() {
+    updateBottomBadgesRealtime();
+    saveStateToLocalStorage();
+  });
 });
