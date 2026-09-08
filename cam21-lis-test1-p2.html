@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>IELTS 21 Listening Test 1 - Part 2: Becoming a Makeup Artist</title>
+  <link rel="stylesheet" href="ielts-core.css">
+</head>
+<body>
+
+<div class="user-info-box">
+  <div class="user-info-field">
+    <label for="studentNameInput">👤 Họ và Tên:</label>
+    <input type="text" id="studentNameInput" placeholder="Đang đồng bộ họ tên...">
+  </div>
+  <div class="user-info-field">
+    <label for="studentEmailInput">✉️ Email Google:</label>
+    <input type="email" id="studentEmailInput" placeholder="Đang đồng bộ Email...">
+  </div>
+</div>
+
+<div class="header-bar">
+  <h1>IELTS Academic 21 - Listening Test 1 - Part 2</h1>
+  
+  <div class="header-nav">
+    <a href="index.html" class="nav-link">🏠 Trang chủ</a>
+    <a href="cam21-lis-test1-p1.html" class="nav-link">Part 1</a>
+    <a href="cam21-lis-test1-p2.html" class="nav-link active">Part 2</a>
+  </div>
+
+  <div class="header-controls">
+    <button class="btn-header" onclick="changeFontSize(-1)" title="Giảm cỡ chữ">A-</button>
+    <button class="btn-header" onclick="changeFontSize(1)" title="Tăng cỡ chữ">A+</button>
+    <button class="btn-header" id="btnThemeToggle" onclick="toggleTheme()" title="Đổi chế độ Sáng / Tối">🌙 Tối/Sáng</button>
+  </div>
+
+  <div class="timer-container">
+    <span>⏱️ Thời gian:</span>
+    <span class="timer-display" id="timerDisplay">00:00</span>
+    <button class="btn-timer" onclick="startTimer()">▶️ Bắt đầu</button>
+    <button class="btn-timer" onclick="pauseTimer()">⏸️ Tạm dừng</button>
+  </div>
+
+  <div class="score-badge" id="scoreBadge">Điểm số: <span id="scoreText">0/10</span></div>
+</div>
+
+<div class="container" id="mainContainer">
+  
+  <!-- CỘT TRÁI: TRANSCRIPT (ẨN KHI LÀM, TỰ HIỆN KHI NỘP BÀI) -->
+  <div class="passage-box" id="passageBox">
+    <h2 style="margin-top:0; border-bottom:2px solid var(--primary-blue); padding-bottom:6px;">LISTENING TRANSCRIPT - PART 2</h2>
+    <p style="font-size: 0.75em; color: #64748b; font-style: italic; margin-bottom: 16px;">
+      💡 <b>Audio-Track Sync:</b> Bấm vào bất kỳ câu nào dưới đây để phát audio ngay đúng câu đó!
+    </p>
+
+    <div class="transcript-line" data-time="461">
+      <span class="time-stamp-tag">07:41</span><b>MAN:</b> Hello and welcome to the film making podcast. In this week's episode, Claire Lemarre talks to us about how to become a makeup artist. Claire's been working as a makeup artist in the film industry for over 20 years and has lots of useful advice about how to get started.
+    </div>
+
+    <div class="transcript-line" data-time="477">
+      <span class="time-stamp-tag">07:57</span><b>WOMAN:</b> Thanks Ian. Well, before you can become a makeup artist on films you have to spend about 2 years working as a makeup trainee.
+    </div>
+
+    <div class="transcript-line" data-time="483">
+      <span class="time-stamp-tag">08:03</span>A good place to get your first job would be on a low-budget short film. Of course, this means that you'll be working for free. But it's often worth it for the experience. <span class="hl" id="hl-q11" data-q="[Q11]">Make sure your <span class="kw">transport costs are covered</span> - and remember, there's very unlikely to be any catering provided, so bring plenty of food</span>.
+    </div>
+
+    <div class="transcript-line" data-time="499">
+      <span class="time-stamp-tag">08:19</span>If you're lucky, you might start out on a big-budget film where you'll get the most useful experience. On productions like this, makeup and hair styling are separate departments - so you won't need to bring your curling tongs! <span class="hl" id="hl-q12" data-q="[Q12]">But you're likely to get the opportunity to work with a range of age groups, as well as <span class="kw">different ethnicities</span></span>. Doing makeup for special effects is highly specialised, so don't expect to be offered any practical experience in that.
+    </div>
+
+    <div class="transcript-line" data-time="524">
+      <span class="time-stamp-tag">08:44</span>One problem with working in the makeup department is that it's a high-pressure environment. There are very few times when you'll be bored or have nothing to do. <span class="hl" id="hl-q13" data-q="[Q13]">It can be stressful but you'll see that the top makeup artists are very professional - even when they're having to work with <span class="kw">directors who are impatient</span>, or unhappy with the makeup artist's work</span>. Follow your supervisor's lead and try to remain calm at all times.
+    </div>
+
+    <div class="transcript-line" data-time="556">
+      <span class="time-stamp-tag">09:16</span>I've worked with many very famous actors over the years. <span class="hl" id="hl-q14" data-q="[Q14]">At first, <span class="kw">I found it overwhelming and could hardly speak. I was so in awe</span></span>. That's preferable, by the way, to becoming too excited and asking for selfies. Now meeting the talent is just a normal part of the job and to be honest most actors don't look that special without all the makeup!
+    </div>
+
+    <div class="transcript-line" data-time="578">
+      <span class="time-stamp-tag">09:38</span><span class="hl" id="hl-q15" data-q="[Q15]">Every makeup trainee will need a makeup kit, which they'll be expected to have with them at all times. <span class="kw">Just the essentials will do</span> for the kinds of tasks you'll be given - it won't be anything complicated</span>. It's worth looking at what the other makeup artists have in their kits - but whatever you do, don't borrow anything without asking first.
+    </div>
+
+    <div class="transcript-line" data-time="605">
+      <span class="time-stamp-tag">10:05</span>It's very important to build your portfolio. You should take photos of all the work you do and ideally show the different stages of makeup application if you can. <span class="hl" id="hl-q16" data-q="[Q16]">But remember you'll need to <span class="kw">get approval</span> from the makeup designer in charge of the department</span>. As you'll be sending your portfolio digitally, you won't need to get photos printed.
+    </div>
+
+    <div class="transcript-line" data-time="629">
+      <span class="time-stamp-tag">10:29</span>So what does a makeup trainee actually do? You need to think about whether you're the right kind of person to do the job and whether you'd enjoy it. So, to give you some idea, here are some of the things you might be required to do.
+    </div>
+
+    <div class="transcript-line" data-time="649">
+      <span class="time-stamp-tag">10:49</span><span class="hl" id="hl-q17" data-q="[Q17]">You may be asked to help prep an actor ready for makeup. Some actors will arrive having already cleansed and moisturized their skin. But sometimes you'll need to step in and <span class="kw">get this done without wasting any time</span>, otherwise the makeup artist will get behind schedule</span>.
+    </div>
+
+    <div class="transcript-line" data-time="663">
+      <span class="time-stamp-tag">11:03</span><span class="hl" id="hl-q18" data-q="[Q18]">Trainees play a useful role in continuity. It will be your responsibility to take photos, log them digitally and print out a hard copy to put in each actor's file. <span class="kw">This information needs to be kept in good order</span> as a reshoot can mean replicating makeup months later</span>.
+    </div>
+
+    <div class="transcript-line" data-time="687">
+      <span class="time-stamp-tag">11:27</span><span class="hl" id="hl-q19" data-q="[Q19]">General duties mean doing anything from getting the teas and coffees to putting on a wash. <span class="kw">Having a positive attitude and being willing to do whatever is asked of you</span> will help you get your next film job</span>.
+    </div>
+
+    <div class="transcript-line" data-time="704">
+      <span class="time-stamp-tag">11:44</span><span class="hl" id="hl-q20" data-q="[Q20]">You won't be asked to apply makeup to any of the principal cast, only the extras. If there are dozens of extras involved <span class="kw">you'll need to keep up a swift pace and not spend too long on each person</span></span>. It takes quite a lot of confidence to be able to do this well.
+    </div>
+
+    <div class="transcript-line" data-time="726">
+      <span class="time-stamp-tag">12:06</span>OK now about terms and conditions...
+    </div>
+  </div>
+
+  <!-- THANH KÉO RESIZER CHIA CỘT (◄►) -->
+  <div class="resizer" id="dragResizer">
+    <div class="resizer-icon">◄►</div>
+  </div>
+
+  <!-- CỘT PHẢI: AUDIO & BỘ CÂU HỎI 11-20 -->
+  <div class="question-box" id="questionBox">
+    
+    <!-- Audio Player (Bắt đầu từ 7:41) -->
+    <div class="audio-player-container">
+      <div class="audio-player-header">
+        🎧 <b>Part 2:</b> Listen and answer questions 11-20
+      </div>
+      <audio id="mainAudioElement" class="audio-player-element" controls preload="metadata">
+        <source src="https://archive.org/download/cambridge-21-test-1_202609/Cambridge%2021%20-%20Test%201.mp3#t=461" type="audio/mpeg">
+        Trình duyệt của bạn không hỗ trợ phát âm thanh.
+      </audio>
+    </div>
+
+    <!-- KHỐI CÂU HỎI 11-16 (TRẮC NGHIỆM MULTIPLE CHOICE) -->
+    <h3 style="color: var(--primary-blue); font-size: 1.15em; margin-top: 5px;">Questions 11-16</h3>
+    <p><i>Choose the correct letter, <b>A</b>, <b>B</b> or <b>C</b>.</i></p>
+
+    <!-- Câu 11 -->
+    <div class="question" id="q11">
+      <p><b>11.</b> What should trainees always expect to get when working on low budget short films?</p>
+      <div class="options-vertical">
+        <label><input type="radio" name="q11" value="A"> <b>A</b> travel expenses</label>
+        <label><input type="radio" name="q11" value="B"> <b>B</b> a minimum wage</label>
+        <label><input type="radio" name="q11" value="C"> <b>C</b> meals</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q11_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• <b>Đáp án đúng:</b> <span class="kw-exp">A</span></div>
+        <div class="exp-step">• <b>Dấu hiệu:</b> "Make sure your transport costs are covered – and remember, there’s very unlikely to be any catering provided, so bring plenty of food". Transport costs = travel expenses.</div>
+        <button class="btn-locate" onclick="highlightText('hl-q11')">📍 Xem vị trí transcript</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q11"><button class="ai-btn" onclick="askGeminiAI('q11')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q11"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Câu 12 -->
+    <div class="question" id="q12">
+      <p><b>12.</b> According to the speaker, on big budget films trainees may get experience of</p>
+      <div class="options-vertical">
+        <label><input type="radio" name="q12" value="A"> <b>A</b> makeup for special effects.</label>
+        <label><input type="radio" name="q12" value="B"> <b>B</b> working with different ethnicities.</label>
+        <label><input type="radio" name="q12" value="C"> <b>C</b> creating a variety of hair styles.</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q12_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• <b>Đáp án đúng:</b> <span class="kw-exp">B</span></div>
+        <div class="exp-step">• <b>Dấu hiệu:</b> "But you’re likely to get the opportunity to work with a range of age groups, as well as different ethnicities".</div>
+        <button class="btn-locate" onclick="highlightText('hl-q12')">📍 Xem vị trí transcript</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q12"><button class="ai-btn" onclick="askGeminiAI('q12')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q12"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Câu 13 -->
+    <div class="question" id="q13">
+      <p><b>13.</b> The speaker says a problem for makeup artists is</p>
+      <div class="options-vertical">
+        <label><input type="radio" name="q13" value="A"> <b>A</b> dealing with difficult directors.</label>
+        <label><input type="radio" name="q13" value="B"> <b>B</b> being shouted at by their supervisor.</label>
+        <label><input type="radio" name="q13" value="C"> <b>C</b> waiting around for hours doing nothing.</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q13_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• <b>Đáp án đúng:</b> <span class="kw-exp">A</span></div>
+        <div class="exp-step">• <b>Dấu hiệu:</b> "working with directors who are impatient, or unhappy with the makeup artist’s work". Impatient directors = difficult directors.</div>
+        <button class="btn-locate" onclick="highlightText('hl-q13')">📍 Xem vị trí transcript</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q13"><button class="ai-btn" onclick="askGeminiAI('q13')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q13"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Câu 14 -->
+    <div class="question" id="q14">
+      <p><b>14.</b> How did the speaker feel when she met famous actors for the first time?</p>
+      <div class="options-vertical">
+        <label><input type="radio" name="q14" value="A"> <b>A</b> very shy</label>
+        <label><input type="radio" name="q14" value="B"> <b>B</b> very proud</label>
+        <label><input type="radio" name="q14" value="C"> <b>C</b> very disappointed</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q14_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• <b>Đáp án đúng:</b> <span class="kw-exp">A</span></div>
+        <div class="exp-step">• <b>Dấu hiệu:</b> "At first, I found it overwhelming and could hardly speak. I was so in awe". Không dám nói chuyện vì quá choáng ngợp = very shy.</div>
+        <button class="btn-locate" onclick="highlightText('hl-q14')">📍 Xem vị trí transcript</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q14"><button class="ai-btn" onclick="askGeminiAI('q14')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q14"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Câu 15 -->
+    <div class="question" id="q15">
+      <p><b>15.</b> What advice does the speaker give about makeup kits?</p>
+      <div class="options-vertical">
+        <label><input type="radio" name="q15" value="A"> <b>A</b> Always carry a basic kit with you.</label>
+        <label><input type="radio" name="q15" value="B"> <b>B</b> Only buy the best products for a makeup kit.</label>
+        <label><input type="radio" name="q15" value="C"> <b>C</b> Ask other makeup artists to check your kit.</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q15_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• <b>Đáp án đúng:</b> <span class="kw-exp">A</span></div>
+        <div class="exp-step">• <b>Dấu hiệu:</b> "which they’ll be expected to have with them at all times. Just the essentials will do". Have with them at all times = always carry, essentials = basic kit.</div>
+        <button class="btn-locate" onclick="highlightText('hl-q15')">📍 Xem vị trí transcript</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q15"><button class="ai-btn" onclick="askGeminiAI('q15')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q15"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Câu 16 -->
+    <div class="question" id="q16">
+      <p><b>16.</b> What advice does the speaker give about creating a portfolio?</p>
+      <div class="options-vertical">
+        <label><input type="radio" name="q16" value="A"> <b>A</b> Keep print and digital photos.</label>
+        <label><input type="radio" name="q16" value="B"> <b>B</b> Only include a small selection of photos.</label>
+        <label><input type="radio" name="q16" value="C"> <b>C</b> Get permission to use photos.</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q16_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• <b>Đáp án đúng:</b> <span class="kw-exp">C</span></div>
+        <div class="exp-step">• <b>Dấu hiệu:</b> "But remember you’ll need to get approval from the makeup designer in charge of the department". Get approval = get permission.</div>
+        <button class="btn-locate" onclick="highlightText('hl-q16')">📍 Xem vị trí transcript</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q16"><button class="ai-btn" onclick="askGeminiAI('q16')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q16"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KHỐI CÂU HỎI 17-20 (MATCHING) -->
+    <h3 style="color: var(--primary-blue); font-size: 1.15em; margin-top: 35px;">Questions 17-20</h3>
+    <p><i>What ability is required for each of the following duties? Choose the correct letter, <b>A</b>, <b>B</b>, or <b>C</b>.</i></p>
+
+    <!-- Hộp đáp án lựa chọn A, B, C -->
+    <div style="background: var(--bg-subcard); border: 2px dashed var(--border-color); padding: 14px 20px; border-radius: 8px; margin-bottom: 20px;">
+      <b style="color: var(--primary-blue);">Abilities:</b>
+      <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 8px;">
+        <span><b>A.</b> being well-organised</span>
+        <span><b>B.</b> being flexible</span>
+        <span><b>C.</b> working quickly</span>
+      </div>
+    </div>
+
+    <!-- Câu 17 -->
+    <div class="question" id="q17">
+      <p><b>17.</b> Prepping an actor</p>
+      <div class="options">
+        <label><input type="radio" name="q17" value="A"> <b>A</b></label>
+        <label><input type="radio" name="q17" value="B"> <b>B</b></label>
+        <label><input type="radio" name="q17" value="C"> <b>C</b></label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q17_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• <b>Đáp án đúng:</b> <span class="kw-exp">C</span> (working quickly)</div>
+        <div class="exp-step">• <b>Dấu hiệu:</b> "step in and get this done without wasting any time, otherwise the makeup artist will get behind schedule". Without wasting time = working quickly.</div>
+        <button class="btn-locate" onclick="highlightText('hl-q17')">📍 Xem vị trí transcript</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q17"><button class="ai-btn" onclick="askGeminiAI('q17')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q17"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Câu 18 -->
+    <div class="question" id="q18">
+      <p><b>18.</b> Continuity</p>
+      <div class="options">
+        <label><input type="radio" name="q18" value="A"> <b>A</b></label>
+        <label><input type="radio" name="q18" value="B"> <b>B</b></label>
+        <label><input type="radio" name="q18" value="C"> <b>C</b></label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q18_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• <b>Đáp án đúng:</b> <span class="kw-exp">A</span> (being well-organised)</div>
+        <div class="exp-step">• <b>Dấu hiệu:</b> "This information needs to be kept in good order as a reshoot can mean replicating makeup months later". Kept in good order = being well-organised.</div>
+        <button class="btn-locate" onclick="highlightText('hl-q18')">📍 Xem vị trí transcript</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q18"><button class="ai-btn" onclick="askGeminiAI('q18')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q18"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Câu 19 -->
+    <div class="question" id="q19">
+      <p><b>19.</b> General</p>
+      <div class="options">
+        <label><input type="radio" name="q19" value="A"> <b>A</b></label>
+        <label><input type="radio" name="q19" value="B"> <b>B</b></label>
+        <label><input type="radio" name="q19" value="C"> <b>C</b></label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q19_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• <b>Đáp án đúng:</b> <span class="kw-exp">B</span> (being flexible)</div>
+        <div class="exp-step">• <b>Dấu hiệu:</b> "doing anything from getting the teas and coffees to putting on a wash. Having a positive attitude and being willing to do whatever is asked of you". Willing to do whatever = being flexible.</div>
+        <button class="btn-locate" onclick="highlightText('hl-q19')">📍 Xem vị trí transcript</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q19"><button class="ai-btn" onclick="askGeminiAI('q19')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q19"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Câu 20 -->
+    <div class="question" id="q20">
+      <p><b>20.</b> Applying makeup</p>
+      <div class="options">
+        <label><input type="radio" name="q20" value="A"> <b>A</b></label>
+        <label><input type="radio" name="q20" value="B"> <b>B</b></label>
+        <label><input type="radio" name="q20" value="C"> <b>C</b></label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q20_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• <b>Đáp án đúng:</b> <span class="kw-exp">C</span> (working quickly)</div>
+        <div class="exp-step">• <b>Dấu hiệu:</b> "If there are dozens of extras involved you’ll need to keep up a swift pace and not spend too long on each person". Swift pace / not spend too long = working quickly.</div>
+        <button class="btn-locate" onclick="highlightText('hl-q20')">📍 Xem vị trí transcript</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q20"><button class="ai-btn" onclick="askGeminiAI('q20')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q20"></div>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn-submit" onclick="checkAnswers()">CHẤM BÀI VÀ NỘP KẾT QUẢ</button>
+  </div>
+</div>
+
+<script>
+  window.TEST_DATA = {
+    title: "Cam 21 Listening Test 1 - Part 2",
+    answers: {
+      q11: "A",
+      q12: "B",
+      q13: "A",
+      q14: "A",
+      q15: "A",
+      q16: "C",
+      q17: "C",
+      q18: "A",
+      q19: "B",
+      q20: "C"
+    }
+  };
+</script>
+<script src="ielts-core.js"></script>
+</body>
+</html>
