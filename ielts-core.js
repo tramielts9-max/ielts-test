@@ -18,7 +18,7 @@ let seconds = 0;
 let timerInterval = null;
 let isTimerRunning = false;
 let userFinalScore = 0;
-let currentFontSize = 15;
+let currentFontSize = 22;
 let isReviewMode = false;
 
 function getStorageKey() {
