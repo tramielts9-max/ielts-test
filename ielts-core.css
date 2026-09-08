@@ -198,12 +198,12 @@ body {
 
 /* Trong lúc làm bài: Transcript bị ẩn, Question tràn full 100% */
 .passage-box {
-  display: none; /* Mặc định ẩn lúc làm */
+  display: none;
   width: 50%;
   background: var(--bg-card);
   padding: 22px;
   overflow-y: auto;
-  font-size: 15.5px;
+  font-size: var(--font-size-base); /* <-- SỬA DÒNG NÀY */
   line-height: 1.8;
   border-right: none;
 }
@@ -239,11 +239,11 @@ body {
 }
 
 .question-box {
-  width: 100%; /* Tràn viền 100% lúc đang làm bài */
+  width: 100%;
   background: var(--bg-card);
   padding: 24px;
   overflow-y: auto;
-  font-size: 15.5px;
+  font-size: var(--font-size-base); /* <-- SỬA DÒNG NÀY */
   line-height: 1.8;
 }
 
@@ -302,7 +302,7 @@ body {
   background: var(--bg-subcard);
   border: 1.5px solid var(--border-color);
   border-radius: 8px;
-  font-size: 15px;
+  font-size: 1em; /* 👈 ĐỔI 15px THÀNH 1em Ở ĐÂY */
 }
 
 .table-question th {
@@ -334,7 +334,7 @@ input[type="text"].fill-input,
   color: var(--text-main);
   border-radius: 6px;
   min-width: 120px;
-  font-size: 15px;
+  font-size: 0.95em; /* 👈 ĐỔI 15px THÀNH 0.95em Ở ĐÂY */
   font-weight: 600;
   outline: none;
   transition: border-color 0.2s;
