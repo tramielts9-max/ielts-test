@@ -26,6 +26,12 @@
     <a href="cam21-lis-test1-p1.html" class="nav-link active">Part 1</a>
   </div>
 
+  <!-- DÁN ĐOẠN NÀY VÀO NGAY TRƯỚC <div class="timer-container"> -->
+  <div style="display: flex; gap: 6px; align-items: center;">
+    <button type="button" class="btn-timer" onclick="changeFontSize(-2)" style="font-weight: bold; font-size: 14px; padding: 4px 10px;" title="Giảm cỡ chữ">A-</button>
+    <button type="button" class="btn-timer" onclick="changeFontSize(2)" style="font-weight: bold; font-size: 14px; padding: 4px 10px;" title="Tăng cỡ chữ">A+</button>
+  </div>
+  
   <div class="timer-container">
     <span>⏱️ Thời gian:</span>
     <span class="timer-display" id="timerDisplay">00:00</span>
