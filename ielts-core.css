@@ -1,11 +1,11 @@
 /* ==========================================================================
-   IELTS PRACTICE TEST CORE STYLESHEET (ENHANCED FOR LISTENING & READING)
-   Features: Resizable Split, Dynamic Full-Width, Bottom Question Bar,
-             Audio-Track Sync, Result Modal, Dark Mode, Thought Box, AI Box
+   IELTS PRACTICE TEST CORE STYLESHEET (ENHANCED BIG FONT VERSION)
+   Features: Font x1.5 (~22px), Font Controls (A-/A+), Dark Theme,
+             Resizable Split 2 Columns, Audio Sync, Result Modal, Bottom Bar
    ========================================================================== */
 
 :root {
-  --font-size-base: 22px;
+  --font-size-base: 22px; /* Đã tăng gấp 1.5 lần so với 15px */
   --bg-body: #F7F4EF;
   --bg-card: #FFFFFF;
   --bg-subcard: #FAF7F2;
@@ -32,7 +32,7 @@ body.dark-theme {
 body {
   font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
   margin: 0;
-  padding: 15px 15px 75px 15px; /* Để trống 75px dưới đáy cho bottom bar */
+  padding: 15px 15px 85px 15px; /* Để trống cho bottom nav bar */
   background-color: var(--bg-body);
   color: var(--text-main);
   font-size: var(--font-size-base);
@@ -43,7 +43,7 @@ body {
 .user-info-box {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
-  padding: 10px 16px;
+  padding: 12px 18px;
   border-radius: 8px;
   margin-bottom: 12px;
   display: flex;
@@ -55,22 +55,22 @@ body {
 .user-info-field {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   flex: 1;
-  min-width: 240px;
+  min-width: 260px;
 }
 
 .user-info-field label {
-  font-weight: 600;
+  font-weight: 700;
   color: var(--primary-blue);
-  font-size: 14px;
+  font-size: 0.85em;
   white-space: nowrap;
 }
 
 .user-info-field input {
-  padding: 7px 12px;
-  font-size: 14px;
-  border: 1px solid var(--border-color);
+  padding: 8px 14px;
+  font-size: 0.85em;
+  border: 1.5px solid var(--border-color);
   background: var(--bg-subcard);
   color: var(--text-main);
   border-radius: 6px;
@@ -82,7 +82,7 @@ body {
 .header-bar {
   background: var(--primary-dark);
   color: #ffffff;
-  padding: 12px 18px;
+  padding: 12px 20px;
   border-radius: 8px;
   margin-bottom: 14px;
   display: flex;
@@ -94,7 +94,7 @@ body {
 
 .header-bar h1 {
   margin: 0;
-  font-size: 17px;
+  font-size: 1.05em;
   font-weight: 700;
 }
 
@@ -107,8 +107,8 @@ body {
 .nav-link {
   color: #94a3b8;
   text-decoration: none;
-  font-size: 13px;
-  padding: 5px 12px;
+  font-size: 0.75em;
+  padding: 6px 12px;
   border-radius: 6px;
   background: rgba(255,255,255,0.08);
 }
@@ -118,22 +118,45 @@ body {
   background: #b91c1c;
 }
 
+/* Header Controls (Nút đổi cỡ chữ A-, A+ và Theme) */
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-header {
+  background: rgba(255,255,255,0.15);
+  color: #ffffff;
+  border: 1px solid rgba(255,255,255,0.25);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.75em;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-header:hover {
+  background: rgba(255,255,255,0.3);
+}
+
 .timer-container {
   display: flex;
   align-items: center;
   gap: 8px;
   background: rgba(255,255,255,0.08);
-  padding: 4px 10px;
+  padding: 4px 12px;
   border-radius: 20px;
 }
 
 .timer-display {
-  font-size: 15px;
+  font-size: 0.85em;
   font-weight: bold;
   font-family: monospace;
   color: #38bdf8;
   background: #020617;
-  padding: 2px 8px;
+  padding: 3px 10px;
   border-radius: 4px;
 }
 
@@ -141,19 +164,19 @@ body {
   background: rgba(255,255,255,0.15);
   color: white;
   border: none;
-  padding: 4px 8px;
+  padding: 4px 10px;
   border-radius: 4px;
-  font-size: 12px;
+  font-size: 0.7em;
   cursor: pointer;
 }
 
 .score-badge {
   background: #16a34a;
   color: white;
-  padding: 5px 14px;
+  padding: 5px 15px;
   border-radius: 20px;
   font-weight: bold;
-  font-size: 14px;
+  font-size: 0.8em;
   display: none;
 }
 
@@ -162,20 +185,20 @@ body {
   background: var(--bg-card);
   border: 1.5px solid var(--border-color);
   border-radius: 8px;
-  padding: 12px 16px;
-  margin-bottom: 16px;
+  padding: 12px 18px;
+  margin-bottom: 20px;
 }
 
 .audio-player-header {
   font-weight: 700;
-  font-size: 14.5px;
+  font-size: 0.85em;
   color: var(--text-main);
   margin-bottom: 8px;
 }
 
 .audio-player-element {
   width: 100%;
-  height: 40px;
+  height: 44px;
   outline: none;
 }
 
@@ -187,30 +210,28 @@ body {
   gap: 0;
   width: 100%;
   margin: auto;
-  height: calc(100vh - 210px);
-  min-height: 520px;
+  height: calc(100vh - 220px);
+  min-height: 550px;
   position: relative;
   overflow: hidden;
   border-radius: 8px;
-  border: 1px solid var(--border-color);
+  border: 1.5px solid var(--border-color);
   background: var(--bg-card);
 }
 
-/* Trong lúc làm bài: Transcript bị ẩn, Question tràn full 100% */
 .passage-box {
-  display: none;
+  display: none; /* Mặc định ẩn khi làm bài */
   width: 50%;
   background: var(--bg-card);
-  padding: 22px;
+  padding: 24px;
   overflow-y: auto;
-  font-size: var(--font-size-base); /* <-- SỬA DÒNG NÀY */
+  font-size: var(--font-size-base);
   line-height: 1.8;
-  border-right: none;
 }
 
 .resizer {
-  display: none; /* Ẩn lúc làm */
-  width: 14px;
+  display: none; /* Ẩn khi làm bài */
+  width: 16px;
   background: #e2e8f0;
   cursor: col-resize;
   position: relative;
@@ -225,13 +246,12 @@ body {
   background: #cbd5e1;
 }
 
-/* Nút icon 2 mũi tên kéo ở giữa giống hệt trong ảnh */
 .resizer-icon {
   background: #ffffff;
   border: 1px solid #94a3b8;
   border-radius: 4px;
-  padding: 4px 1px;
-  font-size: 11px;
+  padding: 5px 2px;
+  font-size: 12px;
   font-weight: bold;
   color: #334155;
   box-shadow: 0 1px 3px rgba(0,0,0,0.15);
@@ -239,15 +259,15 @@ body {
 }
 
 .question-box {
-  width: 100%;
+  width: 100%; /* Tràn viền 100% lúc đang làm */
   background: var(--bg-card);
-  padding: 24px;
+  padding: 26px;
   overflow-y: auto;
-  font-size: var(--font-size-base); /* <-- SỬA DÒNG NÀY */
+  font-size: var(--font-size-base);
   line-height: 1.8;
 }
 
-/* KHI NỘP BÀI HOẶC CHẾ ĐỘ XEM LẠI (.submitted-mode) */
+/* Khi đã nộp bài hoặc chế độ Review (.submitted-mode) */
 .container.submitted-mode .passage-box {
   display: block;
   width: 50%;
@@ -258,7 +278,7 @@ body {
 }
 
 .container.submitted-mode .question-box {
-  width: calc(50% - 14px);
+  width: calc(50% - 16px);
   flex: 1;
 }
 
@@ -266,9 +286,9 @@ body {
    AUDIO-TRACK SYNC TRANSCRIPT
    ========================================================================== */
 .transcript-line {
-  padding: 4px 8px;
-  border-radius: 5px;
-  margin-bottom: 8px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  margin-bottom: 10px;
   cursor: pointer;
   transition: background-color 0.2s;
   display: block;
@@ -278,44 +298,47 @@ body {
   background-color: #f1f5f9;
 }
 
-/* Câu đang được phát theo audio */
 .transcript-line.playing-active {
   background-color: #fef08a !important;
-  border-left: 3px solid #eab308;
+  border-left: 4px solid #eab308;
 }
 
 .time-stamp-tag {
-  font-size: 11px;
+  font-size: 0.65em;
   color: #64748b;
-  margin-right: 6px;
+  margin-right: 8px;
+  font-weight: 700;
+  background: #f1f5f9;
+  padding: 2px 6px;
+  border-radius: 4px;
   user-select: none;
-  font-weight: 600;
 }
 
 /* ==========================================================================
-   BẢNG VÀ CÂU HỎI CHỮ TO, RÕ RÀNG
+   BẢNG VÀ Ô CÂU HỎI TO, RÕ RÀNG
    ========================================================================== */
 .table-question {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 14px;
+  margin-top: 15px;
   background: var(--bg-subcard);
   border: 1.5px solid var(--border-color);
   border-radius: 8px;
-  font-size: 1em; /* 👈 ĐỔI 15px THÀNH 1em Ở ĐÂY */
+  font-size: var(--font-size-base);
 }
 
 .table-question th {
   background: #f1f5f9;
   border-bottom: 2px solid var(--border-color);
-  padding: 12px 14px;
+  padding: 14px 16px;
   text-align: left;
   font-weight: 700;
   color: var(--text-main);
+  font-size: 0.95em;
 }
 
 .table-question td {
-  padding: 14px;
+  padding: 16px;
   border-bottom: 1px solid var(--border-color);
   border-right: 1px solid var(--border-color);
   vertical-align: top;
@@ -325,34 +348,34 @@ body {
   border-right: none;
 }
 
-/* Input điền câu trả lời */
+/* Ô nhập chữ to, rõ ràng */
 input[type="text"].fill-input,
 .question input[type="text"] {
-  padding: 7px 12px;
-  border: 1.5px solid #94a3b8;
+  padding: 8px 14px;
+  border: 2px solid #94a3b8;
   background: var(--bg-card);
   color: var(--text-main);
   border-radius: 6px;
-  min-width: 120px;
-  font-size: 0.95em; /* 👈 ĐỔI 15px THÀNH 0.95em Ở ĐÂY */
-  font-weight: 600;
+  min-width: 130px;
+  font-size: var(--font-size-base);
+  font-weight: 700;
   outline: none;
   transition: border-color 0.2s;
 }
 
 input[type="text"].fill-input:focus {
   border-color: #0284c7;
-  box-shadow: 0 0 0 2px rgba(2,132,199,0.15);
+  box-shadow: 0 0 0 3px rgba(2,132,199,0.15);
 }
 
-/* Ô Mạch suy nghĩ & AI Assistant */
+/* Mạch suy nghĩ & Trợ giảng AI */
 .thought-box {
-  margin-top: 10px;
+  margin-top: 12px;
 }
 
 .thought-box label {
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 0.7em;
+  font-weight: 700;
   color: var(--text-muted);
   display: block;
   margin-bottom: 4px;
@@ -360,10 +383,10 @@ input[type="text"].fill-input:focus {
 
 .thought-box textarea {
   width: 100%;
-  height: 50px;
-  padding: 8px 10px;
-  font-size: 13.5px;
-  border: 1px solid var(--border-color);
+  height: 60px;
+  padding: 8px 12px;
+  font-size: 0.75em;
+  border: 1.5px solid var(--border-color);
   background: var(--bg-card);
   color: var(--text-main);
   border-radius: 6px;
@@ -372,26 +395,26 @@ input[type="text"].fill-input:focus {
 }
 
 .explanation {
-  font-size: 14.5px;
+  font-size: 0.85em;
   background: var(--bg-card);
   border: 1px solid var(--border-color);
   border-left: 4px solid #0284c7;
-  padding: 14px;
-  margin-top: 10px;
+  padding: 16px;
+  margin-top: 12px;
   border-radius: 6px;
   display: none;
 }
 
 .ai-assistant-box {
-  margin-top: 10px;
-  padding: 12px;
+  margin-top: 12px;
+  padding: 14px;
   background: var(--bg-subcard);
   border: 1px solid var(--border-color);
   border-radius: 8px;
 }
 
 .ai-assistant-box label {
-  font-size: 13px;
+  font-size: 0.75em;
   font-weight: 700;
   color: var(--primary-blue);
   display: block;
@@ -405,9 +428,9 @@ input[type="text"].fill-input:focus {
 
 .ai-input-group input {
   flex: 1;
-  padding: 7px 10px;
-  font-size: 13px;
-  border: 1px solid var(--border-color);
+  padding: 8px 12px;
+  font-size: 0.75em;
+  border: 1.5px solid var(--border-color);
   background: var(--bg-card);
   border-radius: 6px;
 }
@@ -416,8 +439,8 @@ input[type="text"].fill-input:focus {
   background: var(--primary-blue);
   color: white;
   border: none;
-  padding: 7px 14px;
-  font-size: 13px;
+  padding: 8px 16px;
+  font-size: 0.75em;
   font-weight: 700;
   border-radius: 6px;
   cursor: pointer;
@@ -426,63 +449,63 @@ input[type="text"].fill-input:focus {
 .btn-locate {
   background: #f8fafc;
   border: 1px solid var(--border-color);
-  padding: 5px 10px;
-  font-size: 13px;
-  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 0.75em;
+  border-radius: 5px;
   cursor: pointer;
-  margin-top: 6px;
+  margin-top: 8px;
   font-weight: 600;
 }
 
 .kw-exp {
   background-color: #bbf7d0;
   color: #14532d;
-  padding: 2px 6px;
+  padding: 2px 8px;
   border-radius: 4px;
   font-weight: 700;
 }
 
-/* Nút nộp bài */
+/* Nút Submit */
 .btn-submit {
   background-color: #8B1518;
   color: white;
   border: none;
-  padding: 12px 20px;
-  font-size: 16px;
+  padding: 14px 24px;
+  font-size: 0.95em;
   font-weight: 700;
   border-radius: 8px;
   cursor: pointer;
   width: 100%;
-  margin-top: 25px;
+  margin-top: 30px;
 }
 
 .btn-submit:hover {
   filter: brightness(1.1);
 }
 
-/* Highlight Transcript khi bấm nút Locate */
+/* Highlight Transcript */
 .submitted .hl {
   background-color: #fef08a;
-  padding: 2px 4px;
-  border-radius: 3px;
+  padding: 2px 6px;
+  border-radius: 4px;
   color: #1e293b;
 }
 
 .submitted .hl-active {
   background-color: #fde047 !important;
-  outline: 2px solid #ca8a04;
+  outline: 3px solid #ca8a04;
 }
 
 .submitted .kw {
   background-color: #86efac !important;
   font-weight: 700;
-  padding: 1px 4px;
-  border-radius: 3px;
+  padding: 2px 6px;
+  border-radius: 4px;
   color: #14532d;
 }
 
 /* ==========================================================================
-   BOTTOM NAVIGATION BAR (CỐ ĐỊNH PHÍA DƯỚI)
+   BOTTOM NAVIGATION BAR
    ========================================================================== */
 .bottom-nav-bar {
   position: fixed;
@@ -491,26 +514,26 @@ input[type="text"].fill-input:focus {
   width: 100%;
   background: #ffffff;
   border-top: 1.5px solid #cbd5e1;
-  box-shadow: 0 -3px 10px rgba(0,0,0,0.06);
-  padding: 8px 16px;
+  box-shadow: 0 -3px 12px rgba(0,0,0,0.08);
+  padding: 10px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   z-index: 100;
-  font-size: 14px;
+  font-size: 0.75em;
 }
 
 .bottom-nav-left {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 16px;
   overflow-x: auto;
 }
 
 .part-tab-item {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   font-weight: 700;
   color: #334155;
   white-space: nowrap;
@@ -523,39 +546,34 @@ input[type="text"].fill-input:focus {
 .part-q-badges {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
   margin-left: 6px;
 }
 
 .q-badge-btn {
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   border-radius: 6px;
   background: #f1f5f9;
   border: 1px solid #cbd5e1;
   color: #334155;
   font-weight: 700;
-  font-size: 13.5px;
+  font-size: 15px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.2s;
-  text-decoration: none;
 }
 
-.q-badge-btn:hover {
-  background: #e2e8f0;
-}
+.q-badge-btn:hover { background: #e2e8f0; }
 
-/* Khi học sinh đã nhập câu trả lời */
 .q-badge-btn.filled {
   background: #cbd5e1;
   color: #0f172a;
   border-color: #94a3b8;
 }
 
-/* Sau khi nộp bài: Đúng thì Xanh lá, Sai thì Đỏ */
 .q-badge-btn.status-correct {
   background: #16a34a !important;
   color: #ffffff !important;
@@ -571,25 +589,22 @@ input[type="text"].fill-input:focus {
 .bottom-nav-right {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .btn-open-modal-list {
   background: #0284c7;
   color: white;
   border: none;
-  padding: 8px 14px;
+  padding: 8px 16px;
   border-radius: 6px;
-  font-size: 13.5px;
+  font-size: 0.9em;
   font-weight: 700;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
 }
 
 /* ==========================================================================
-   POPUP MODAL: QUESTION LIST & EXAM RESULT POPUP
+   POPUP MODAL KẾT QUẢ
    ========================================================================== */
 .modal-backdrop {
   display: none;
@@ -609,12 +624,13 @@ input[type="text"].fill-input:focus {
   background: #ffffff;
   border-radius: 12px;
   width: 100%;
-  max-width: 600px;
+  max-width: 650px;
   max-height: 85vh;
   overflow-y: auto;
-  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);
-  padding: 24px;
+  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.25);
+  padding: 26px;
   position: relative;
+  font-size: 0.8em;
 }
 
 .btn-close-modal {
@@ -623,8 +639,8 @@ input[type="text"].fill-input:focus {
   right: 18px;
   background: #f1f5f9;
   border: 1px solid #cbd5e1;
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   font-weight: bold;
   font-size: 16px;
@@ -635,33 +651,31 @@ input[type="text"].fill-input:focus {
   background: #f8fafc;
   border: 1.5px solid #e2e8f0;
   border-radius: 8px;
-  padding: 14px;
-  margin-bottom: 18px;
+  padding: 16px;
+  margin-bottom: 20px;
   text-align: center;
 }
 
 .modal-score-summary h2 {
   margin: 0;
-  border-bottom: none;
   color: #8B1518;
-  font-size: 22px;
+  font-size: 1.25em;
 }
 
 .modal-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 14.5px;
 }
 
 .modal-table th {
   background: #f1f5f9;
-  padding: 10px;
+  padding: 12px;
   border-bottom: 2px solid #cbd5e1;
   text-align: left;
 }
 
 .modal-table td {
-  padding: 10px;
+  padding: 12px;
   border-bottom: 1px solid #e2e8f0;
 }
 
