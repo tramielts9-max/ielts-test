@@ -26,12 +26,13 @@
     <a href="cam21-lis-test1-p1.html" class="nav-link active">Part 1</a>
   </div>
 
-  <!-- DÁN ĐOẠN NÀY VÀO NGAY TRƯỚC <div class="timer-container"> -->
-  <div style="display: flex; gap: 6px; align-items: center;">
-    <button type="button" class="btn-timer" onclick="changeFontSize(-2)" style="font-weight: bold; font-size: 14px; padding: 4px 10px;" title="Giảm cỡ chữ">A-</button>
-    <button type="button" class="btn-timer" onclick="changeFontSize(2)" style="font-weight: bold; font-size: 14px; padding: 4px 10px;" title="Tăng cỡ chữ">A+</button>
+  <!-- CỤM NÚT ĐỔI CỠ CHỮ VÀ THEME ĐƯỢC KHÔI PHỤC -->
+  <div class="header-controls">
+    <button class="btn-header" onclick="changeFontSize(-1)" title="Giảm cỡ chữ">A-</button>
+    <button class="btn-header" onclick="changeFontSize(1)" title="Tăng cỡ chữ">A+</button>
+    <button class="btn-header" id="btnThemeToggle" onclick="toggleTheme()" title="Đổi chế độ Sáng / Tối">🌙 Tối/Sáng</button>
   </div>
-  
+
   <div class="timer-container">
     <span>⏱️ Thời gian:</span>
     <span class="timer-display" id="timerDisplay">00:00</span>
@@ -42,13 +43,13 @@
   <div class="score-badge" id="scoreBadge">Điểm số: <span id="scoreText">0/10</span></div>
 </div>
 
-<!-- KHUNG CHỨA TOÀN BỘ BÀI THI -->
+<!-- CONTAINER CHÍNH -->
 <div class="container" id="mainContainer">
   
-  <!-- CỘT TRÁI: TRANSCRIPT (ẨN KHI LÀM BÀI, HIỆN KHI NỘP BÀI ĐỂ ĐỐI CHIẾU) -->
+  <!-- CỘT TRÁI: TRANSCRIPT (ẨN KHI LÀM BÀI, HIỆN KHI NỘP BÀI) -->
   <div class="passage-box" id="passageBox">
-    <h2>LISTENING TRANSCRIPT - PART 1</h2>
-    <p style="font-size: 13.5px; color: #64748b; font-style: italic; margin-bottom: 15px;">
+    <h2 style="margin-top:0; border-bottom:2px solid var(--primary-blue); padding-bottom:6px;">LISTENING TRANSCRIPT - PART 1</h2>
+    <p style="font-size: 0.75em; color: #64748b; font-style: italic; margin-bottom: 16px;">
       💡 <b>Audio-Track Sync:</b> Bấm vào bất kỳ câu nào dưới đây để phát audio ngay đúng câu đó!
     </p>
 
@@ -174,12 +175,12 @@
     </div>
   </div>
 
-  <!-- THANH KÉO ĐỘ RỘNG 2 CỘT (RESIZER VỚI ICON 2 MŨI TÊN) -->
+  <!-- THANH KÉO ĐỘ RỘNG RESIZER (CÓ ICON 2 MŨI TÊN) -->
   <div class="resizer" id="dragResizer">
     <div class="resizer-icon">◄►</div>
   </div>
 
-  <!-- CỘT PHẢI: AUDIO & KHỐI CÂU HỎI TRÀN MÀN HÌNH -->
+  <!-- CỘT PHẢI: AUDIO & CÂU HỎI -->
   <div class="question-box" id="questionBox">
     
     <!-- Audio Player -->
@@ -193,8 +194,8 @@
       </audio>
     </div>
 
-    <!-- KHỐI CÂU HỎI 1-6 DẠNG BẢNG -->
-    <h3 style="color: var(--primary-blue); font-size: 18px; margin-top: 5px;">Questions 1-6</h3>
+    <!-- KHỐI BẢNG CÂU HỎI 1-6 -->
+    <h3 style="color: var(--primary-blue); font-size: 1.15em; margin-top: 5px;">Questions 1-6</h3>
     <p><i>Complete the table below. Write <b>ONE WORD AND/OR A NUMBER</b> for each answer.</i></p>
 
     <table class="table-question">
@@ -213,12 +214,12 @@
           <td>£120 if booking one place</td>
           <td>
             <div class="question" id="q1" style="background: transparent; padding: 0; border: none;">
-              small groups (max <b>1.</b> <input type="text" id="q1_input" class="fill-input" style="width: 70px;"> people)
+              small groups (max <b>1.</b> <input type="text" id="q1_input" class="fill-input" style="width: 90px;"> people)
               <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q1_thought"></textarea></div>
               <div class="result"></div>
               <div class="explanation">
                 <div class="exp-step">• <b>Đáp án đúng:</b> <span class="kw-exp">10</span> hoặc <span class="kw-exp">ten</span></div>
-                <div class="exp-step">• <b>Dấu hiệu nhận biết:</b> "usually about eight people but no more than ten" (no more than = max).</div>
+                <div class="exp-step">• <b>Dấu hiệu:</b> "usually about eight people but no more than ten" (no more than = max).</div>
                 <button class="btn-locate" onclick="highlightText('hl-q1')">📍 Xem vị trí transcript</button>
                 <div class="ai-assistant-box">
                   <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
@@ -234,13 +235,13 @@
           <td rowspan="2"><b>Level 1</b></td>
           <td>
             basic theory e.g. understanding the 
-            <div class="question" id="q2" style="background: transparent; padding: 0; margin: 6px 0; border: none;">
+            <div class="question" id="q2" style="background: transparent; padding: 0; margin: 8px 0; border: none;">
               <b>2.</b> <input type="text" id="q2_input" class="fill-input"> and tides
               <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q2_thought"></textarea></div>
               <div class="result"></div>
               <div class="explanation">
                 <div class="exp-step">• <b>Đáp án đúng:</b> <span class="kw-exp">weather</span></div>
-                <div class="exp-step">• <b>Dấu hiệu nhận biết:</b> "learn about things like the weather... and also the tides".</div>
+                <div class="exp-step">• <b>Dấu hiệu:</b> "learn about things like the weather... and also the tides".</div>
                 <button class="btn-locate" onclick="highlightText('hl-q2')">📍 Xem vị trí transcript</button>
                 <div class="ai-assistant-box">
                   <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
@@ -251,13 +252,13 @@
             </div>
             <br>
             basic sailing skills including 
-            <div class="question" id="q3" style="background: transparent; padding: 0; margin: 6px 0; border: none;">
+            <div class="question" id="q3" style="background: transparent; padding: 0; margin: 8px 0; border: none;">
               <b>3.</b> <input type="text" id="q3_input" class="fill-input"> information
               <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q3_thought"></textarea></div>
               <div class="result"></div>
               <div class="explanation">
                 <div class="exp-step">• <b>Đáp án đúng:</b> <span class="kw-exp">safety</span></div>
-                <div class="exp-step">• <b>Dấu hiệu nhận biết:</b> "understand everything you need to know about safety".</div>
+                <div class="exp-step">• <b>Dấu hiệu:</b> "understand everything you need to know about safety".</div>
                 <button class="btn-locate" onclick="highlightText('hl-q3')">📍 Xem vị trí transcript</button>
                 <div class="ai-assistant-box">
                   <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
@@ -275,7 +276,7 @@
               <div class="result"></div>
               <div class="explanation">
                 <div class="exp-step">• <b>Đáp án đúng:</b> <span class="kw-exp">discount</span></div>
-                <div class="exp-step">• <b>Dấu hiệu nhận biết:</b> "There's a discount for members".</div>
+                <div class="exp-step">• <b>Dấu hiệu:</b> "There's a discount for members".</div>
                 <button class="btn-locate" onclick="highlightText('hl-q4')">📍 Xem vị trí transcript</button>
                 <div class="ai-assistant-box">
                   <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
@@ -292,7 +293,7 @@
               <div class="result"></div>
               <div class="explanation">
                 <div class="exp-step">• <b>Đáp án đúng:</b> <span class="kw-exp">dictionary</span></div>
-                <div class="exp-step">• <b>Dấu hiệu nhận biết:</b> "get a really good dictionary... find it really helpful".</div>
+                <div class="exp-step">• <b>Dấu hiệu:</b> "get a really good dictionary... find it really helpful".</div>
                 <button class="btn-locate" onclick="highlightText('hl-q5')">📍 Xem vị trí transcript</button>
                 <div class="ai-assistant-box">
                   <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
@@ -309,7 +310,7 @@
               <div class="result"></div>
               <div class="explanation">
                 <div class="exp-step">• <b>Đáp án đúng:</b> <span class="kw-exp">certificate</span></div>
-                <div class="exp-step">• <b>Dấu hiệu nhận biết:</b> "on completion of the course you get a certificate".</div>
+                <div class="exp-step">• <b>Dấu hiệu:</b> "on completion of the course you get a certificate".</div>
                 <button class="btn-locate" onclick="highlightText('hl-q6')">📍 Xem vị trí transcript</button>
                 <div class="ai-assistant-box">
                   <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
@@ -324,12 +325,12 @@
     </table>
 
     <!-- KHỐI CÂU HỎI 7-10 -->
-    <h3 style="color: var(--primary-blue); font-size: 18px; margin-top: 35px;">Questions 7-10</h3>
+    <h3 style="color: var(--primary-blue); font-size: 1.15em; margin-top: 35px;">Questions 7-10</h3>
     <p><i>Complete the notes below. Write <b>ONE WORD ONLY</b> for each answer.</i></p>
 
-    <div style="background: var(--bg-subcard); border: 1px solid var(--border-color); padding: 18px; border-radius: 8px;">
-      <h4 style="margin-top: 0; font-size: 16px;">General information</h4>
-      <ul style="line-height: 2.2; padding-left: 20px;">
+    <div style="background: var(--bg-subcard); border: 1px solid var(--border-color); padding: 20px; border-radius: 8px;">
+      <h4 style="margin-top: 0; font-size: 1.05em;">General information</h4>
+      <ul style="line-height: 2.3; padding-left: 24px;">
         <li>Participants must be able to swim.</li>
         
         <li class="question" id="q7" style="background: transparent; padding: 0; border: none;">
@@ -338,7 +339,7 @@
           <div class="result"></div>
           <div class="explanation">
             <div class="exp-step">• <b>Đáp án đúng:</b> <span class="kw-exp">towel</span></div>
-            <div class="exp-step">• <b>Dấu hiệu nhận biết:</b> MAN: "And a towel?" - WOMAN: "Yes definitely".</div>
+            <div class="exp-step">• <b>Dấu hiệu:</b> MAN: "And a towel?" - WOMAN: "Yes definitely".</div>
             <button class="btn-locate" onclick="highlightText('hl-q7')">📍 Xem vị trí transcript</button>
             <div class="ai-assistant-box">
               <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
@@ -354,7 +355,7 @@
           <div class="result"></div>
           <div class="explanation">
             <div class="exp-step">• <b>Đáp án đúng:</b> <span class="kw-exp">café</span> hoặc <span class="kw-exp">cafe</span></div>
-            <div class="exp-step">• <b>Dấu hiệu nhận biết:</b> "is there a café at the club? WOMAN: Yes...".</div>
+            <div class="exp-step">• <b>Dấu hiệu:</b> "is there a café at the club? WOMAN: Yes...".</div>
             <button class="btn-locate" onclick="highlightText('hl-q8')">📍 Xem vị trí transcript</button>
             <div class="ai-assistant-box">
               <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
@@ -370,7 +371,7 @@
           <div class="result"></div>
           <div class="explanation">
             <div class="exp-step">• <b>Đáp án đúng:</b> <span class="kw-exp">videos</span></div>
-            <div class="exp-step">• <b>Dấu hiệu nhận biết:</b> "I recommend you watch some videos... available online".</div>
+            <div class="exp-step">• <b>Dấu hiệu:</b> "I recommend you watch some videos... available online".</div>
             <button class="btn-locate" onclick="highlightText('hl-q9')">📍 Xem vị trí transcript</button>
             <div class="ai-assistant-box">
               <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
@@ -386,7 +387,7 @@
           <div class="result"></div>
           <div class="explanation">
             <div class="exp-step">• <b>Đáp án đúng:</b> <span class="kw-exp">lockers</span></div>
-            <div class="exp-step">• <b>Dấu hiệu nhận biết:</b> "wondering if there are lockers... WOMAN: Yes, there are plenty".</div>
+            <div class="exp-step">• <b>Dấu hiệu:</b> "wondering if there are lockers... WOMAN: Yes, there are plenty".</div>
             <button class="btn-locate" onclick="highlightText('hl-q10')">📍 Xem vị trí transcript</button>
             <div class="ai-assistant-box">
               <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
@@ -402,7 +403,7 @@
   </div>
 </div>
 
-<!-- THANH ĐIỀU HƯỚNG DƯỚI ĐÁY CỐ ĐỊNH (BOTTOM NAV BAR) -->
+<!-- BOTTOM NAVIGATION BAR CỐ ĐỊNH PHÍA DƯỚI -->
 <div class="bottom-nav-bar">
   <div class="bottom-nav-left">
     <div class="part-tab-item active">
@@ -432,7 +433,7 @@
   </div>
 </div>
 
-<!-- POPUP KẾT QUẢ VÀ DANH SÁCH BÀI LÀM (MODAL) -->
+<!-- POPUP MODAL KẾT QUẢ & BẢNG ĐÁP ÁN -->
 <div class="modal-backdrop" id="resultModal">
   <div class="modal-content-card">
     <button class="btn-close-modal" onclick="toggleResultModal(false)">✕</button>
