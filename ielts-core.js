@@ -1,13 +1,16 @@
 /**
  * ==========================================================================
- * IELTS PRACTICE TEST CORE ENGINE (ielts-core.js) - ENHANCED VERSION
- * Tự động hóa: Bấm giờ, Resizer 2 cột, Audio Sync, Bottom Badges,
- * Modal kết quả, Chấm điểm, AI Trợ giảng Gemini, Google Drive Storage.
+ * IELTS PRACTICE TEST CORE ENGINE (ielts-core.js)
+ * Tự động hóa: Bấm giờ, Resizer kéo thả 2 cột, Audio Sync chuẩn từng giây,
+ * Bottom badges, Modal kết quả, Chấm điểm, AI Trợ giảng Gemini, Google Drive.
  * ==========================================================================
  */
 
 const IELTS_CONFIG = {
+  // 1. Script AI & Ghi điểm Sheets
   AI_AND_SHEET_URL: "https://script.google.com/macros/s/AKfycby7vRFXq_YhjIEq4kN-8NLRFw2sj-7VkVEmTw6IkNkPmidEPnPtxtNkSE-HKfn5mAPfbw/exec",
+
+  // 2. Script Google Drive Storage
   DRIVE_STORAGE_URL: "https://script.google.com/macros/s/AKfycbx5HRPHr75RLlcuXvcn1QSTmsLszIhYH6cDrKiGZS4RCoxa0l3NJF4dKWplI1sVKVoCYg/exec"
 };
 
@@ -46,7 +49,7 @@ function autoFillUserInfo() {
 
 // ==================== XÓA HẾT ĐỂ LÀM LẠI ====================
 function resetCurrentTest() {
-  if (confirm("⚠️ Em có chắc chắn muốn XÓA HẾT để làm lại bài này từ đầu không?")) {
+  if (confirm("⚠️ Em có chắc chắn muốn XÓA HẾT các câu trả lời để làm lại bài này từ đầu không?")) {
     const key = getStorageKey();
     localStorage.removeItem(key);
     window.location.href = window.location.pathname;
@@ -118,12 +121,12 @@ function scrollToQuestion(qId) {
   }
 }
 
-// ==================== AUDIO TRACKING & CLICK TRANSCRIPT ====================
+// ==================== AUDIO TRACKING & CLICK TRANSCRIPT (CHUẨN TỪNG GIÂY) ====================
 function initAudioTranscriptSync() {
   const audio = document.getElementById('mainAudioElement');
-  const transcriptLines = document.querySelectorAll('.transcript-line');
+  const transcriptLines = Array.from(document.querySelectorAll('.transcript-line'));
 
-  // Click vào transcript -> tua audio đến giây đó
+  // 1. Click câu nào -> tua ngay đến mốc giây của câu đó và play
   transcriptLines.forEach(line => {
     line.addEventListener('click', function() {
       const timeSec = parseFloat(this.getAttribute('data-time'));
@@ -134,18 +137,21 @@ function initAudioTranscriptSync() {
     });
   });
 
-  // Khi audio phát -> highlight câu đang nói
+  // 2. Audio chạy đến đâu -> highlight câu tương ứng đến đó
   if (audio && transcriptLines.length > 0) {
     audio.addEventListener('timeupdate', function() {
       const curTime = audio.currentTime;
       let activeLine = null;
 
-      transcriptLines.forEach(line => {
-        const lineTime = parseFloat(line.getAttribute('data-time'));
-        if (!isNaN(lineTime) && curTime >= lineTime) {
-          activeLine = line;
+      for (let i = 0; i < transcriptLines.length; i++) {
+        const lineTime = parseFloat(transcriptLines[i].getAttribute('data-time'));
+        const nextTime = i < transcriptLines.length - 1 ? parseFloat(transcriptLines[i + 1].getAttribute('data-time')) : Infinity;
+
+        if (curTime >= lineTime && curTime < nextTime) {
+          activeLine = transcriptLines[i];
+          break;
         }
-      });
+      }
 
       transcriptLines.forEach(l => l.classList.remove('playing-active'));
       if (activeLine) {
@@ -197,7 +203,7 @@ function initResizableDivider() {
   });
 }
 
-// ==================== MODAL KẾT QUẢ ====================
+// ==================== MODAL BẢNG ĐÁP ÁN & KẾT QUẢ ====================
 function toggleResultModal(show) {
   const modal = document.getElementById('resultModal');
   if (!modal) return;
@@ -247,7 +253,7 @@ function renderModalTable() {
   tbody.innerHTML = html;
 }
 
-// ==================== LƯU / PHỤC HỒI ====================
+// ==================== LƯU / PHỤC HỒI STATE ====================
 function saveStateToLocalStorage() {
   if (isReviewMode) return;
   try {
@@ -315,7 +321,7 @@ function restoreStateFromLocalStorage() {
   } catch (err) {}
 }
 
-// ==================== REVIEW MODE ====================
+// ==================== REVIEW MODE TỪ GOOGLE DRIVE ====================
 function restoreAttemptFromSnapshot(attempt) {
   isReviewMode = true;
   stopTimer();
@@ -361,7 +367,7 @@ function restoreAttemptFromSnapshot(attempt) {
   if (submitBtn) submitBtn.style.display = 'none';
 }
 
-// ==================== ÁP DỤNG GIAO DIỆN NỘP BÀI (SPLIT-SCREEN) ====================
+// ==================== CHUYỂN SANG SPLIT-SCREEN SAU KHI NỘP ====================
 function applySubmittedUI(scoreStr) {
   const container = document.getElementById('mainContainer');
   const passageBox = document.getElementById('passageBox');
@@ -408,7 +414,7 @@ function applySubmittedUI(scoreStr) {
   }
 }
 
-// ==================== CHẤM BÀI VÀ NỘP KẾT QUẢ ====================
+// ==================== CHẤM BÀI VÀ NỘP BÀI ====================
 async function checkAnswers() {
   if (isReviewMode) return;
   if (!window.TEST_DATA || !window.TEST_DATA.answers) return;
@@ -486,7 +492,7 @@ async function checkAnswers() {
   if (document.getElementById('scoreText')) document.getElementById('scoreText').innerText = scoreStr;
   if (document.getElementById('scoreBadge')) document.getElementById('scoreBadge').style.display = 'block';
 
-  // Chuyển sang giao diện 2 cột
+  // Chuyển sang giao diện 2 cột có thanh kéo
   const container = document.getElementById('mainContainer');
   const passageBox = document.getElementById('passageBox');
   if (container) container.classList.add('submitted-mode');
@@ -537,7 +543,7 @@ async function checkAnswers() {
     }).catch(() => {});
   }
 
-  // Cập nhật Modal popup và TỰ ĐỘNG BẬT POPUP KẾT QUẢ
+  // Tự động mở Popup bảng điểm chi tiết
   const modalBand = document.getElementById('modalBandScoreText');
   const modalDetail = document.getElementById('modalScoreDetailText');
   if (modalBand) modalBand.innerText = `Điểm của bạn: ${score}/${totalQuestions}`;
@@ -704,7 +710,7 @@ Dùng **từ khóa** để IN ĐẬM, ==bằng chứng== để TÔ VÀNG đoạn
   }
 }
 
-// ==================== KHỞI CHẠY HỆ THỐNG ====================
+// ==================== KHỞI ĐỘNG HỆ THỐNG ====================
 document.addEventListener('DOMContentLoaded', async function() {
   initResizableDivider();
   initAudioTranscriptSync();
@@ -730,7 +736,6 @@ document.addEventListener('DOMContentLoaded', async function() {
 
   restoreStateFromLocalStorage();
 
-  // Lắng nghe nhập liệu để cập nhật bottom badges
   document.addEventListener('input', function() {
     updateBottomBadgesRealtime();
     saveStateToLocalStorage();
