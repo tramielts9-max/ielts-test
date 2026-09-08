@@ -1,11 +1,12 @@
 /* ==========================================================================
-   IELTS PRACTICE TEST CORE STYLESHEET (ENHANCED BIG FONT VERSION)
-   Features: Font x1.5 (~22px), Font Controls (A-/A+), Dark Theme,
-             Resizable Split 2 Columns, Audio Sync, Result Modal, Bottom Bar
+   IELTS PRACTICE TEST CORE STYLESHEET (UNIFIED: READING + LISTENING)
+   - READING: Giữ nguyên 100% gốc (2 cột từ đầu, cỡ chữ 15px, đầy đủ tool highlight)
+   - LISTENING (.listening-test): Chữ to 1.5x (~22px), full-width lúc làm bài,
+     chia 2 cột khi nộp bài, Audio Sync, Resizer ◄►, Bottom Bar & Result Modal.
    ========================================================================== */
 
 :root {
-  --font-size-base: 22px; /* Đã tăng gấp 1.5 lần so với 15px */
+  --font-size-base: 15px; /* Mặc định 15px cho Reading */
   --bg-body: #F7F4EF;
   --bg-card: #FFFFFF;
   --bg-subcard: #FAF7F2;
@@ -16,6 +17,7 @@
   --primary-dark: #1A1A1A;
 }
 
+/* Dark Mode Theme Variables */
 body.dark-theme {
   --bg-body: #0f172a;
   --bg-card: #1e293b;
@@ -32,11 +34,12 @@ body.dark-theme {
 body {
   font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
   margin: 0;
-  padding: 15px 15px 85px 15px; /* Để trống cho bottom nav bar */
+  padding: 15px;
   background-color: var(--bg-body);
   color: var(--text-main);
   font-size: var(--font-size-base);
   line-height: 1.7;
+  transition: background-color 0.2s, color 0.2s;
 }
 
 /* User Info Bar */
@@ -50,27 +53,28 @@ body {
   flex-wrap: wrap;
   gap: 15px;
   align-items: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 
 .user-info-field {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   flex: 1;
   min-width: 260px;
 }
 
 .user-info-field label {
-  font-weight: 700;
+  font-weight: 600;
   color: var(--primary-blue);
-  font-size: 0.85em;
+  font-size: 14px;
   white-space: nowrap;
 }
 
 .user-info-field input {
-  padding: 8px 14px;
-  font-size: 0.85em;
-  border: 1.5px solid var(--border-color);
+  padding: 8px 12px;
+  font-size: 14px;
+  border: 1px solid var(--border-color);
   background: var(--bg-subcard);
   color: var(--text-main);
   border-radius: 6px;
@@ -78,23 +82,24 @@ body {
   outline: none;
 }
 
-/* Header Bar */
+/* Header Bar & Controls */
 .header-bar {
   background: var(--primary-dark);
   color: #ffffff;
-  padding: 12px 20px;
+  padding: 14px 20px;
   border-radius: 8px;
   margin-bottom: 14px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
   flex-wrap: wrap;
   gap: 12px;
 }
 
 .header-bar h1 {
   margin: 0;
-  font-size: 1.05em;
+  font-size: 18px;
   font-weight: 700;
 }
 
@@ -104,10 +109,32 @@ body {
   align-items: center;
 }
 
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-header {
+  background: rgba(255,255,255,0.12);
+  color: #ffffff;
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-header:hover {
+  background: rgba(255,255,255,0.25);
+}
+
 .nav-link {
   color: #94a3b8;
   text-decoration: none;
-  font-size: 0.75em;
+  font-size: 13px;
   padding: 6px 12px;
   border-radius: 6px;
   background: rgba(255,255,255,0.08);
@@ -115,30 +142,7 @@ body {
 
 .nav-link:hover, .nav-link.active {
   color: #ffffff;
-  background: #b91c1c;
-}
-
-/* Header Controls (Nút đổi cỡ chữ A-, A+ và Theme) */
-.header-controls {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.btn-header {
-  background: rgba(255,255,255,0.15);
-  color: #ffffff;
-  border: 1px solid rgba(255,255,255,0.25);
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-size: 0.75em;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.btn-header:hover {
-  background: rgba(255,255,255,0.3);
+  background: #2563eb;
 }
 
 .timer-container {
@@ -151,102 +155,451 @@ body {
 }
 
 .timer-display {
-  font-size: 0.85em;
+  font-size: 16px;
   font-weight: bold;
   font-family: monospace;
   color: #38bdf8;
   background: #020617;
-  padding: 3px 10px;
+  padding: 3px 8px;
   border-radius: 4px;
-}
-
-.btn-timer {
-  background: rgba(255,255,255,0.15);
-  color: white;
-  border: none;
-  padding: 4px 10px;
-  border-radius: 4px;
-  font-size: 0.7em;
-  cursor: pointer;
 }
 
 .score-badge {
   background: #16a34a;
   color: white;
-  padding: 5px 15px;
+  padding: 6px 16px;
   border-radius: 20px;
   font-weight: bold;
-  font-size: 0.8em;
+  font-size: 15px;
   display: none;
 }
 
-/* Audio Player */
+/* ==========================================================================
+   LAYOUT GỐC DÀNH CHO READING (2 CỘT TỪ ĐẦU, CÓ RESIZER CHIA ĐÔI)
+   ========================================================================== */
+.container {
+  display: flex;
+  gap: 0;
+  max-width: 100%;
+  margin: auto;
+  height: calc(100vh - 165px);
+  min-height: 550px;
+  position: relative;
+  overflow: hidden;
+}
+
+.passage-box {
+  width: 50%;
+  background: var(--bg-card);
+  padding: 24px;
+  border-radius: 8px 0 0 8px;
+  overflow-y: auto;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  border: 1px solid var(--border-color);
+  font-size: var(--font-size-base);
+  line-height: 1.7;
+}
+
+.resizer {
+  width: 10px;
+  background: var(--border-color);
+  cursor: col-resize;
+  position: relative;
+  z-index: 10;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.resizer:hover, .resizer.resizing {
+  background: var(--primary-blue);
+}
+
+.resizer::after {
+  content: '⋮';
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.question-box {
+  flex: 1;
+  width: 50%;
+  background: var(--bg-card);
+  padding: 24px;
+  border-radius: 0 8px 8px 0;
+  overflow-y: auto;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  border: 1px solid var(--border-color);
+  border-left: none;
+  font-size: var(--font-size-base);
+  line-height: 1.7;
+}
+
+/* Typography Bài đọc & Câu hỏi */
+h2 {
+  color: var(--text-main);
+  margin-top: 0;
+  border-bottom: 2px solid var(--primary-blue);
+  padding-bottom: 8px;
+  font-size: 1.25em;
+  font-weight: 700;
+}
+
+h3 {
+  color: var(--primary-blue);
+  margin-top: 10px;
+  font-size: 1.1em;
+  line-height: 1.4;
+}
+
+.passage-box p {
+  margin-bottom: 14px;
+  text-align: justify;
+}
+
+.section-title {
+  font-weight: 700;
+  background: #FDF2F2;
+  color: #8B1518;
+  padding: 10px 14px;
+  border-left: 4px solid var(--primary-blue);
+  margin: 20px 0 14px 0;
+  border-radius: 0 6px 6px 0;
+  font-size: 1.05em;
+}
+
+body.dark-theme .section-title {
+  background: #0369a1;
+  color: #ffffff;
+}
+
+/* Câu hỏi dạng thường & trắc nghiệm của Reading */
+.question {
+  margin-bottom: 22px;
+  padding: 18px;
+  border: 1.5px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--bg-subcard);
+  font-size: var(--font-size-base);
+  line-height: 1.7;
+}
+
+.question p {
+  margin-top: 0;
+  font-size: 1em;
+  line-height: 1.7;
+}
+
+.question.correct-border {
+  border-color: #22c55e !important;
+  background-color: rgba(34, 197, 94, 0.08) !important;
+}
+
+.question.incorrect-border {
+  border-color: #ef4444 !important;
+  background-color: rgba(239, 68, 68, 0.08) !important;
+}
+
+.options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 12px 0;
+}
+
+.options label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 1em;
+  background: var(--bg-card);
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+}
+
+.options-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.options-vertical label {
+  display: flex;
+  align-items: flex-start;
+  padding: 10px 14px;
+}
+
+.summary-word-bank {
+  background: var(--bg-subcard);
+  border: 1px solid var(--border-color);
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 8px;
+  font-size: 0.95em;
+}
+
+input[type="text"].fill-input,
+.question input[type="text"] {
+  padding: 6px 12px;
+  border: 1.5px solid var(--border-color);
+  background: var(--bg-card);
+  color: var(--text-main);
+  border-radius: 4px;
+  min-width: 120px;
+  font-size: 0.95em;
+  outline: none;
+  font-weight: 600;
+}
+
+.thought-box {
+  margin-top: 12px;
+}
+
+.thought-box label {
+  font-size: 0.85em;
+  font-weight: 600;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.thought-box textarea {
+  width: 100%;
+  height: 55px;
+  padding: 8px 10px;
+  font-size: 0.9em;
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  color: var(--text-main);
+  border-radius: 6px;
+  resize: vertical;
+  font-family: inherit;
+  outline: none;
+}
+
+.btn-submit {
+  background-color: #8B1518;
+  color: white;
+  border: none;
+  padding: 14px 20px;
+  font-size: 1.1em;
+  font-weight: 700;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 20px;
+  box-shadow: 0 2px 4px rgba(2, 132, 199, 0.2);
+}
+
+.btn-submit:hover { filter: brightness(0.9); }
+
+.result {
+  margin-top: 10px;
+  font-weight: 700;
+  font-size: 1em;
+}
+
+.correct-text { color: #16a34a; }
+.incorrect-text { color: #dc2626; }
+
+.explanation {
+  font-size: 1em;
+  line-height: 1.7;
+  color: var(--text-main);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-left: 4px solid var(--primary-blue);
+  padding: 16px;
+  margin-top: 14px;
+  border-radius: 6px;
+  display: none;
+}
+
+.exp-step { margin-bottom: 8px; font-size: 0.98em; }
+
+.kw-exp {
+  background-color: #bbf7d0;
+  color: #14532d;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 700;
+}
+
+body.dark-theme .kw-exp {
+  background-color: #14532d;
+  color: #86efac;
+}
+
+/* AI Assistant */
+.ai-assistant-box {
+  margin-top: 14px;
+  padding: 14px;
+  background: var(--bg-subcard);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+}
+
+.ai-assistant-box label {
+  font-size: 0.9em;
+  font-weight: 700;
+  color: var(--primary-blue);
+  display: block;
+}
+
+.ai-input-group { display: flex; gap: 8px; margin-top: 8px; }
+
+.ai-input-group input {
+  flex: 1;
+  padding: 8px 12px;
+  font-size: 0.9em;
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  color: var(--text-main);
+  border-radius: 6px;
+  outline: none;
+}
+
+.ai-btn {
+  background: var(--primary-blue);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  font-size: 0.9em;
+  font-weight: 700;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Highlighting Logic của Reading */
+.user-highlight {
+  background-color: #fecdd3 !important;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.hl-popup {
+  position: absolute;
+  display: none;
+  z-index: 1000;
+  background: #0f172a;
+  color: white;
+  border-radius: 6px;
+  padding: 4px;
+}
+
+.hl-popup button {
+  background: transparent;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.submitted .hl {
+  background-color: #fef08a;
+  padding: 2px 4px;
+  border-radius: 3px;
+  color: #1e293b;
+}
+
+body.dark-theme .submitted .hl {
+  background-color: #854d0e;
+  color: #fef08a;
+}
+
+.submitted .hl-active {
+  background-color: #fde047 !important;
+  outline: 2px solid #ca8a04;
+  color: #1e293b !important;
+}
+
+.submitted .kw {
+  background-color: #86efac !important;
+  font-weight: 700;
+  padding: 1px 4px;
+  border-radius: 3px;
+  color: #14532d;
+}
+
+.submitted .hl::before {
+  content: attr(data-q);
+  background-color: #d97706;
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 3px;
+  margin-right: 4px;
+}
+
+.btn-locate {
+  background: var(--bg-subcard);
+  border: 1px solid var(--border-color);
+  padding: 6px 12px;
+  font-size: 0.9em;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 8px;
+  color: var(--text-main);
+  font-weight: 600;
+}
+
 .audio-player-container {
   background: var(--bg-card);
   border: 1.5px solid var(--border-color);
   border-radius: 8px;
-  padding: 12px 18px;
-  margin-bottom: 20px;
+  padding: 12px 16px;
+  margin-bottom: 18px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.04);
 }
 
 .audio-player-header {
   font-weight: 700;
-  font-size: 0.85em;
+  font-size: 14.5px;
   color: var(--text-main);
   margin-bottom: 8px;
 }
 
 .audio-player-element {
   width: 100%;
-  height: 44px;
+  height: 42px;
   outline: none;
 }
 
+
 /* ==========================================================================
-   LAYOUT CONTAINER: FULL-WIDTH (Khi làm bài) & SPLIT-VIEW (Sau khi nộp)
+   PHẠM VI RIÊNG BIỆT DÀNH CHO BÀI LISTENING (.listening-test)
+   - HOÀN TOÀN KHÔNG ẢNH HƯỞNG ĐẾN READING BÊN TRÊN
    ========================================================================== */
-.container {
-  display: flex;
-  gap: 0;
-  width: 100%;
-  margin: auto;
-  height: calc(100vh - 220px);
-  min-height: 550px;
-  position: relative;
-  overflow: hidden;
-  border-radius: 8px;
-  border: 1.5px solid var(--border-color);
-  background: var(--bg-card);
+body.listening-test {
+  --font-size-base: 22px; /* Chữ to gấp 1.5 lần riêng cho Listening */
+  padding-bottom: 85px; /* Để trống cho Bottom Bar */
 }
 
-.passage-box {
-  display: none; /* Mặc định ẩn khi làm bài */
+/* Trong lúc làm bài Listening: Transcript bị ẩn, Question tràn 100% full-width */
+body.listening-test .passage-box {
+  display: none;
   width: 50%;
-  background: var(--bg-card);
-  padding: 24px;
-  overflow-y: auto;
   font-size: var(--font-size-base);
-  line-height: 1.8;
 }
 
-.resizer {
-  display: none; /* Ẩn khi làm bài */
+body.listening-test .resizer {
+  display: none;
   width: 16px;
-  background: #e2e8f0;
-  cursor: col-resize;
-  position: relative;
-  z-index: 10;
-  user-select: none;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.2s;
 }
 
-.resizer:hover, .resizer.resizing {
-  background: #cbd5e1;
-}
+body.listening-test .resizer::after { content: ''; } /* Tắt icon 3 chấm cũ của reading */
 
-.resizer-icon {
+body.listening-test .resizer-icon {
   background: #ffffff;
   border: 1px solid #94a3b8;
   border-radius: 4px;
@@ -258,33 +611,64 @@ body {
   pointer-events: none;
 }
 
-.question-box {
-  width: 100%; /* Tràn viền 100% lúc đang làm */
-  background: var(--bg-card);
-  padding: 26px;
-  overflow-y: auto;
+body.listening-test .question-box {
+  width: 100%;
   font-size: var(--font-size-base);
-  line-height: 1.8;
 }
 
-/* Khi đã nộp bài hoặc chế độ Review (.submitted-mode) */
-.container.submitted-mode .passage-box {
+/* Khi đã nộp bài Listening (.submitted-mode): Chuyển thành 2 cột có resizer ◄► */
+body.listening-test.submitted-mode .passage-box {
   display: block;
   width: 50%;
 }
 
-.container.submitted-mode .resizer {
+body.listening-test.submitted-mode .resizer {
   display: flex;
 }
 
-.container.submitted-mode .question-box {
+body.listening-test.submitted-mode .question-box {
   width: calc(50% - 16px);
   flex: 1;
 }
 
-/* ==========================================================================
-   AUDIO-TRACK SYNC TRANSCRIPT
-   ========================================================================== */
+/* Bảng dạng Listening chữ to */
+body.listening-test .table-question {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  background: var(--bg-subcard);
+  border: 1.5px solid var(--border-color);
+  border-radius: 8px;
+  font-size: var(--font-size-base);
+}
+
+body.listening-test .table-question th {
+  background: #f1f5f9;
+  border-bottom: 2px solid var(--border-color);
+  padding: 14px 16px;
+  text-align: left;
+  font-weight: 700;
+  font-size: 0.95em;
+}
+
+body.listening-test .table-question td {
+  padding: 16px;
+  border-bottom: 1px solid var(--border-color);
+  border-right: 1px solid var(--border-color);
+  vertical-align: top;
+}
+
+body.listening-test .table-question td:last-child { border-right: none; }
+
+body.listening-test input[type="text"].fill-input,
+body.listening-test .question input[type="text"] {
+  padding: 8px 14px;
+  border: 2px solid #94a3b8;
+  font-size: var(--font-size-base);
+  font-weight: 700;
+}
+
+/* Audio-Track Sync */
 .transcript-line {
   padding: 6px 10px;
   border-radius: 6px;
@@ -294,9 +678,7 @@ body {
   display: block;
 }
 
-.transcript-line:hover {
-  background-color: #f1f5f9;
-}
+.transcript-line:hover { background-color: #f1f5f9; }
 
 .transcript-line.playing-active {
   background-color: #fef08a !important;
@@ -311,202 +693,9 @@ body {
   background: #f1f5f9;
   padding: 2px 6px;
   border-radius: 4px;
-  user-select: none;
 }
 
-/* ==========================================================================
-   BẢNG VÀ Ô CÂU HỎI TO, RÕ RÀNG
-   ========================================================================== */
-.table-question {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 15px;
-  background: var(--bg-subcard);
-  border: 1.5px solid var(--border-color);
-  border-radius: 8px;
-  font-size: var(--font-size-base);
-}
-
-.table-question th {
-  background: #f1f5f9;
-  border-bottom: 2px solid var(--border-color);
-  padding: 14px 16px;
-  text-align: left;
-  font-weight: 700;
-  color: var(--text-main);
-  font-size: 0.95em;
-}
-
-.table-question td {
-  padding: 16px;
-  border-bottom: 1px solid var(--border-color);
-  border-right: 1px solid var(--border-color);
-  vertical-align: top;
-}
-
-.table-question td:last-child {
-  border-right: none;
-}
-
-/* Ô nhập chữ to, rõ ràng */
-input[type="text"].fill-input,
-.question input[type="text"] {
-  padding: 8px 14px;
-  border: 2px solid #94a3b8;
-  background: var(--bg-card);
-  color: var(--text-main);
-  border-radius: 6px;
-  min-width: 130px;
-  font-size: var(--font-size-base);
-  font-weight: 700;
-  outline: none;
-  transition: border-color 0.2s;
-}
-
-input[type="text"].fill-input:focus {
-  border-color: #0284c7;
-  box-shadow: 0 0 0 3px rgba(2,132,199,0.15);
-}
-
-/* Mạch suy nghĩ & Trợ giảng AI */
-.thought-box {
-  margin-top: 12px;
-}
-
-.thought-box label {
-  font-size: 0.7em;
-  font-weight: 700;
-  color: var(--text-muted);
-  display: block;
-  margin-bottom: 4px;
-}
-
-.thought-box textarea {
-  width: 100%;
-  height: 60px;
-  padding: 8px 12px;
-  font-size: 0.75em;
-  border: 1.5px solid var(--border-color);
-  background: var(--bg-card);
-  color: var(--text-main);
-  border-radius: 6px;
-  resize: vertical;
-  outline: none;
-}
-
-.explanation {
-  font-size: 0.85em;
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-left: 4px solid #0284c7;
-  padding: 16px;
-  margin-top: 12px;
-  border-radius: 6px;
-  display: none;
-}
-
-.ai-assistant-box {
-  margin-top: 12px;
-  padding: 14px;
-  background: var(--bg-subcard);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-}
-
-.ai-assistant-box label {
-  font-size: 0.75em;
-  font-weight: 700;
-  color: var(--primary-blue);
-  display: block;
-}
-
-.ai-input-group {
-  display: flex;
-  gap: 8px;
-  margin-top: 6px;
-}
-
-.ai-input-group input {
-  flex: 1;
-  padding: 8px 12px;
-  font-size: 0.75em;
-  border: 1.5px solid var(--border-color);
-  background: var(--bg-card);
-  border-radius: 6px;
-}
-
-.ai-btn {
-  background: var(--primary-blue);
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  font-size: 0.75em;
-  font-weight: 700;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.btn-locate {
-  background: #f8fafc;
-  border: 1px solid var(--border-color);
-  padding: 6px 12px;
-  font-size: 0.75em;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-top: 8px;
-  font-weight: 600;
-}
-
-.kw-exp {
-  background-color: #bbf7d0;
-  color: #14532d;
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-weight: 700;
-}
-
-/* Nút Submit */
-.btn-submit {
-  background-color: #8B1518;
-  color: white;
-  border: none;
-  padding: 14px 24px;
-  font-size: 0.95em;
-  font-weight: 700;
-  border-radius: 8px;
-  cursor: pointer;
-  width: 100%;
-  margin-top: 30px;
-}
-
-.btn-submit:hover {
-  filter: brightness(1.1);
-}
-
-/* Highlight Transcript */
-.submitted .hl {
-  background-color: #fef08a;
-  padding: 2px 6px;
-  border-radius: 4px;
-  color: #1e293b;
-}
-
-.submitted .hl-active {
-  background-color: #fde047 !important;
-  outline: 3px solid #ca8a04;
-}
-
-.submitted .kw {
-  background-color: #86efac !important;
-  font-weight: 700;
-  padding: 2px 6px;
-  border-radius: 4px;
-  color: #14532d;
-}
-
-/* ==========================================================================
-   BOTTOM NAVIGATION BAR
-   ========================================================================== */
+/* Bottom Bar riêng của Listening */
 .bottom-nav-bar {
   position: fixed;
   bottom: 0;
@@ -520,15 +709,10 @@ input[type="text"].fill-input:focus {
   justify-content: space-between;
   align-items: center;
   z-index: 100;
-  font-size: 0.75em;
+  font-size: 15px;
 }
 
-.bottom-nav-left {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  overflow-x: auto;
-}
+.bottom-nav-left { display: flex; align-items: center; gap: 16px; overflow-x: auto; }
 
 .part-tab-item {
   display: flex;
@@ -539,16 +723,8 @@ input[type="text"].fill-input:focus {
   white-space: nowrap;
 }
 
-.part-tab-item.active {
-  color: #8B1518;
-}
-
-.part-q-badges {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-left: 6px;
-}
+.part-tab-item.active { color: #8B1518; }
+.part-q-badges { display: flex; align-items: center; gap: 6px; margin-left: 6px; }
 
 .q-badge-btn {
   width: 36px;
@@ -586,11 +762,7 @@ input[type="text"].fill-input:focus {
   border-color: #b91c1c !important;
 }
 
-.bottom-nav-right {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
+.bottom-nav-right { display: flex; align-items: center; gap: 12px; }
 
 .btn-open-modal-list {
   background: #0284c7;
@@ -598,14 +770,12 @@ input[type="text"].fill-input:focus {
   border: none;
   padding: 8px 16px;
   border-radius: 6px;
-  font-size: 0.9em;
+  font-size: 14.5px;
   font-weight: 700;
   cursor: pointer;
 }
 
-/* ==========================================================================
-   POPUP MODAL KẾT QUẢ
-   ========================================================================== */
+/* Modal Popup Result */
 .modal-backdrop {
   display: none;
   position: fixed;
@@ -630,7 +800,7 @@ input[type="text"].fill-input:focus {
   box-shadow: 0 20px 25px -5px rgba(0,0,0,0.25);
   padding: 26px;
   position: relative;
-  font-size: 0.8em;
+  font-size: 15px;
 }
 
 .btn-close-modal {
@@ -656,36 +826,9 @@ input[type="text"].fill-input:focus {
   text-align: center;
 }
 
-.modal-score-summary h2 {
-  margin: 0;
-  color: #8B1518;
-  font-size: 1.25em;
-}
-
-.modal-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.modal-table th {
-  background: #f1f5f9;
-  padding: 12px;
-  border-bottom: 2px solid #cbd5e1;
-  text-align: left;
-}
-
-.modal-table td {
-  padding: 12px;
-  border-bottom: 1px solid #e2e8f0;
-}
-
-.ans-correct-tag {
-  color: #16a34a;
-  font-weight: 700;
-}
-
-.ans-incorrect-tag {
-  color: #dc2626;
-  font-weight: 700;
-  text-decoration: line-through;
-}
+.modal-score-summary h2 { margin: 0; color: #8B1518; font-size: 24px; }
+.modal-table { width: 100%; border-collapse: collapse; }
+.modal-table th { background: #f1f5f9; padding: 12px; border-bottom: 2px solid #cbd5e1; text-align: left; }
+.modal-table td { padding: 12px; border-bottom: 1px solid #e2e8f0; }
+.ans-correct-tag { color: #16a34a; font-weight: 700; }
+.ans-incorrect-tag { color: #dc2626; font-weight: 700; text-decoration: line-through; }
