@@ -5,7 +5,7 @@
   <title>IELTS 21 Listening Test 1 - Part 1: Oyster Bay Sailing Club</title>
   <link rel="stylesheet" href="ielts-core.css">
 </head>
-<body class="listening-test">
+<body>
 
 <div class="user-info-box">
   <div class="user-info-field">
@@ -44,7 +44,7 @@
 
 <div class="container" id="mainContainer">
   
-  <!-- CỘT TRÁI: TRANSCRIPT (ẨN KHI LÀM BÀI, CHỈ HIỆN KHI NỘP BÀI ĐỐI CHIẾU) -->
+  <!-- CỘT TRÁI: TRANSCRIPT (ẨN KHI LÀM, TỰ HIỆN KHI NỘP BÀI) -->
   <div class="passage-box" id="passageBox">
     <h2 style="margin-top:0; border-bottom:2px solid var(--primary-blue); padding-bottom:6px;">LISTENING TRANSCRIPT - PART 1</h2>
     <p style="font-size: 0.75em; color: #64748b; font-style: italic; margin-bottom: 16px;">
@@ -173,12 +173,12 @@
     </div>
   </div>
 
-  <!-- THANH KÉO ĐỘ RỘNG RESIZER (CÓ ICON 2 MŨI TÊN) -->
+  <!-- THANH KÉO RESIZER CHIA CỘT (◄►) -->
   <div class="resizer" id="dragResizer">
     <div class="resizer-icon">◄►</div>
   </div>
 
-  <!-- CỘT PHẢI: AUDIO & CÂU HỎI -->
+  <!-- CỘT PHẢI: AUDIO & BẢNG CÂU HỎI -->
   <div class="question-box" id="questionBox">
     
     <!-- Audio Player -->
@@ -398,62 +398,6 @@
     </div>
 
     <button class="btn-submit" onclick="checkAnswers()">CHẤM BÀI VÀ NỘP KẾT QUẢ</button>
-  </div>
-</div>
-
-<!-- BOTTOM NAVIGATION BAR CỐ ĐỊNH PHÍA DƯỚI -->
-<div class="bottom-nav-bar">
-  <div class="bottom-nav-left">
-    <div class="part-tab-item active">
-      <span>Part 1:</span>
-      <div class="part-q-badges">
-        <button type="button" class="q-badge-btn" id="badge_q1" onclick="scrollToQuestion('q1')">1</button>
-        <button type="button" class="q-badge-btn" id="badge_q2" onclick="scrollToQuestion('q2')">2</button>
-        <button type="button" class="q-badge-btn" id="badge_q3" onclick="scrollToQuestion('q3')">3</button>
-        <button type="button" class="q-badge-btn" id="badge_q4" onclick="scrollToQuestion('q4')">4</button>
-        <button type="button" class="q-badge-btn" id="badge_q5" onclick="scrollToQuestion('q5')">5</button>
-        <button type="button" class="q-badge-btn" id="badge_q6" onclick="scrollToQuestion('q6')">6</button>
-        <button type="button" class="q-badge-btn" id="badge_q7" onclick="scrollToQuestion('q7')">7</button>
-        <button type="button" class="q-badge-btn" id="badge_q8" onclick="scrollToQuestion('q8')">8</button>
-        <button type="button" class="q-badge-btn" id="badge_q9" onclick="scrollToQuestion('q9')">9</button>
-        <button type="button" class="q-badge-btn" id="badge_q10" onclick="scrollToQuestion('q10')">10</button>
-      </div>
-    </div>
-    <div class="part-tab-item" style="color: #94a3b8; font-weight: normal;">Part 2: 10 questions</div>
-    <div class="part-tab-item" style="color: #94a3b8; font-weight: normal;">Part 3: 10 questions</div>
-    <div class="part-tab-item" style="color: #94a3b8; font-weight: normal;">Part 4: 10 questions</div>
-  </div>
-
-  <div class="bottom-nav-right">
-    <button type="button" class="btn-open-modal-list" onclick="toggleResultModal(true)">
-      📋 Bảng đáp án
-    </button>
-  </div>
-</div>
-
-<!-- POPUP MODAL KẾT QUẢ & BẢNG ĐÁP ÁN -->
-<div class="modal-backdrop" id="resultModal">
-  <div class="modal-content-card">
-    <button class="btn-close-modal" onclick="toggleResultModal(false)">✕</button>
-    
-    <div class="modal-score-summary" id="modalScoreSummaryBox">
-      <h2 id="modalBandScoreText">Band Score: Đang làm bài</h2>
-      <p style="margin: 6px 0 0 0; color: #475569; font-weight: 600;" id="modalScoreDetailText">
-        Hãy điền các câu hỏi và bấm nộp bài để xem điểm chi tiết!
-      </p>
-    </div>
-
-    <table class="modal-table">
-      <thead>
-        <tr>
-          <th style="width: 15%;">#</th>
-          <th style="width: 45%;">Câu trả lời của bạn</th>
-          <th style="width: 40%;">Đáp án đúng</th>
-        </tr>
-      </thead>
-      <tbody id="modalTableBody">
-      </tbody>
-    </table>
   </div>
 </div>
 
