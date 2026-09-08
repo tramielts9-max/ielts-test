@@ -1,12 +1,7 @@
 /**
  * ==========================================================================
  * IELTS PRACTICE TEST CORE ENGINE (ielts-core.js) - UNIVERSAL VẠN NĂNG 100%
- * Tự động hóa:
- * 1. Tự phát hiện Listening/Reading qua <audio> hoặc tên file.
- * 2. Tự động sinh (inject) thanh điều hướng đáy và bảng Modal kết quả.
- * 3. Tự bóc tách số câu chính xác (1-10, 11-20, 21-30, 31-40...).
- * 4. Bắt mượt cả điền từ (input) lẫn trắc nghiệm khoanh tròn (radio/change).
- * 5. Giữ nguyên 100% tính năng Reading gốc, AI Gemini, Drive Storage, Audio Sync.
+ * Đã sửa lỗi nút cỡ chữ: hoạt động nhạy 100%, tự động phóng to 22px cho Listening.
  * ==========================================================================
  */
 
@@ -21,7 +16,7 @@ let isTimerRunning = false;
 let userFinalScore = 0;
 let isReviewMode = false;
 
-// TỰ ĐỘNG PHÁT HIỆN ĐỀ LISTENING HAY READING
+// TỰ ĐỘNG PHÁT HIỆN LISTENING HAY READING
 function isListeningTest() {
   return !!document.querySelector('audio') || 
          !!document.getElementById('mainAudioElement') ||
@@ -36,18 +31,44 @@ function getStorageKey() {
   return 'ielts_state_' + pageName;
 }
 
+// ==================== ĐIỀU CHỈNH CỠ CHỮ & THEME (HOẠT ĐỘNG 100%) ====================
+function applyFontSize() {
+  document.documentElement.style.setProperty('--font-size-base', currentFontSize + 'px');
+  if (document.body) {
+    document.body.style.setProperty('--font-size-base', currentFontSize + 'px');
+  }
+}
+
+function changeFontSize(delta) {
+  currentFontSize += delta;
+  const minSize = isListeningTest() ? 15 : 12;
+  const maxSize = isListeningTest() ? 36 : 26;
+  if (currentFontSize < minSize) currentFontSize = minSize;
+  if (currentFontSize > maxSize) currentFontSize = maxSize;
+  
+  applyFontSize();
+  if (!isReviewMode) saveStateToLocalStorage();
+}
+
+function toggleTheme() {
+  document.body.classList.toggle('dark-theme');
+  const btnTheme = document.getElementById('btnThemeToggle');
+  if (btnTheme) {
+    btnTheme.innerText = document.body.classList.contains('dark-theme') ? "☀️ Sáng" : "🌙 Tối";
+  }
+  if (!isReviewMode) saveStateToLocalStorage();
+}
+
 // ==================== TỰ ĐỘNG SINH THANH ĐIỀU HƯỚNG & MODAL ====================
 function injectUniversalListeningUI() {
   if (!isListeningTest() || document.getElementById('bottomNavBar')) return;
 
-  // 1. Tự động thêm class vào body
   document.body.classList.add('listening-test');
 
   const answers = (window.TEST_DATA && window.TEST_DATA.answers) ? window.TEST_DATA.answers : {};
   const qKeys = Object.keys(answers);
   if (qKeys.length === 0) return;
 
-  // Xác định câu đầu tiên để biết Part mấy (1-10: P1, 11-20: P2, 21-30: P3, 31-40: P4)
   let firstQNum = 1;
   const matchNum = qKeys[0].match(/\d+/);
   if (matchNum) firstQNum = parseInt(matchNum[0]);
@@ -57,14 +78,12 @@ function injectUniversalListeningUI() {
   else if (firstQNum >= 21) currentPart = 3;
   else if (firstQNum >= 11) currentPart = 2;
 
-  // Sinh các nút số câu hỏi
   let badgesHtml = '';
   qKeys.forEach(qKey => {
     const num = qKey.replace(/\D/g, '');
     badgesHtml += `<button type="button" class="q-badge-btn" id="badge_${qKey}" onclick="scrollToQuestion('${qKey}')">${num}</button>`;
   });
 
-  // Sinh các Tab Part 1, 2, 3, 4
   const partsHtml = [1, 2, 3, 4].map(p => {
     if (p === currentPart) {
       return `<div class="part-tab-item active"><span>Part ${p}:</span><div class="part-q-badges">${badgesHtml}</div></div>`;
@@ -73,7 +92,6 @@ function injectUniversalListeningUI() {
     }
   }).join('');
 
-  // 2. Tạo thanh điều hướng dưới đáy (Bottom Bar)
   const bottomBar = document.createElement('div');
   bottomBar.id = 'bottomNavBar';
   bottomBar.className = 'bottom-nav-bar';
@@ -85,7 +103,6 @@ function injectUniversalListeningUI() {
   `;
   document.body.appendChild(bottomBar);
 
-  // 3. Tạo Popup Modal bảng kết quả
   const modalDiv = document.createElement('div');
   modalDiv.id = 'resultModal';
   modalDiv.className = 'modal-backdrop';
@@ -111,26 +128,6 @@ function injectUniversalListeningUI() {
     </div>
   `;
   document.body.appendChild(modalDiv);
-}
-
-// ==================== ĐIỀU CHỈNH CỠ CHỮ & THEME ====================
-function changeFontSize(delta) {
-  currentFontSize += delta;
-  const minSize = isListeningTest() ? 16 : 12;
-  const maxSize = isListeningTest() ? 32 : 24;
-  if (currentFontSize < minSize) currentFontSize = minSize;
-  if (currentFontSize > maxSize) currentFontSize = maxSize;
-  document.documentElement.style.setProperty('--font-size-base', currentFontSize + 'px');
-  if (!isReviewMode) saveStateToLocalStorage();
-}
-
-function toggleTheme() {
-  document.body.classList.toggle('dark-theme');
-  const btnTheme = document.getElementById('btnThemeToggle');
-  if (btnTheme) {
-    btnTheme.innerText = document.body.classList.contains('dark-theme') ? "☀️ Sáng" : "🌙 Tối";
-  }
-  if (!isReviewMode) saveStateToLocalStorage();
 }
 
 // ==================== QUẢN LÝ THÔNG TIN HỌC VIÊN ====================
@@ -319,7 +316,7 @@ function renderModalTable() {
   let html = '';
 
   for (const qKey in answers) {
-    const qNum = qKey.replace(/\D/g, ''); // Bóc tách câu 11, 21, 31 chuẩn 100%
+    const qNum = qKey.replace(/\D/g, '');
     const input = document.getElementById(`${qKey}_input`);
     const radio = document.querySelector(`input[name="${qKey}"]:checked`);
     const expected = answers[qKey];
@@ -400,7 +397,7 @@ function restoreStateFromLocalStorage() {
 
     if (state.fontSize) {
       currentFontSize = state.fontSize;
-      document.documentElement.style.setProperty('--font-size-base', currentFontSize + 'px');
+      applyFontSize();
     }
 
     if (state.isDarkTheme) {
@@ -444,7 +441,7 @@ function restoreStateFromLocalStorage() {
   } catch (err) {}
 }
 
-// ==================== REVIEW MODE TỪ GOOGLE DRIVE ====================
+// ==================== REVIEW MODE TỪ DRIVE ====================
 function restoreAttemptFromSnapshot(attempt) {
   isReviewMode = true;
   stopTimer();
@@ -665,7 +662,6 @@ async function checkAnswers() {
 
   saveStateToLocalStorage();
 
-  // Gửi Google Sheets
   if (IELTS_CONFIG.AI_AND_SHEET_URL) {
     fetch(IELTS_CONFIG.AI_AND_SHEET_URL, {
       method: "POST",
@@ -682,7 +678,6 @@ async function checkAnswers() {
     }).catch(() => {});
   }
 
-  // Gửi Google Drive
   if (IELTS_CONFIG.DRIVE_STORAGE_URL && !IELTS_CONFIG.DRIVE_STORAGE_URL.includes("DÁN_LINK")) {
     fetch(IELTS_CONFIG.DRIVE_STORAGE_URL, {
       method: "POST",
@@ -865,18 +860,14 @@ Dùng **từ khóa** để IN ĐẬM, ==bằng chứng== để TÔ VÀNG đoạn
 
 // ==================== KHỞI ĐỘNG HỆ THỐNG ====================
 document.addEventListener('DOMContentLoaded', async function() {
-  // 1. Tự động tiêm thanh đáy và popup modal nếu là Listening
   injectUniversalListeningUI();
-
-  // 2. Kích hoạt Resizer chia cột
   initResizableDivider();
 
-  // 3. Kích hoạt Audio Sync
   if (isListeningTest()) {
     initAudioTranscriptSync();
   }
 
-  // 4. Khôi phục bài thi từ Review Mode nếu có query params
+  // Khôi phục bài từ Google Drive Review Mode nếu có
   const urlParams = new URLSearchParams(window.location.search);
   const attemptId = urlParams.get('attemptId');
   const emailParam = urlParams.get('email');
@@ -896,10 +887,12 @@ document.addEventListener('DOMContentLoaded', async function() {
     } catch (e) {}
   }
 
-  // 5. Khôi phục bài đang làm dở cục bộ
   restoreStateFromLocalStorage();
 
-  // 6. LẮNG NGHE ĐỒNG THỜI CẢ INPUT (GÕ PHÍM) VÀ CHANGE (CLICK RADIO TRẮC NGHIỆM)
+  // Áp dụng cỡ chữ ngay khi mở bài
+  applyFontSize();
+
+  // Lắng nghe cả nhập liệu lẫn click trắc nghiệm Radio
   document.addEventListener('input', function() {
     updateBottomBadgesRealtime();
     saveStateToLocalStorage();
