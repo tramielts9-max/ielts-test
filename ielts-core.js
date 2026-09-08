@@ -56,6 +56,15 @@ function resetCurrentTest() {
   }
 }
 
+// ==================== ĐIỀU CHỈNH KÍCH CỠ CHỮ ====================
+function changeFontSize(delta) {
+  currentFontSize += delta;
+  if (currentFontSize < 14) currentFontSize = 14;
+  if (currentFontSize > 34) currentFontSize = 34;
+  document.documentElement.style.setProperty('--font-size-base', currentFontSize + 'px');
+  if (!isReviewMode) saveStateToLocalStorage();
+}
+
 // ==================== BẤM GIỜ ====================
 function updateTimerDisplay() {
   const mins = Math.floor(seconds / 60);
