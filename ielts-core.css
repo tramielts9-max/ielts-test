@@ -581,7 +581,6 @@ body.dark-theme .submitted .hl {
    - HOÀN TOÀN KHÔNG ẢNH HƯỞNG ĐẾN READING BÊN TRÊN
    ========================================================================== */
 body.listening-test {
-  --font-size-base: 22px; /* Chữ to gấp 1.5 lần riêng cho Listening */
   padding-bottom: 85px; /* Để trống cho Bottom Bar */
 }
 
