@@ -1,8 +1,8 @@
 /**
  * ==========================================================================
  * IELTS PRACTICE TEST CORE ENGINE (ielts-core.js)
- * Tự động hóa: Bấm giờ, Resizer kéo thả 2 cột, Audio Sync chuẩn từng giây,
- * Bottom badges, Modal kết quả, Chấm điểm, AI Trợ giảng Gemini, Google Drive.
+ * Tự động hóa: Bấm giờ, Resizer kéo thả, Audio Sync, Đổi cỡ chữ (A-/A+),
+ * Theme Sáng/Tối, Bottom Badges, Modal kết quả, AI Trợ giảng, Google Drive.
  * ==========================================================================
  */
 
@@ -18,12 +18,30 @@ let seconds = 0;
 let timerInterval = null;
 let isTimerRunning = false;
 let userFinalScore = 0;
-let currentFontSize = 22;
+let currentFontSize = 22; // Cỡ chữ mặc định gấp 1.5 lần
 let isReviewMode = false;
 
 function getStorageKey() {
   const pageName = window.location.pathname.split('/').pop() || 'default_test';
   return 'ielts_state_' + pageName;
+}
+
+// ==================== ĐIỀU CHỈNH CỠ CHỮ & THEME (ĐÃ KHÔI PHỤC) ====================
+function changeFontSize(delta) {
+  currentFontSize += delta;
+  if (currentFontSize < 14) currentFontSize = 14;
+  if (currentFontSize > 34) currentFontSize = 34;
+  document.documentElement.style.setProperty('--font-size-base', currentFontSize + 'px');
+  if (!isReviewMode) saveStateToLocalStorage();
+}
+
+function toggleTheme() {
+  document.body.classList.toggle('dark-theme');
+  const btnTheme = document.getElementById('btnThemeToggle');
+  if (btnTheme) {
+    btnTheme.innerText = document.body.classList.contains('dark-theme') ? "☀️ Sáng" : "🌙 Tối";
+  }
+  if (!isReviewMode) saveStateToLocalStorage();
 }
 
 // ==================== QUẢN LÝ THÔNG TIN HỌC VIÊN ====================
@@ -54,15 +72,6 @@ function resetCurrentTest() {
     localStorage.removeItem(key);
     window.location.href = window.location.pathname;
   }
-}
-
-// ==================== ĐIỀU CHỈNH KÍCH CỠ CHỮ ====================
-function changeFontSize(delta) {
-  currentFontSize += delta;
-  if (currentFontSize < 14) currentFontSize = 14;
-  if (currentFontSize > 34) currentFontSize = 34;
-  document.documentElement.style.setProperty('--font-size-base', currentFontSize + 'px');
-  if (!isReviewMode) saveStateToLocalStorage();
 }
 
 // ==================== BẤM GIỜ ====================
@@ -130,12 +139,11 @@ function scrollToQuestion(qId) {
   }
 }
 
-// ==================== AUDIO TRACKING & CLICK TRANSCRIPT (CHUẨN TỪNG GIÂY) ====================
+// ==================== AUDIO TRACKING & CLICK TRANSCRIPT ====================
 function initAudioTranscriptSync() {
   const audio = document.getElementById('mainAudioElement');
   const transcriptLines = Array.from(document.querySelectorAll('.transcript-line'));
 
-  // 1. Click câu nào -> tua ngay đến mốc giây của câu đó và play
   transcriptLines.forEach(line => {
     line.addEventListener('click', function() {
       const timeSec = parseFloat(this.getAttribute('data-time'));
@@ -146,7 +154,6 @@ function initAudioTranscriptSync() {
     });
   });
 
-  // 2. Audio chạy đến đâu -> highlight câu tương ứng đến đó
   if (audio && transcriptLines.length > 0) {
     audio.addEventListener('timeupdate', function() {
       const curTime = audio.currentTime;
@@ -181,7 +188,7 @@ function initResizableDivider() {
 
   let isDragging = false;
 
-  resizer.addEventListener('mousedown', function(e) {
+  resizer.addEventListener('mousedown', function() {
     isDragging = true;
     resizer.classList.add('resizing');
     document.body.style.cursor = 'col-resize';
@@ -199,7 +206,7 @@ function initResizableDivider() {
     if (leftPercent > 80) leftPercent = 80;
 
     passageBox.style.width = `${leftPercent}%`;
-    questionBox.style.width = `calc(${100 - leftPercent}% - 14px)`;
+    questionBox.style.width = `calc(${100 - leftPercent}% - 16px)`;
   });
 
   document.addEventListener('mouseup', function() {
@@ -212,7 +219,7 @@ function initResizableDivider() {
   });
 }
 
-// ==================== MODAL BẢNG ĐÁP ÁN & KẾT QUẢ ====================
+// ==================== MODAL KẾT QUẢ & BẢNG ĐÁP ÁN ====================
 function toggleResultModal(show) {
   const modal = document.getElementById('resultModal');
   if (!modal) return;
@@ -262,7 +269,7 @@ function renderModalTable() {
   tbody.innerHTML = html;
 }
 
-// ==================== LƯU / PHỤC HỒI STATE ====================
+// ==================== LƯU / PHỤC HỒI LOCALSTORAGE ====================
 function saveStateToLocalStorage() {
   if (isReviewMode) return;
   try {
@@ -275,6 +282,8 @@ function saveStateToLocalStorage() {
       seconds: seconds,
       studentName: nameVal,
       studentEmail: emailVal,
+      fontSize: currentFontSize,
+      isDarkTheme: document.body.classList.contains('dark-theme'),
       isSubmitted: document.getElementById('mainContainer')?.classList.contains('submitted-mode') || false,
       scoreText: document.getElementById('scoreText')?.innerText || '',
       inputs: {},
@@ -301,6 +310,17 @@ function restoreStateFromLocalStorage() {
 
     const state = JSON.parse(savedData);
     if (state.seconds) { seconds = state.seconds; updateTimerDisplay(); }
+
+    if (state.fontSize) {
+      currentFontSize = state.fontSize;
+      document.documentElement.style.setProperty('--font-size-base', currentFontSize + 'px');
+    }
+
+    if (state.isDarkTheme) {
+      document.body.classList.add('dark-theme');
+      const btnTheme = document.getElementById('btnThemeToggle');
+      if (btnTheme) btnTheme.innerText = "☀️ Sáng";
+    }
 
     if (state.inputs) {
       for (const id in state.inputs) {
@@ -501,7 +521,7 @@ async function checkAnswers() {
   if (document.getElementById('scoreText')) document.getElementById('scoreText').innerText = scoreStr;
   if (document.getElementById('scoreBadge')) document.getElementById('scoreBadge').style.display = 'block';
 
-  // Chuyển sang giao diện 2 cột có thanh kéo
+  // Chuyển sang giao diện 2 cột có resizer
   const container = document.getElementById('mainContainer');
   const passageBox = document.getElementById('passageBox');
   if (container) container.classList.add('submitted-mode');
@@ -552,7 +572,7 @@ async function checkAnswers() {
     }).catch(() => {});
   }
 
-  // Tự động mở Popup bảng điểm chi tiết
+  // Bật Modal bảng điểm
   const modalBand = document.getElementById('modalBandScoreText');
   const modalDetail = document.getElementById('modalScoreDetailText');
   if (modalBand) modalBand.innerText = `Điểm của bạn: ${score}/${totalQuestions}`;
@@ -667,10 +687,10 @@ async function askGeminiAI(qId) {
   tempDiv.style.paddingTop = "10px";
   tempDiv.style.marginTop = "10px";
   tempDiv.innerHTML = `
-    <div style="color: var(--primary-blue); font-weight: 700; font-size: 13.5px; margin-bottom: 6px;">
+    <div style="color: var(--primary-blue); font-weight: 700; font-size: 14px; margin-bottom: 6px;">
       💬 Thắc mắc: "${safeQuestionText}"
     </div>
-    <i style="color: var(--text-muted); font-size: 13px;">⏳ AI đang đọc bài và soạn lời giải thích...</i>
+    <i style="color: var(--text-muted); font-size: 13.5px;">⏳ AI đang đọc bài và soạn lời giải thích...</i>
   `;
   responseBox.appendChild(tempDiv);
   inputEl.value = "";
@@ -704,10 +724,10 @@ Dùng **từ khóa** để IN ĐẬM, ==bằng chứng== để TÔ VÀNG đoạn
         .replace(/\[kw\](.*?)\[\/kw\]/g, "<span style='background-color: #bbf7d0; color: #14532d; padding: 2px 6px; border-radius: 4px; font-weight: 700;'>$1</span>");
 
       targetEl.innerHTML = `
-        <div style="color: var(--primary-blue); font-weight: 700; font-size: 13.5px; margin-bottom: 6px;">
+        <div style="color: var(--primary-blue); font-weight: 700; font-size: 14px; margin-bottom: 6px;">
           💬 Thắc mắc: "${safeQuestionText}"
         </div>
-        <div style="font-size: 14px; line-height: 1.7; color: var(--text-main);">
+        <div style="font-size: 14.5px; line-height: 1.7; color: var(--text-main);">
           <b style="color: var(--primary-blue);">🤖 Trợ giảng AI:</b><br>${formattedReply}
         </div>
       `;
