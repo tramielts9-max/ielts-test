@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>IELTS Vol 7 Reading Test 1 - Passage 2: Drawing Lessons from History</title>
+  <link rel="stylesheet" href="ielts-core.css">
+</head>
+<body>
+
+<div class="user-info-box">
+  <div class="user-info-field">
+    <label for="studentNameInput">👤 Họ và Tên:</label>
+    <input type="text" id="studentNameInput" placeholder="Đang đồng bộ họ tên...">
+  </div>
+  <div class="user-info-field">
+    <label for="studentEmailInput">✉️ Email Google:</label>
+    <input type="email" id="studentEmailInput" placeholder="Đang đồng bộ Email...">
+  </div>
+</div>
+
+<div class="header-bar">
+  <h1>IELTS Academic Vol 7 - Reading Test 1 - Passage 2</h1>
+  
+  <div class="header-nav">
+    <a href="index.html" class="nav-link">🏠 Trang chủ</a>
+    <a href="vol7-test1-p1.html" class="nav-link">Passage 1</a>
+    <a href="vol7-test1-p2.html" class="nav-link active">Passage 2</a>
+    <a href="vol7-test1-p3.html" class="nav-link">Passage 3</a>
+  </div>
+
+  <div class="header-controls">
+    <button class="btn-header" onclick="changeFontSize(-1)" title="Giảm cỡ chữ">A-</button>
+    <button class="btn-header" onclick="changeFontSize(1)" title="Tăng cỡ chữ">A+</button>
+    <button class="btn-header" id="btnThemeToggle" onclick="toggleTheme()" title="Đổi chế độ Sáng / Tối">🌙 Tối/Sáng</button>
+  </div>
+
+  <div class="timer-container">
+    <span>⏱️ Thời gian:</span>
+    <span class="timer-display" id="timerDisplay">00:00</span>
+    <button class="btn-timer" onclick="startTimer()">▶️ Bắt đầu</button>
+    <button class="btn-timer" onclick="pauseTimer()">⏸️ Tạm dừng</button>
+  </div>
+
+  <div class="score-badge" id="scoreBadge">Điểm số: <span id="scoreText">0/13</span></div>
+</div>
+
+<div id="hlPopup" class="hl-popup"><button id="btnDoHighlight">🖍️ Highlight</button></div>
+<div id="removeHlPopup" class="hl-popup"><button id="btnRemoveHighlight">❌ Xóa Highlight</button></div>
+
+<div class="container">
+  <div class="passage-box" id="passageBox">
+    <h2>READING PASSAGE 2</h2>
+    <h3>Drawing Lessons from History</h3>
+
+    <p>Numerous ancient civilisations collapsed or disappeared, leaving behind grand ruins reminiscent of what poet Shelley described in his sonnet Ozymandias. The term ‘collapse’ refers to a significant reduction in population and/or political, economic, and social complexity of a society across a wide area for an extended period.</p>
+
+    <p>The awe-inspiring ruins left behind by these past societies captivate us all. As children, we marvel at them when we first discover them through pictures-vast stone structures, intricate carvings, or towering temples that defy imagination. As we grow older, many of us plan vacations to witness these remarkable sites firsthand, standing in silent reverence before the remnants of a world that once thrived. <span class="hl" id="hl-q14" data-q="[Q14]">We are drawn to their magnificent and haunting <span class="kw">beauty, as well as the enigmas</span> they present</span>. <span class="hl" id="hl-q22" data-q="[Q22]">The grandeur of these ruins attests to the previous wealth and power of their builders, yet their sudden disappearance challenges our understanding of human resilience. These builders vanished, abandoning the remarkable <span class="kw">structures</span> they had painstakingly constructed</span>. How did a once-mighty society end up collapsing, leaving behind only echoes of its former glory?</p>
+
+    <p>For a long time, it has been suspected that the mysterious disappearance of many such societies was, to some extent, triggered by ecological issues and unintentional destruction of the environmental resources on which their societies relied. This suspicion of unintended ecological suicide, or ecocide, has been substantiated by discoveries made in recent decades by <span class="hl" id="hl-q15" data-q="[Q15]"><span class="kw">archaeologists, climatologists, historians, palaeontologists, and palynologists</span></span> (pollen scientists). The processes through which past societies have undermined themselves by damaging their environments can be categorised into eight areas, which vary in significance from one case to another: deforestation and habitat loss, soil degradation, water management challenges, overhunting, overfishing, the impacts of invasive species on native ones, human population growth, and increased human activity.</p>
+
+    <p><span class="hl" id="hl-q16" data-q="[Q16]">Historical collapses generally followed <span class="kw">similar patterns resembling variations on a theme</span></span>. These patterns often include resource depletion, environmental degradation, internal strife, or external pressures, yet the specific combination and intensity of these factors varied across civilisations. <span class="hl" id="hl-q23" data-q="[Q23]">Writers are often tempted to draw analogies between the trajectory of human society and that of an individual’s life, speaking of a society’s birth, growth, peak, old age, and eventual demise. However, this metaphor proves inaccurate for many past societies: they experienced rapid declines after reaching their peak in terms of population and power, and these rapid declines must have come as a surprise and shock to their inhabitants. It is evident that <span class="kw">not all past societies</span> followed this trajectory uniformly</span> to its conclusion: different societies collapsed to varying degrees and in somewhat distinct ways while many societies did not collapse at all. The diversity in collapse mechanisms suggests that while certain systemic vulnerabilities may be universal, their expression is deeply contingent on local conditions, cultural responses, and the interplay of multiple stressors over time.</p>
+
+    <p><span class="hl" id="hl-q18" data-q="[Q18]">Currently, many individuals believe that <span class="kw">environmental problems eclipse other global threats</span></span>. <span class="hl" id="hl-q20" data-q="[Q20]"><span class="hl" id="hl-q24" data-q="[Q24]">These environmental problems encompass the same eight factors that contributed to past societies’ downfalls, <span class="kw">plus four new ones</span>: human-induced climate change, the accumulation of toxic chemicals, energy shortages, and the complete utilisation of the Earth’s photosynthetic capacity</span></span>. However, <span class="hl" id="hl-q19" data-q="[Q19]">the seriousness of these modern environmental dilemmas is <span class="kw">vigorously debated</span> among the scientific community</span>. Are the perceived risks overstated or undervalued? Will contemporary technology resolve our issues, or is it producing new challenges faster than it can remedy old ones? When one resource (such as wood, oil, or ocean fish) is depleted, can we trust that new alternatives (like plastics, wind and solar energy, or farmed fish) will emerge? Isn’t the rate of human population growth slowing down, suggesting we might soon reach a manageable global population?</p>
+
+    <p>Questions like these highlight why the well-known collapses of past civilisations carry more significance than merely being romantic mysteries. There may be practical lessons to be learnt from these historical failures. However, there are also differences between the modern world and its problems, and those ancient societies and their problems. <span class="hl" id="hl-q26" data-q="[Q26]">It would be naive to assume that studying the past will yield <span class="kw">straightforward answers directly applicable</span> to today’s world</span>. We have certain advantages over past societies that reduce our risks, including our powerful technology (i.e. its beneficial effects), globalisation, modern medicine, and enhanced awareness of both past and distant modern societies. At the same time, there are also factors that heighten our risks in comparison to earlier civilisations: again, <span class="hl" id="hl-q25" data-q="[Q25]">our potent technology (i.e. <span class="kw">its unintended destructive effects</span>)</span>, globalisation (where a problem in one area can affect the entire world), the reliance of millions on modern health care for survival, and our vastly larger human population. <span class="hl" id="hl-q21" data-q="[Q21]">Perhaps we can still learn from the past, but only if we <span class="kw">carefully contemplate</span> its lessons</span>.</p>
+  </div>
+
+  <div class="resizer" id="dragResizer"></div>
+
+  <div class="question-box">
+    <div class="section-title">Questions 14-16</div>
+    <p><i>Choose the correct answer, <b>A</b>, <b>B</b>, <b>C</b> or <b>D</b>.</i></p>
+
+    <!-- Q14 -->
+    <div class="question" id="q14">
+      <p><b>14.</b> In describing the appeal of monumental ruins, the writer highlights</p>
+      <div class="options-vertical">
+        <label><input type="radio" name="q14" value="A"> <b>A</b> the curiosity of historians about the original purpose of these ruins.</label>
+        <label><input type="radio" name="q14" value="B"> <b>B</b> the vast geographical areas covered by these structures.</label>
+        <label><input type="radio" name="q14" value="C"> <b>C</b> their profound impact on the field of archaeological research.</label>
+        <label><input type="radio" name="q14" value="D"> <b>D</b> the mixture of beauty and mystery these sites represent.</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q14_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• <b>Đáp án:</b> <span class="kw-exp">D</span></div>
+        <div class="exp-step">• <b>Dấu hiệu:</b> "We are drawn to their magnificent and haunting beauty, as well as the enigmas they present." (beauty and enigmas = beauty and mystery).</div>
+        <button class="btn-locate" onclick="highlightText('hl-q14')">📍 Xem vị trí bài đọc</button>
+      </div>
+    </div>
+
+    <!-- Q15 -->
+    <div class="question" id="q15">
+      <p><b>15.</b> Recent findings regarding lost civilisations have</p>
+      <div class="options-vertical">
+        <label><input type="radio" name="q15" value="A"> <b>A</b> upended established theories.</label>
+        <label><input type="radio" name="q15" value="B"> <b>B</b> triggered a heated debate among scientists.</label>
+        <label><input type="radio" name="q15" value="C"> <b>C</b> emerged from a range of disciplines.</label>
+        <label><input type="radio" name="q15" value="D"> <b>D</b> confirmed a major cause of environmental destruction.</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q15_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• <b>Đáp án:</b> <span class="kw-exp">C</span></div>
+        <div class="exp-step">• <b>Dấu hiệu:</b> "...substantiated by discoveries made in recent decades by archaeologists, climatologists, historians, palaeontologists, and palynologists..." (đến từ nhiều ngành khoa học khác nhau = range of disciplines).</div>
+        <button class="btn-locate" onclick="highlightText('hl-q15')">📍 Xem vị trí bài đọc</button>
+      </div>
+    </div>
+
+    <!-- Q16 -->
+    <div class="question" id="q16">
+      <p><b>16.</b> In discussing how previous societies fell, the writer mentions that</p>
+      <div class="options-vertical">
+        <label><input type="radio" name="q16" value="A"> <b>A</b> the pace of collapse showed some resemblance across societies.</label>
+        <label><input type="radio" name="q16" value="B"> <b>B</b> the decline of societies was usually a slow and predictable process.</label>
+        <label><input type="radio" name="q16" value="C"> <b>C</b> all societies peaked in terms of population and power before collapsing.</label>
+        <label><input type="radio" name="q16" value="D"> <b>D</b> ordinary people could occasionally affect the course of events.</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q16_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• <b>Đáp án:</b> <span class="kw-exp">A</span></div>
+        <div class="exp-step">• <b>Dấu hiệu:</b> "Historical collapses generally followed similar patterns resembling variations on a theme... experienced rapid declines..."</div>
+        <button class="btn-locate" onclick="highlightText('hl-q16')">📍 Xem vị trí bài đọc</button>
+      </div>
+    </div>
+
+    <div class="section-title">Questions 17-21</div>
+    <p><i>Do the following statements agree with the claims of the writer in Reading Passage 2? In boxes 17-21, choose:</i></p>
+    <ul style="list-style: none; padding-left: 0;">
+      <li><b>YES</b> if the statement agrees with the claims of the writer</li>
+      <li><b>NO</b> if the statement contradicts the claims of the writer</li>
+      <li><b>NOT GIVEN</b> if it is impossible to say what the writer thinks about this</li>
+    </ul>
+
+    <!-- Q17 -->
+    <div class="question" id="q17">
+      <p><b>17.</b> The impressive relics of ancient societies were influenced by Shelley’s sonnet Ozymandias.</p>
+      <div class="options">
+        <label><input type="radio" name="q17" value="YES"> YES</label>
+        <label><input type="radio" name="q17" value="NO"> NO</label>
+        <label><input type="radio" name="q17" value="NOT GIVEN"> NOT GIVEN</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q17_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• <b>Đáp án:</b> <span class="kw-exp">NO</span></div>
+        <div class="exp-step">• <b>Dấu hiệu:</b> Tàn tích cổ đại có trước bài thơ của Shelley hàng ngàn năm, nó chỉ gợi nhớ (reminiscent of) đến bài thơ chứ không thể bị "ảnh hưởng" (influenced) bởi bài thơ.</div>
+      </div>
+    </div>
+
+    <!-- Q18 -->
+    <div class="question" id="q18">
+      <p><b>18.</b> There is a widespread belief that environmental issues pose the principal hazard to the contemporary world.</p>
+      <div class="options">
+        <label><input type="radio" name="q18" value="YES"> YES</label>
+        <label><input type="radio" name="q18" value="NO"> NO</label>
+        <label><input type="radio" name="q18" value="NOT GIVEN"> NOT GIVEN</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q18_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• <b>Đáp án:</b> <span class="kw-exp">YES</span></div>
+        <div class="exp-step">• <b>Dấu hiệu:</b> "Currently, many individuals believe that environmental problems eclipse other global threats." (eclipse other global threats = pose principal hazard).</div>
+        <button class="btn-locate" onclick="highlightText('hl-q18')">📍 Xem vị trí bài đọc</button>
+      </div>
+    </div>
+
+    <!-- Q19 -->
+    <div class="question" id="q19">
+      <p><b>19.</b> Scientists have reached a consensus about how severe the present ecological concerns are.</p>
+      <div class="options">
+        <label><input type="radio" name="q19" value="YES"> YES</label>
+        <label><input type="radio" name="q19" value="NO"> NO</label>
+        <label><input type="radio" name="q19" value="NOT GIVEN"> NOT GIVEN</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q19_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• <b>Đáp án:</b> <span class="kw-exp">NO</span></div>
+        <div class="exp-step">• <b>Dấu hiệu:</b> "...the seriousness of these modern environmental dilemmas is vigorously debated among the scientific community." (Tranh luận gay gắt trái ngược với đạt được đồng thuận - consensus).</div>
+        <button class="btn-locate" onclick="highlightText('hl-q19')">📍 Xem vị trí bài đọc</button>
+      </div>
+    </div>
+
+    <!-- Q20 -->
+    <div class="question" id="q20">
+      <p><b>20.</b> The presence of poisonous substances in high concentrations is a relatively modern issue.</p>
+      <div class="options">
+        <label><input type="radio" name="q20" value="YES"> YES</label>
+        <label><input type="radio" name="q20" value="NO"> NO</label>
+        <label><input type="radio" name="q20" value="NOT GIVEN"> NOT GIVEN</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q20_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• <b>Đáp án:</b> <span class="kw-exp">YES</span></div>
+        <div class="exp-step">• <b>Dấu hiệu:</b> "These environmental problems encompass the same eight factors... plus four new ones: ...the accumulation of toxic chemicals..." (accumulation of toxic chemicals là 1 trong 4 vấn đề mới của thời hiện đại).</div>
+        <button class="btn-locate" onclick="highlightText('hl-q20')">📍 Xem vị trí bài đọc</button>
+      </div>
+    </div>
+
+    <!-- Q21 -->
+    <div class="question" id="q21">
+      <p><b>21.</b> We should reflect cautiously when comparing the past with the present.</p>
+      <div class="options">
+        <label><input type="radio" name="q21" value="YES"> YES</label>
+        <label><input type="radio" name="q21" value="NO"> NO</label>
+        <label><input type="radio" name="q21" value="NOT GIVEN"> NOT GIVEN</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q21_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• <b>Đáp án:</b> <span class="kw-exp">YES</span></div>
+        <div class="exp-step">• <b>Dấu hiệu:</b> "It would be naive to assume that studying the past will yield straightforward answers... but only if we carefully contemplate its lessons." (carefully contemplate = reflect cautiously).</div>
+        <button class="btn-locate" onclick="highlightText('hl-q21')">📍 Xem vị trí bài đọc</button>
+      </div>
+    </div>
+
+    <div class="section-title">Questions 22-26</div>
+    <p><i>Complete each sentence with the correct ending, <b>A-F</b>, below.</i></p>
+
+    <div style="background: var(--bg-subcard); border: 2px dashed var(--border-color); padding: 14px 18px; border-radius: 8px; margin-bottom: 20px; line-height: 2;">
+      <b>A</b> are not applicable to all societies.<br>
+      <b>B</b> provides a hopeful perspective.<br>
+      <b>C</b> is embodied in physical structures.<br>
+      <b>D</b> is potentially both positive and negative.<br>
+      <b>E</b> will not address current issues directly.<br>
+      <b>F</b> have increased compared to the past.
+    </div>
+
+    <!-- Q22 -->
+    <div class="question" id="q22">
+      <p><b>22.</b> Evidence of remarkable achievements of certain past civilisations</p>
+      <div class="options">
+        <label><input type="radio" name="q22" value="A"> A</label>
+        <label><input type="radio" name="q22" value="B"> B</label>
+        <label><input type="radio" name="q22" value="C"> C</label>
+        <label><input type="radio" name="q22" value="D"> D</label>
+        <label><input type="radio" name="q22" value="E"> E</label>
+        <label><input type="radio" name="q22" value="F"> F</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q22_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• <b>Đáp án:</b> <span class="kw-exp">C</span> (is embodied in physical structures)</div>
+        <div class="exp-step">• <b>Dấu hiệu:</b> "...abandoning the remarkable structures they had painstakingly constructed..."</div>
+        <button class="btn-locate" onclick="highlightText('hl-q22')">📍 Xem vị trí bài đọc</button>
+      </div>
+    </div>
+
+    <!-- Q23 -->
+    <div class="question" id="q23">
+      <p><b>23.</b> Analogies between the development of an individual and that of a society</p>
+      <div class="options">
+        <label><input type="radio" name="q23" value="A"> A</label>
+        <label><input type="radio" name="q23" value="B"> B</label>
+        <label><input type="radio" name="q23" value="C"> C</label>
+        <label><input type="radio" name="q23" value="D"> D</label>
+        <label><input type="radio" name="q23" value="E"> E</label>
+        <label><input type="radio" name="q23" value="F"> F</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q23_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• <b>Đáp án:</b> <span class="kw-exp">A</span> (are not applicable to all societies)</div>
+        <div class="exp-step">• <b>Dấu hiệu:</b> "However, this metaphor proves inaccurate for many past societies... not all past societies followed this trajectory..."</div>
+        <button class="btn-locate" onclick="highlightText('hl-q23')">📍 Xem vị trí bài đọc</button>
+      </div>
+    </div>
+
+    <!-- Q24 -->
+    <div class="question" id="q24">
+      <p><b>24.</b> The environmental challenges that societies encounter</p>
+      <div class="options">
+        <label><input type="radio" name="q24" value="A"> A</label>
+        <label><input type="radio" name="q24" value="B"> B</label>
+        <label><input type="radio" name="q24" value="C"> C</label>
+        <label><input type="radio" name="q24" value="D"> D</label>
+        <label><input type="radio" name="q24" value="E"> E</label>
+        <label><input type="radio" name="q24" value="F"> F</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q24_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• <b>Đáp án:</b> <span class="kw-exp">F</span> (have increased compared to the past)</div>
+        <div class="exp-step">• <b>Dấu hiệu:</b> "...same eight factors that contributed to past societies’ downfalls, plus four new ones..." (8 yếu tố cũ cộng thêm 4 yếu tố mới = tăng lên so với quá khứ).</div>
+        <button class="btn-locate" onclick="highlightText('hl-q24')">📍 Xem vị trí bài đọc</button>
+      </div>
+    </div>
+
+    <!-- Q25 -->
+    <div class="question" id="q25">
+      <p><b>25.</b> In modern society, powerful technology</p>
+      <div class="options">
+        <label><input type="radio" name="q25" value="A"> A</label>
+        <label><input type="radio" name="q25" value="B"> B</label>
+        <label><input type="radio" name="q25" value="C"> C</label>
+        <label><input type="radio" name="q25" value="D"> D</label>
+        <label><input type="radio" name="q25" value="E"> E</label>
+        <label><input type="radio" name="q25" value="F"> F</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q25_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• <b>Đáp án:</b> <span class="kw-exp">D</span> (is potentially both positive and negative)</div>
+        <div class="exp-step">• <b>Dấu hiệu:</b> "...our powerful technology (i.e. its beneficial effects)... our potent technology (i.e. its unintended destructive effects)..."</div>
+        <button class="btn-locate" onclick="highlightText('hl-q25')">📍 Xem vị trí bài đọc</button>
+      </div>
+    </div>
+
+    <!-- Q26 -->
+    <div class="question" id="q26">
+      <p><b>26.</b> Reflections on ancient events and tendencies</p>
+      <div class="options">
+        <label><input type="radio" name="q26" value="A"> A</label>
+        <label><input type="radio" name="q26" value="B"> B</label>
+        <label><input type="radio" name="q26" value="C"> C</label>
+        <label><input type="radio" name="q26" value="D"> D</label>
+        <label><input type="radio" name="q26" value="E"> E</label>
+        <label><input type="radio" name="q26" value="F"> F</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q26_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• <b>Đáp án:</b> <span class="kw-exp">E</span> (will not address current issues directly)</div>
+        <div class="exp-step">• <b>Dấu hiệu:</b> "It would be naive to assume that studying the past will yield straightforward answers directly applicable to today’s world."</div>
+        <button class="btn-locate" onclick="highlightText('hl-q26')">📍 Xem vị trí bài đọc</button>
+      </div>
+    </div>
+
+    <button class="btn-submit" onclick="checkAnswers()">CHẤM BÀI VÀ NỘP KẾT QUẢ</button>
+  </div>
+</div>
+
+<script>
+  window.TEST_DATA = {
+    title: "Vol 7 Reading Test 1 - Passage 2",
+    answers: {
+      q14: "D",
+      q15: "C",
+      q16: "A",
+      q17: "NO",
+      q18: "YES",
+      q19: "NO",
+      q20: "YES",
+      q21: "YES",
+      q22: "C",
+      q23: "A",
+      q24: "F",
+      q25: "D",
+      q26: "E"
+    }
+  };
+</script>
+<script src="ielts-core.js"></script>
+</body>
+</html>
