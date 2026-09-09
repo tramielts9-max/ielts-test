@@ -59,7 +59,6 @@ function toggleTheme() {
   if (!isReviewMode) saveStateToLocalStorage();
 }
 
-// ==================== TỰ ĐỘNG SINH THANH ĐIỀU HƯỚNG & MODAL ====================
 function injectUniversalListeningUI() {
   if (!isListeningTest() || document.getElementById('bottomNavBar')) return;
 
@@ -78,17 +77,23 @@ function injectUniversalListeningUI() {
   else if (firstQNum >= 21) currentPart = 3;
   else if (firstQNum >= 11) currentPart = 2;
 
+  // Lấy đường dẫn gốc của đề (ví dụ: cam21-lis-test1-)
+  const curPath = window.location.pathname.split('/').pop() || '';
+  const basePath = curPath.replace(/-p\d+\.html$/, '');
+
   let badgesHtml = '';
   qKeys.forEach(qKey => {
     const num = qKey.replace(/\D/g, '');
     badgesHtml += `<button type="button" class="q-badge-btn" id="badge_${qKey}" onclick="scrollToQuestion('${qKey}')">${num}</button>`;
   });
 
+  // Tự động tạo link cho các Part ở đáy
   const partsHtml = [1, 2, 3, 4].map(p => {
+    const targetUrl = `${basePath}-p${p}.html`;
     if (p === currentPart) {
       return `<div class="part-tab-item active"><span>Part ${p}:</span><div class="part-q-badges">${badgesHtml}</div></div>`;
     } else {
-      return `<div class="part-tab-item" style="color: #94a3b8; font-weight: normal;">Part ${p}: 10 questions</div>`;
+      return `<a href="${targetUrl}" class="part-tab-item" style="color: #64748b; text-decoration: none; font-weight: 600;">Part ${p}: 10 questions</a>`;
     }
   }).join('');
 
