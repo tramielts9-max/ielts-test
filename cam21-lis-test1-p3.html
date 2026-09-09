@@ -323,4 +323,248 @@
 
     <!-- KHỐI CÂU HỎI 23-24 -->
     <h3 style="color: var(--primary-blue); font-size: 1.15em; margin-top: 30px;">Questions 23-24</h3>
-    <p><i>Choose <b>TWO</b
+    <p><i>Choose <b>TWO</b> letters, <b>A-E</b>.</i></p>
+    <p>Which <b>TWO</b> details about the research project particularly impressed the students?</p>
+
+    <div style="background: var(--bg-subcard); border: 1.5px solid var(--border-color); padding: 14px 18px; border-radius: 8px; margin-bottom: 15px; line-height: 2;">
+      <b>A</b> the team's previous successes<br>
+      <b>B</b> its wide geographical scale<br>
+      <b>C</b> the use of new technology<br>
+      <b>D</b> the extensive statistical evidence<br>
+      <b>E</b> the large range of specialists involved
+    </div>
+
+    <div class="question" id="q23">
+      <p><b>23.</b> First chosen letter: <input type="text" id="q23_input" class="fill-input" maxlength="1" style="width: 60px; text-transform: uppercase;"></p>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q23_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• <b>Đáp án đúng:</b> <span class="kw-exp">C</span> hoặc <span class="kw-exp">E</span></div>
+        <div class="exp-step">• <b>Dấu hiệu:</b> "so many experts working together" (= E: large range of specialists) và "tracking marine animals and things like robots" (= C: use of new technology).</div>
+        <button class="btn-locate" onclick="highlightText('hl-q23')">📍 Xem vị trí transcript</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q23"><button class="ai-btn" onclick="askGeminiAI('q23')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q23"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="question" id="q24">
+      <p><b>24.</b> Second chosen letter: <input type="text" id="q24_input" class="fill-input" maxlength="1" style="width: 60px; text-transform: uppercase;"></p>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q24_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• <b>Đáp án đúng:</b> <span class="kw-exp">C</span> hoặc <span class="kw-exp">E</span></div>
+        <div class="exp-step">• <b>Dấu hiệu:</b> "so many experts working together" (= E) và "tracking marine animals and things like robots" (= C).</div>
+        <button class="btn-locate" onclick="highlightText('hl-q24')">📍 Xem vị trí transcript</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q24"><button class="ai-btn" onclick="askGeminiAI('q24')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q24"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KHỐI CÂU HỎI 25-30 (MATCHING) -->
+    <h3 style="color: var(--primary-blue); font-size: 1.15em; margin-top: 35px;">Questions 25-30</h3>
+    <p><i>What is the students' opinion of each of the following resources related to ocean biodiversity? Choose <b>SIX</b> answers from the box and select the correct letter, <b>A-H</b>.</i></p>
+
+    <div style="background: var(--bg-subcard); border: 2px dashed var(--border-color); padding: 14px 18px; border-radius: 8px; margin-bottom: 20px; line-height: 1.9; font-size: 0.9em;">
+      <b>Opinions:</b><br>
+      <b>A.</b> This is aimed at a very specialist audience.<br>
+      <b>B.</b> This is now rather outdated.<br>
+      <b>C.</b> This was an effective description of a new danger.<br>
+      <b>D.</b> This suggests possible ways to improve the situation.<br>
+      <b>E.</b> This does not give a balanced account.<br>
+      <b>F.</b> This is too predictable to be useful.<br>
+      <b>G.</b> This gives insufficient evidence for its claims.<br>
+      <b>H.</b> This gives a clear explanation of the problems.
+    </div>
+
+    <!-- Câu 25 -->
+    <div class="question" id="q25">
+      <p><b>25.</b> Article on invasive lionfish</p>
+      <div class="options">
+        <label><input type="radio" name="q25" value="A"> A</label>
+        <label><input type="radio" name="q25" value="B"> B</label>
+        <label><input type="radio" name="q25" value="C"> C</label>
+        <label><input type="radio" name="q25" value="D"> D</label>
+        <label><input type="radio" name="q25" value="E"> E</label>
+        <label><input type="radio" name="q25" value="F"> F</label>
+        <label><input type="radio" name="q25" value="G"> G</label>
+        <label><input type="radio" name="q25" value="H"> H</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q25_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• <b>Đáp án đúng:</b> <span class="kw-exp">G</span></div>
+        <div class="exp-step">• <b>Dấu hiệu:</b> "didn't really provide much information to explain why" = gives insufficient evidence.</div>
+        <button class="btn-locate" onclick="highlightText('hl-q25')">📍 Xem vị trí transcript</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q25"><button class="ai-btn" onclick="askGeminiAI('q25')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q25"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Câu 26 -->
+    <div class="question" id="q26">
+      <p><b>26.</b> Documentary on microplastics</p>
+      <div class="options">
+        <label><input type="radio" name="q26" value="A"> A</label>
+        <label><input type="radio" name="q26" value="B"> B</label>
+        <label><input type="radio" name="q26" value="C"> C</label>
+        <label><input type="radio" name="q26" value="D"> D</label>
+        <label><input type="radio" name="q26" value="E"> E</label>
+        <label><input type="radio" name="q26" value="F"> F</label>
+        <label><input type="radio" name="q26" value="G"> G</label>
+        <label><input type="radio" name="q26" value="H"> H</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q26_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• <b>Đáp án đúng:</b> <span class="kw-exp">B</span></div>
+        <div class="exp-step">• <b>Dấu hiệu:</b> "made 10 years ago... it was showing its age" = rather outdated.</div>
+        <button class="btn-locate" onclick="highlightText('hl-q26')">📍 Xem vị trí transcript</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q26"><button class="ai-btn" onclick="askGeminiAI('q26')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q26"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Câu 27 -->
+    <div class="question" id="q27">
+      <p><b>27.</b> Podcast on ocean pollution</p>
+      <div class="options">
+        <label><input type="radio" name="q27" value="A"> A</label>
+        <label><input type="radio" name="q27" value="B"> B</label>
+        <label><input type="radio" name="q27" value="C"> C</label>
+        <label><input type="radio" name="q27" value="D"> D</label>
+        <label><input type="radio" name="q27" value="E"> E</label>
+        <label><input type="radio" name="q27" value="F"> F</label>
+        <label><input type="radio" name="q27" value="G"> G</label>
+        <label><input type="radio" name="q27" value="H"> H</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q27_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• <b>Đáp án đúng:</b> <span class="kw-exp">F</span></div>
+        <div class="exp-step">• <b>Dấu hiệu:</b> "Most of it was stating the obvious... everybody knows that anyway" = too predictable to be useful.</div>
+        <button class="btn-locate" onclick="highlightText('hl-q27')">📍 Xem vị trí transcript</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q27"><button class="ai-btn" onclick="askGeminiAI('q27')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q27"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Câu 28 -->
+    <div class="question" id="q28">
+      <p><b>28.</b> Book on coastal ecosystems</p>
+      <div class="options">
+        <label><input type="radio" name="q28" value="A"> A</label>
+        <label><input type="radio" name="q28" value="B"> B</label>
+        <label><input type="radio" name="q28" value="C"> C</label>
+        <label><input type="radio" name="q28" value="D"> D</label>
+        <label><input type="radio" name="q28" value="E"> E</label>
+        <label><input type="radio" name="q28" value="F"> F</label>
+        <label><input type="radio" name="q28" value="G"> G</label>
+        <label><input type="radio" name="q28" value="H"> H</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q28_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• <b>Đáp án đúng:</b> <span class="kw-exp">H</span></div>
+        <div class="exp-step">• <b>Dấu hiệu:</b> "ended up with a much better understanding of the issues... well-written summary and diagrams helped" = clear explanation.</div>
+        <button class="btn-locate" onclick="highlightText('hl-q28')">📍 Xem vị trí transcript</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q28"><button class="ai-btn" onclick="askGeminiAI('q28')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q28"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Câu 29 -->
+    <div class="question" id="q29">
+      <p><b>29.</b> Article on metal toxicity</p>
+      <div class="options">
+        <label><input type="radio" name="q29" value="A"> A</label>
+        <label><input type="radio" name="q29" value="B"> B</label>
+        <label><input type="radio" name="q29" value="C"> C</label>
+        <label><input type="radio" name="q29" value="D"> D</label>
+        <label><input type="radio" name="q29" value="E"> E</label>
+        <label><input type="radio" name="q29" value="F"> F</label>
+        <label><input type="radio" name="q29" value="G"> G</label>
+        <label><input type="radio" name="q29" value="H"> H</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q29_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• <b>Đáp án đúng:</b> <span class="kw-exp">A</span></div>
+        <div class="exp-step">• <b>Dấu hiệu:</b> "way above my head... still don't understand it... couldn't follow it" = aimed at a very specialist audience.</div>
+        <button class="btn-locate" onclick="highlightText('hl-q29')">📍 Xem vị trí transcript</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q29"><button class="ai-btn" onclick="askGeminiAI('q29')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q29"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Câu 30 -->
+    <div class="question" id="q30">
+      <p><b>30.</b> Podcast on floating marine cities</p>
+      <div class="options">
+        <label><input type="radio" name="q30" value="A"> A</label>
+        <label><input type="radio" name="q30" value="B"> B</label>
+        <label><input type="radio" name="q30" value="C"> C</label>
+        <label><input type="radio" name="q30" value="D"> D</label>
+        <label><input type="radio" name="q30" value="E"> E</label>
+        <label><input type="radio" name="q30" value="F"> F</label>
+        <label><input type="radio" name="q30" value="G"> G</label>
+        <label><input type="radio" name="q30" value="H"> H</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q30_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• <b>Đáp án đúng:</b> <span class="kw-exp">E</span></div>
+        <div class="exp-step">• <b>Dấu hiệu:</b> "rather one-sided picture... ignored the effects on the environment" = does not give a balanced account.</div>
+        <button class="btn-locate" onclick="highlightText('hl-q30')">📍 Xem vị trí transcript</button>
+        <div class="ai-assistant-box">
+          <label>🤖 Hỏi Trợ giảng AI về câu này:</label>
+          <div class="ai-input-group"><input type="text" id="ai_ask_q30"><button class="ai-btn" onclick="askGeminiAI('q30')">Gửi AI</button></div>
+          <div class="ai-response" id="ai_response_q30"></div>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn-submit" onclick="checkAnswers()">CHẤM BÀI VÀ NỘP KẾT QUẢ</button>
+  </div>
+</div>
+
+<script>
+  window.TEST_DATA = {
+    title: "Cam 21 Listening Test 1 - Part 3",
+    answers: {
+      q21: ["B", "D"],
+      q22: ["B", "D"],
+      q23: ["C", "E"],
+      q24: ["C", "E"],
+      q25: "G",
+      q26: "B",
+      q27: "F",
+      q28: "H",
+      q29: "A",
+      q30: "E"
+    }
+  };
+</script>
+<script src="ielts-core.js"></script>
+</body>
+</html>
