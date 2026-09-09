@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>IELTS Vol 7 Reading Test 1 - Passage 1: Carnivorous plant</title>
+  <link rel="stylesheet" href="ielts-core.css">
+</head>
+<body>
+
+<div class="user-info-box">
+  <div class="user-info-field">
+    <label for="studentNameInput">👤 Họ và Tên:</label>
+    <input type="text" id="studentNameInput" placeholder="Đang đồng bộ họ tên...">
+  </div>
+  <div class="user-info-field">
+    <label for="studentEmailInput">✉️ Email Google:</label>
+    <input type="email" id="studentEmailInput" placeholder="Đang đồng bộ Email...">
+  </div>
+</div>
+
+<div class="header-bar">
+  <h1>IELTS Academic Vol 7 - Reading Test 1 - Passage 1</h1>
+  
+  <div class="header-nav">
+    <a href="index.html" class="nav-link">🏠 Trang chủ</a>
+    <a href="vol7-test1-p1.html" class="nav-link active">Passage 1</a>
+    <a href="vol7-test1-p2.html" class="nav-link">Passage 2</a>
+    <a href="vol7-test1-p3.html" class="nav-link">Passage 3</a>
+  </div>
+
+  <div class="header-controls">
+    <button class="btn-header" onclick="changeFontSize(-1)" title="Giảm cỡ chữ">A-</button>
+    <button class="btn-header" onclick="changeFontSize(1)" title="Tăng cỡ chữ">A+</button>
+    <button class="btn-header" id="btnThemeToggle" onclick="toggleTheme()" title="Đổi chế độ Sáng / Tối">🌙 Tối/Sáng</button>
+  </div>
+
+  <div class="timer-container">
+    <span>⏱️ Thời gian:</span>
+    <span class="timer-display" id="timerDisplay">00:00</span>
+    <button class="btn-timer" onclick="startTimer()">▶️ Bắt đầu</button>
+    <button class="btn-timer" onclick="pauseTimer()">⏸️ Tạm dừng</button>
+  </div>
+
+  <div class="score-badge" id="scoreBadge">Điểm số: <span id="scoreText">0/13</span></div>
+</div>
+
+<div id="hlPopup" class="hl-popup"><button id="btnDoHighlight">🖍️ Highlight</button></div>
+<div id="removeHlPopup" class="hl-popup"><button id="btnRemoveHighlight">❌ Xóa Highlight</button></div>
+
+<div class="container">
+  <!-- CỘT BÊN TRÁI: BÀI ĐỌC -->
+  <div class="passage-box" id="passageBox">
+    <h2>READING PASSAGE 1</h2>
+    <h3>Carnivorous plant</h3>
+    <p><i>They attract insects and then eat their flesh. Is that any way for a plant to behave?</i></p>
+
+    <p>The naturalist and author of Origin of Species, Charles Darwin, was fascinated by carnivorous plants. In 1860, soon after he came across his first carnivorous plant - the sundew, Drosera - he wrote, ‘I care more about Drosera than the origin of all the species in the world.’ He spent months running experiments on the plants. He dropped flies and bits of meat on their leaves and watched them slowly fold their sticky tentacles over their prey. He thought it incredible that brushing a leaf with a single strand of human hair was enough to bring about a response. <span class="hl" id="hl-q1" data-q="[Q1]">Yet sundews, he observed, ignored <span class="kw">raindrops</span>. To react to such a false alarm, he reasoned, would obviously be a great evil to the plant</span>. This was no accident. This was adaptation.</p>
+
+    <p>Darwin expanded his studies from sundews to other species in his book Insectivorous Plants. He was amazed at the quickness and power of the Venus flytrap. <span class="hl" id="hl-q2" data-q="[Q2]">He showed that when one of its leaves snapped shut, it formed itself into a temporary ‘<span class="kw">stomach</span>’, secreting enzymes that could dissolve the prey</span>. He noted that a leaf took more than a week to reopen after closing, and reasoned that the interlocking spines along the margin of the leaf allowed tiny insects to escape, saving the plant the expense of digesting an insufficient meal.</p>
+
+    <p>Today, biologists using 21st-century tools to study cells and DNA are beginning to understand how these plants hunt, eat, and digest - and how these strange adaptations came about in the first place. Alexander Volkov, a plant physiologist at Oakwood University in Alabama, believes he has figured out the Venus flytrap’s secret. ‘This,’ Volkov declares, ‘is an electrical plant.’</p>
+
+    <p>When an insect brushes against a hair on the leaf of a Venus flytrap, the movement sets off an electric charge. The charge builds up inside the tissue of the leaf but is not enough to stimulate the snap, which keeps the Venus flytrap from reacting to false alarms, such as raindrops. An insect, however, is likely to brush a second hair, adding enough electric charge for the leaf to close.</p>
+
+    <p><span class="hl" id="hl-q3" data-q="[Q3]">Volkov’s experiments reveal that the electric charge travels down fluid-filled tunnels in a leaf, which opens up <span class="kw">pores</span> in cell membranes</span>. Water rushes from the cells on the inside of the leaf to those on the outside, causing the leaf to rapidly flip in shape from convex to concave, like a soft contact lens. As the leaves flip, they snap together, trapping an insect inside.</p>
+
+    <p>The bladderwort plant has an equally sophisticated way of setting its underwater trap. It pumps water out of tiny air sacs or bladders, lowering the pressure inside. When a water flea or some other small creature swims past, it bends hairs on the bladder, causing a flap to spring apart. The low pressure sucks water in, carrying the creature along with it. In one five-hundredth of a second, the flap swings shut again. <span class="hl" id="hl-q4" data-q="[Q4]">The cells in the bladder then begin to pump water out again, creating a new <span class="kw">vacuum</span></span>. Many other species of carnivorous plants act like living flypaper, catching animals on sticky tentacles. Pitcher plants use yet another strategy, growing long tube-shaped leaves into which insects fall. <span class="hl" id="hl-q5" data-q="[Q5]">Some of the largest have pitchers up to 30cm deep and can consume whole <span class="kw">frogs</span> unlucky enough to fall into them</span>. Sophisticated chemistry helps make the pitcher a death trap.</p>
+
+    <p>Nicholas Gotelli, of the University of Vermont, is trying to figure out what evolutionary forces pushed these plants towards meat. <span class="hl" id="hl-q6" data-q="[Q6]">Carnivorous plants clearly benefit from eating animals; when scientists feed pitcher plants extra bugs, the plants get <span class="kw">bigger</span></span>. But the benefits of eating flesh are not the ones you might expect. Carnivorous animals, like ourselves, use the carbon in protein and the fat in meat to build muscles and store energy. <span class="hl" id="hl-q7" data-q="[Q7]">Carnivorous plants, however, take nitrogen and phosphorus from the flesh in order to build <span class="kw">light-harvesting enzymes</span></span>. Eating animals, in other words, lets carnivorous plants do what all plants do: grow by taking energy directly from the sun.</p>
+
+    <p>Unfortunately, they do a really bad job of it. That’s because they have to use a lot of energy to make the equipment they need to catch animals - the enzymes, the pumps, the sticky tentacles, and so on. <span class="hl" id="hl-q8" data-q="[Q8]">A pitcher or a flytrap is not very good at photosynthesis because, unlike plants with ordinary leaves, they do not have flat solar panels that can absorb lots of sunlight</span>. Gotelli suspects that only under special conditions are the benefits of being carnivorous greater than the costs. <span class="hl" id="hl-q9" data-q="[Q9]">The poor soil of bogs and swamps, where many carnivorous plants grow, offers little nitrogen and phosphorus, so carnivorous plants enjoy an advantage there over ‘conventional’ plants</span>. <span class="hl" id="hl-q10" data-q="[Q10]">Also, bogs are often <span class="kw">flooded with sunshine</span>, so even an inefficient carnivorous plant can carry out enough photosynthesis to survive</span>. ‘They’re stuck, and they’re making the best of it,’ says Aaron Ellison of Harvard University.</p>
+
+    <p>Unfortunately, the adaptations that enable carnivorous plants to survive in harsh habitats also make them extremely sensitive to environmental changes. <span class="hl" id="hl-q11" data-q="[Q11]">Chemical fertilizers used in agriculture and pollution from power plants are adding extra nitrogen to many bogs in North America</span>. Carnivorous plants are so finely adapted to low levels of nitrogen that this extra fertilizer is overloading their systems. Humans also threaten carnivorous plants in other ways. <span class="hl" id="hl-q12" data-q="[Q12]">The <span class="kw">black market trade</span> in exotic carnivorous plants is strong</span>, but even if this can be prevented, carnivorous plants will continue to suffer from other dangers. Their habitat is disappearing, to be replaced by shopping centers and houses. <span class="hl" id="hl-q13" data-q="[Q13]">The suppression of wildfires by government agencies allows other plants to grow quickly and <span class="kw">outcompete the Venus flytraps</span></span>. Good news, perhaps, for flies. But a loss for all who delight in the inventiveness of evolution.</p>
+  </div>
+
+  <div class="resizer" id="dragResizer"></div>
+
+  <!-- CỘT BÊN PHẢI: CÂU HỎI -->
+  <div class="question-box">
+    <div class="section-title">Questions 1-5</div>
+    <p><i>Complete the notes below. Write <b>ONE WORD ONLY</b> from the passage for each answer.</i></p>
+
+    <div style="background: var(--bg-subcard); border: 1.5px solid var(--border-color); padding: 18px; border-radius: 8px; margin-bottom: 25px;">
+      <h3 style="margin-top: 0;">Carnivorous Plants</h3>
+      
+      <h4>Darwin’s experiments</h4>
+      <p><b>Drosera</b></p>
+      <ul>
+        <li>He put insects and small amounts of meat onto leaves and observed what happened.</li>
+        <li>He was amazed that one human hair triggered a response.</li>
+        <li class="question" id="q1" style="background: transparent; border: none; padding: 0;">
+          He understood why the plant did not respond to <b>1.</b> <input type="text" id="q1_input" class="fill-input">
+          <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q1_thought"></textarea></div>
+          <div class="result"></div>
+          <div class="explanation">
+            <div class="exp-step">• <b>Đáp án:</b> <span class="kw-exp">raindrops</span></div>
+            <div class="exp-step">• <b>Dấu hiệu:</b> "Yet sundews, he observed, ignored raindrops." (ignored = did not respond to).</div>
+            <button class="btn-locate" onclick="highlightText('hl-q1')">📍 Xem vị trí bài đọc</button>
+            <div class="ai-assistant-box">
+              <label>🤖 Hỏi Trợ giảng AI:</label>
+              <div class="ai-input-group"><input type="text" id="ai_ask_q1"><button class="ai-btn" onclick="askGeminiAI('q1')">Gửi AI</button></div>
+              <div class="ai-response" id="ai_response_q1"></div>
+            </div>
+          </div>
+        </li>
+      </ul>
+
+      <h4>Venus Flytrap</h4>
+      <ul>
+        <li class="question" id="q2" style="background: transparent; border: none; padding: 0;">
+          He demonstrated how leaves close and then, for a short period, act like a <b>2.</b> <input type="text" id="q2_input" class="fill-input">
+          <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q2_thought"></textarea></div>
+          <div class="result"></div>
+          <div class="explanation">
+            <div class="exp-step">• <b>Đáp án:</b> <span class="kw-exp">stomach</span></div>
+            <div class="exp-step">• <b>Dấu hiệu:</b> "...formed itself into a temporary ‘stomach’, secreting enzymes..." (temporary = for a short period).</div>
+            <button class="btn-locate" onclick="highlightText('hl-q2')">📍 Xem vị trí bài đọc</button>
+            <div class="ai-assistant-box">
+              <label>🤖 Hỏi Trợ giảng AI:</label>
+              <div class="ai-input-group"><input type="text" id="ai_ask_q2"><button class="ai-btn" onclick="askGeminiAI('q2')">Gửi AI</button></div>
+              <div class="ai-response" id="ai_response_q2"></div>
+            </div>
+          </div>
+        </li>
+        <li>He noted the structure of leaves ensures small insects are released.</li>
+      </ul>
+
+      <h4>Biology today</h4>
+      <p><b>Venus Flytrap</b></p>
+      <ul>
+        <li>If insects come into contact with leaf hairs, their movement produces an electric charge.</li>
+        <li class="question" id="q3" style="background: transparent; border: none; padding: 0;">
+          The charge enters fluid-filled tunnels, causing <b>3.</b> <input type="text" id="q3_input" class="fill-input"> in the cell walls to open.
+          <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q3_thought"></textarea></div>
+          <div class="result"></div>
+          <div class="explanation">
+            <div class="exp-step">• <b>Đáp án:</b> <span class="kw-exp">pores</span></div>
+            <div class="exp-step">• <b>Dấu hiệu:</b> "...travels down fluid-filled tunnels in a leaf, which opens up pores in cell membranes."</div>
+            <button class="btn-locate" onclick="highlightText('hl-q3')">📍 Xem vị trí bài đọc</button>
+            <div class="ai-assistant-box">
+              <label>🤖 Hỏi Trợ giảng AI:</label>
+              <div class="ai-input-group"><input type="text" id="ai_ask_q3"><button class="ai-btn" onclick="askGeminiAI('q3')">Gửi AI</button></div>
+              <div class="ai-response" id="ai_response_q3"></div>
+            </div>
+          </div>
+        </li>
+        <li>Water moves between cells and then the leaf changes from convex to concave, trapping the insect inside.</li>
+      </ul>
+
+      <p><b>Bladderwort</b></p>
+      <ul>
+        <li>Hairs bend when insects swim past, resulting in opening of a flap.</li>
+        <li>Water is sucked in.</li>
+        <li class="question" id="q4" style="background: transparent; border: none; padding: 0;">
+          When water is pumped out of bladder cells, a <b>4.</b> <input type="text" id="q4_input" class="fill-input"> builds up inside.
+          <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q4_thought"></textarea></div>
+          <div class="result"></div>
+          <div class="explanation">
+            <div class="exp-step">• <b>Đáp án:</b> <span class="kw-exp">vacuum</span></div>
+            <div class="exp-step">• <b>Dấu hiệu:</b> "The cells in the bladder then begin to pump water out again, creating a new vacuum."</div>
+            <button class="btn-locate" onclick="highlightText('hl-q4')">📍 Xem vị trí bài đọc</button>
+            <div class="ai-assistant-box">
+              <label>🤖 Hỏi Trợ giảng AI:</label>
+              <div class="ai-input-group"><input type="text" id="ai_ask_q4"><button class="ai-btn" onclick="askGeminiAI('q4')">Gửi AI</button></div>
+              <div class="ai-response" id="ai_response_q4"></div>
+            </div>
+          </div>
+        </li>
+      </ul>
+
+      <p><b>Pitcher Plants</b></p>
+      <ul>
+        <li>The plants have tube-shaped leaves that insects fall into.</li>
+        <li class="question" id="q5" style="background: transparent; border: none; padding: 0;">
+          Some plants are big enough to capture and eat <b>5.</b> <input type="text" id="q5_input" class="fill-input">
+          <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q5_thought"></textarea></div>
+          <div class="result"></div>
+          <div class="explanation">
+            <div class="exp-step">• <b>Đáp án:</b> <span class="kw-exp">frogs</span></div>
+            <div class="exp-step">• <b>Dấu hiệu:</b> "Some of the largest have pitchers up to 30cm deep and can consume whole frogs..." (consume = eat).</div>
+            <button class="btn-locate" onclick="highlightText('hl-q5')">📍 Xem vị trí bài đọc</button>
+            <div class="ai-assistant-box">
+              <label>🤖 Hỏi Trợ giảng AI:</label>
+              <div class="ai-input-group"><input type="text" id="ai_ask_q5"><button class="ai-btn" onclick="askGeminiAI('q5')">Gửi AI</button></div>
+              <div class="ai-response" id="ai_response_q5"></div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="section-title">Questions 6-13</div>
+    <p><i>Do the following statements agree with the information given in Reading Passage 1? In boxes 6-13 on your answer sheet, choose:</i></p>
+    <ul style="list-style: none; padding-left: 0;">
+      <li><b>TRUE</b> if the statement agrees with the information</li>
+      <li><b>FALSE</b> if the statement contradicts the information</li>
+      <li><b>NOT GIVEN</b> if there is no information on this</li>
+    </ul>
+
+    <!-- Câu 6 -->
+    <div class="question" id="q6">
+      <p><b>6.</b> Pitcher plants increase in size after they have digested a lot of insects.</p>
+      <div class="options">
+        <label><input type="radio" name="q6" value="TRUE"> TRUE</label>
+        <label><input type="radio" name="q6" value="FALSE"> FALSE</label>
+        <label><input type="radio" name="q6" value="NOT GIVEN"> NOT GIVEN</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q6_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• <b>Đáp án:</b> <span class="kw-exp">TRUE</span></div>
+        <div class="exp-step">• <b>Dấu hiệu:</b> "when scientists feed pitcher plants extra bugs, the plants get bigger."</div>
+        <button class="btn-locate" onclick="highlightText('hl-q6')">📍 Xem vị trí bài đọc</button>
+      </div>
+    </div>
+
+    <!-- Câu 7 -->
+    <div class="question" id="q7">
+      <p><b>7.</b> Carnivorous plants produce light-harvesting enzymes with the nutrients they extract from animals.</p>
+      <div class="options">
+        <label><input type="radio" name="q7" value="TRUE"> TRUE</label>
+        <label><input type="radio" name="q7" value="FALSE"> FALSE</label>
+        <label><input type="radio" name="q7" value="NOT GIVEN"> NOT GIVEN</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q7_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• <b>Đáp án:</b> <span class="kw-exp">TRUE</span></div>
+        <div class="exp-step">• <b>Dấu hiệu:</b> "Carnivorous plants, however, take nitrogen and phosphorus from the flesh in order to build light-harvesting enzymes."</div>
+        <button class="btn-locate" onclick="highlightText('hl-q7')">📍 Xem vị trí bài đọc</button>
+      </div>
+    </div>
+
+    <!-- Câu 8 -->
+    <div class="question" id="q8">
+      <p><b>8.</b> Pitcher plants and Venus flytraps are more efficient at photosynthesis than plants with ordinary leaves.</p>
+      <div class="options">
+        <label><input type="radio" name="q8" value="TRUE"> TRUE</label>
+        <label><input type="radio" name="q8" value="FALSE"> FALSE</label>
+        <label><input type="radio" name="q8" value="NOT GIVEN"> NOT GIVEN</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q8_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• <b>Đáp án:</b> <span class="kw-exp">FALSE</span></div>
+        <div class="exp-step">• <b>Dấu hiệu:</b> "A pitcher or a flytrap is not very good at photosynthesis because, unlike plants with ordinary leaves, they do not have flat solar panels..."</div>
+        <button class="btn-locate" onclick="highlightText('hl-q8')">📍 Xem vị trí bài đọc</button>
+      </div>
+    </div>
+
+    <!-- Câu 9 -->
+    <div class="question" id="q9">
+      <p><b>9.</b> Venus flytraps are better adapted to the soil of swamps and bogs than other carnivorous plants.</p>
+      <div class="options">
+        <label><input type="radio" name="q9" value="TRUE"> TRUE</label>
+        <label><input type="radio" name="q9" value="FALSE"> FALSE</label>
+        <label><input type="radio" name="q9" value="NOT GIVEN"> NOT GIVEN</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q9_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• <b>Đáp án:</b> <span class="kw-exp">NOT GIVEN</span></div>
+        <div class="exp-step">• <b>Dấu hiệu:</b> Bài chỉ nói cây ăn thịt nói chung thích nghi với đất đầm lầy hơn cây thông thường, không hề so sánh Venus flytrap với các cây ăn thịt khác.</div>
+        <button class="btn-locate" onclick="highlightText('hl-q9')">📍 Xem vị trí bài đọc</button>
+      </div>
+    </div>
+
+    <!-- Câu 10 -->
+    <div class="question" id="q10">
+      <p><b>10.</b> Carnivorous plants frequently find it difficult to photosynthesise in bogs due to a lack of sunlight.</p>
+      <div class="options">
+        <label><input type="radio" name="q10" value="TRUE"> TRUE</label>
+        <label><input type="radio" name="q10" value="FALSE"> FALSE</label>
+        <label><input type="radio" name="q10" value="NOT GIVEN"> NOT GIVEN</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q10_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• <b>Đáp án:</b> <span class="kw-exp">FALSE</span></div>
+        <div class="exp-step">• <b>Dấu hiệu:</b> "Also, bogs are often flooded with sunshine, so even an inefficient carnivorous plant can carry out enough photosynthesis to survive." (Tràn ngập ánh nắng chứ không phải thiếu ánh nắng).</div>
+        <button class="btn-locate" onclick="highlightText('hl-q10')">📍 Xem vị trí bài đọc</button>
+      </div>
+    </div>
+
+    <!-- Câu 11 -->
+    <div class="question" id="q11">
+      <p><b>11.</b> Scientists have campaigned to reduce the amount of nitrogen that is released into the soil by agricultural practices.</p>
+      <div class="options">
+        <label><input type="radio" name="q11" value="TRUE"> TRUE</label>
+        <label><input type="radio" name="q11" value="FALSE"> FALSE</label>
+        <label><input type="radio" name="q11" value="NOT GIVEN"> NOT GIVEN</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q11_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• <b>Đáp án:</b> <span class="kw-exp">NOT GIVEN</span></div>
+        <div class="exp-step">• <b>Dấu hiệu:</b> Bài chỉ nêu phân bón nông nghiệp thải thêm nitơ, không hề nhắc đến việc các nhà khoa học có chiến dịch vận động cắt giảm hay không.</div>
+        <button class="btn-locate" onclick="highlightText('hl-q11')">📍 Xem vị trí bài đọc</button>
+      </div>
+    </div>
+
+    <!-- Câu 12 -->
+    <div class="question" id="q12">
+      <p><b>12.</b> A lot of exotic carnivorous plants are sold illegally.</p>
+      <div class="options">
+        <label><input type="radio" name="q12" value="TRUE"> TRUE</label>
+        <label><input type="radio" name="q12" value="FALSE"> FALSE</label>
+        <label><input type="radio" name="q12" value="NOT GIVEN"> NOT GIVEN</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q12_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• <b>Đáp án:</b> <span class="kw-exp">TRUE</span></div>
+        <div class="exp-step">• <b>Dấu hiệu:</b> "The black market trade in exotic carnivorous plants is strong..." (black market trade = sold illegally).</div>
+        <button class="btn-locate" onclick="highlightText('hl-q12')">📍 Xem vị trí bài đọc</button>
+      </div>
+    </div>
+
+    <!-- Câu 13 -->
+    <div class="question" id="q13">
+      <p><b>13.</b> Preventing wildfires is beneficial to the Venus flytrap.</p>
+      <div class="options">
+        <label><input type="radio" name="q13" value="TRUE"> TRUE</label>
+        <label><input type="radio" name="q13" value="FALSE"> FALSE</label>
+        <label><input type="radio" name="q13" value="NOT GIVEN"> NOT GIVEN</label>
+      </div>
+      <div class="thought-box"><label>💭 Mạch suy nghĩ của em:</label><textarea id="q13_thought"></textarea></div>
+      <div class="result"></div>
+      <div class="explanation">
+        <div class="exp-step">• <b>Đáp án:</b> <span class="kw-exp">FALSE</span></div>
+        <div class="exp-step">• <b>Dấu hiệu:</b> "The suppression of wildfires by government agencies allows other plants to grow quickly and outcompete the Venus flytraps... a loss..." (Dập tắt cháy rừng khiến cây khác cạnh tranh triệt tiêu Venus flytrap, không phải có lợi).</div>
+        <button class="btn-locate" onclick="highlightText('hl-q13')">📍 Xem vị trí bài đọc</button>
+      </div>
+    </div>
+
+    <button class="btn-submit" onclick="checkAnswers()">CHẤM BÀI VÀ NỘP KẾT QUẢ</button>
+  </div>
+</div>
+
+<script>
+  window.TEST_DATA = {
+    title: "Vol 7 Reading Test 1 - Passage 1",
+    answers: {
+      q1: "raindrops",
+      q2: "stomach",
+      q3: "pores",
+      q4: "vacuum",
+      q5: "frogs",
+      q6: "TRUE",
+      q7: "TRUE",
+      q8: "FALSE",
+      q9: "NOT GIVEN",
+      q10: "FALSE",
+      q11: "NOT GIVEN",
+      q12: "TRUE",
+      q13: "FALSE"
+    }
+  };
+</script>
+<script src="ielts-core.js"></script>
+</body>
+</html>
