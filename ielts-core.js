@@ -1,7 +1,13 @@
 /**
  * ==========================================================================
  * IELTS PRACTICE TEST CORE ENGINE (ielts-core.js) - UNIVERSAL VẠN NĂNG 100%
- * Đã sửa lỗi nút cỡ chữ: hoạt động nhạy 100%, tự động phóng to 22px cho Listening.
+ * Tích hợp đầy đủ:
+ * 1. Bôi đen văn bản hiện popup 🖍️ Highlight / ❌ Xóa Highlight (Reading & Listening)
+ * 2. Tự nhận diện Reading / Listening qua <audio> hoặc tên file
+ * 3. Tự sinh thanh điều hướng đáy & popup Modal kết quả cho Listening
+ * 4. Đồng bộ Audio-Track Sync từng giây
+ * 5. Tự động chuyển qua lại giữa các Part (Part 1 -> Part 4)
+ * 6. Lưu trữ Google Sheets & Google Drive
  * ==========================================================================
  */
 
@@ -31,7 +37,127 @@ function getStorageKey() {
   return 'ielts_state_' + pageName;
 }
 
-// ==================== ĐIỀU CHỈNH CỠ CHỮ & THEME (HOẠT ĐỘNG 100%) ====================
+// ==================== TÍNH NĂNG BÔI ĐEN VĂN BẢN ĐỂ HIGHLIGHT ====================
+function initTextHighlighting() {
+  let hlPopup = document.getElementById('hlPopup');
+  let removeHlPopup = document.getElementById('removeHlPopup');
+
+  // Tự động tạo popup nếu trong file HTML chưa có sẵn
+  if (!hlPopup) {
+    hlPopup = document.createElement('div');
+    hlPopup.id = 'hlPopup';
+    hlPopup.className = 'hl-popup';
+    hlPopup.innerHTML = '<button id="btnDoHighlight">🖍️ Highlight</button>';
+    document.body.appendChild(hlPopup);
+  }
+
+  if (!removeHlPopup) {
+    removeHlPopup = document.createElement('div');
+    removeHlPopup.id = 'removeHlPopup';
+    removeHlPopup.className = 'hl-popup';
+    removeHlPopup.innerHTML = '<button id="btnRemoveHighlight">❌ Xóa Highlight</button>';
+    document.body.appendChild(removeHlPopup);
+  }
+
+  const btnDoHighlight = document.getElementById('btnDoHighlight');
+  const btnRemoveHighlight = document.getElementById('btnRemoveHighlight');
+  const container = document.querySelector('.container');
+
+  if (!passageBox) return;
+
+  let currentTargetSpan = null;
+  let currentRange = null;
+
+  // Sử dụng position fixed để popup nổi chính xác bất chấp cuộn trang
+  hlPopup.style.position = 'fixed';
+  removeHlPopup.style.position = 'fixed';
+
+  // 1. Khi buông chuột sau khi bôi đen chữ
+  document.addEventListener('mouseup', function(e) {
+    if (hlPopup.contains(e.target) || removeHlPopup.contains(e.target)) return;
+
+    const selection = window.getSelection();
+    const selectedText = selection.toString().trim();
+
+    // Nếu click vào một đoạn đã highlight trước đó -> hiện nút xóa
+    if (e.target.classList.contains('user-highlight')) {
+      currentTargetSpan = e.target;
+      const rect = e.target.getBoundingClientRect();
+      removeHlPopup.style.left = `${rect.left + rect.width / 2 - 55}px`;
+      removeHlPopup.style.top = `${rect.top - 38}px`;
+      removeHlPopup.style.display = 'block';
+      hlPopup.style.display = 'none';
+      return;
+    } else {
+      removeHlPopup.style.display = 'none';
+    }
+
+    // Nếu bôi đen chữ mới trong khung bài đọc -> hiện nút Highlight
+    if (selectedText.length > 0 && selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0);
+      // Cho phép highlight cả 2 cột (trừ khi đang bôi đen trong ô gõ chữ input/textarea)
+if (container && container.contains(range.commonAncestorContainer) && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+        currentRange = range.cloneRange();
+        const rect = range.getBoundingClientRect();
+        hlPopup.style.left = `${rect.left + rect.width / 2 - 45}px`;
+        hlPopup.style.top = `${rect.top - 38}px`;
+        hlPopup.style.display = 'block';
+        return;
+      }
+    }
+
+    hlPopup.style.display = 'none';
+  });
+
+  // 2. Bấm nút "🖍️ Highlight"
+  if (btnDoHighlight) {
+    btnDoHighlight.addEventListener('click', function(e) {
+      e.stopPropagation();
+      e.preventDefault();
+      if (!currentRange) return;
+
+      const span = document.createElement('span');
+      span.className = 'user-highlight';
+      try {
+        currentRange.surroundContents(span);
+      } catch (err) {
+        span.appendChild(currentRange.extractContents());
+        currentRange.insertNode(span);
+      }
+
+      window.getSelection().removeAllRanges();
+      hlPopup.style.display = 'none';
+      currentRange = null;
+    });
+  }
+
+  // 3. Bấm nút "❌ Xóa Highlight"
+  if (btnRemoveHighlight) {
+    btnRemoveHighlight.addEventListener('click', function(e) {
+      e.stopPropagation();
+      e.preventDefault();
+      if (currentTargetSpan) {
+        const parent = currentTargetSpan.parentNode;
+        while (currentTargetSpan.firstChild) {
+          parent.insertBefore(currentTargetSpan.firstChild, currentTargetSpan);
+        }
+        parent.removeChild(currentTargetSpan);
+        currentTargetSpan = null;
+      }
+      removeHlPopup.style.display = 'none';
+    });
+  }
+
+  // 4. Click ra ngoài thì ẩn popup
+  document.addEventListener('mousedown', function(e) {
+    if (!hlPopup.contains(e.target) && !removeHlPopup.contains(e.target)) {
+      hlPopup.style.display = 'none';
+      removeHlPopup.style.display = 'none';
+    }
+  });
+}
+
+// ==================== ĐIỀU CHỈNH CỠ CHỮ & THEME ====================
 function applyFontSize() {
   document.documentElement.style.setProperty('--font-size-base', currentFontSize + 'px');
   if (document.body) {
@@ -59,6 +185,7 @@ function toggleTheme() {
   if (!isReviewMode) saveStateToLocalStorage();
 }
 
+// ==================== TỰ ĐỘNG SINH THANH ĐIỀU HƯỚNG & MODAL (LISTENING) ====================
 function injectUniversalListeningUI() {
   if (!isListeningTest() || document.getElementById('bottomNavBar')) return;
 
@@ -77,7 +204,6 @@ function injectUniversalListeningUI() {
   else if (firstQNum >= 21) currentPart = 3;
   else if (firstQNum >= 11) currentPart = 2;
 
-  // Lấy đường dẫn gốc của đề (ví dụ: cam21-lis-test1-)
   const curPath = window.location.pathname.split('/').pop() || '';
   const basePath = curPath.replace(/-p\d+\.html$/, '');
 
@@ -87,7 +213,6 @@ function injectUniversalListeningUI() {
     badgesHtml += `<button type="button" class="q-badge-btn" id="badge_${qKey}" onclick="scrollToQuestion('${qKey}')">${num}</button>`;
   });
 
-  // Tự động tạo link cho các Part ở đáy
   const partsHtml = [1, 2, 3, 4].map(p => {
     const targetUrl = `${basePath}-p${p}.html`;
     if (p === currentPart) {
@@ -865,14 +990,21 @@ Dùng **từ khóa** để IN ĐẬM, ==bằng chứng== để TÔ VÀNG đoạn
 
 // ==================== KHỞI ĐỘNG HỆ THỐNG ====================
 document.addEventListener('DOMContentLoaded', async function() {
+  // 1. Tự động tiêm thanh đáy & popup modal nếu là Listening
   injectUniversalListeningUI();
+
+  // 2. Kích hoạt tính năng bôi đen văn bản hiện popup Highlight
+  initTextHighlighting();
+
+  // 3. Kích hoạt Resizer kéo thả chia đôi màn hình
   initResizableDivider();
 
+  // 4. Kích hoạt Audio Sync
   if (isListeningTest()) {
     initAudioTranscriptSync();
   }
 
-  // Khôi phục bài từ Google Drive Review Mode nếu có
+  // 5. Khôi phục bài thi từ Review Mode nếu có query params
   const urlParams = new URLSearchParams(window.location.search);
   const attemptId = urlParams.get('attemptId');
   const emailParam = urlParams.get('email');
@@ -892,12 +1024,13 @@ document.addEventListener('DOMContentLoaded', async function() {
     } catch (e) {}
   }
 
+  // 6. Khôi phục bài đang làm dở cục bộ
   restoreStateFromLocalStorage();
 
-  // Áp dụng cỡ chữ ngay khi mở bài
+  // 7. Áp dụng cỡ chữ chuẩn
   applyFontSize();
 
-  // Lắng nghe cả nhập liệu lẫn click trắc nghiệm Radio
+  // 8. Lắng nghe nhập liệu và click trắc nghiệm Radio
   document.addEventListener('input', function() {
     updateBottomBadgesRealtime();
     saveStateToLocalStorage();
