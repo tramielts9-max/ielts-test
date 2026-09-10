@@ -348,38 +348,80 @@ function scrollToQuestion(qId) {
   }
 }
 
-// ==================== AUDIO TRACKING & CLICK TRANSCRIPT ====================
+// ==================== AUDIO TRACKING & CLICK TRANSCRIPT (NÂNG CẤP TỪ WHISPER JSON) ====================
 function initAudioTranscriptSync() {
   const audio = document.getElementById('mainAudioElement') || document.querySelector('audio');
+  const passageBox = document.getElementById('passageBox');
   const transcriptLines = Array.from(document.querySelectorAll('.transcript-line'));
   if (!audio || transcriptLines.length === 0) return;
 
+  // Cờ nhận diện khi học viên tự cuộn màn hình để không giật ngược trang
+  let isUserScrolling = false;
+  let userScrollTimeout = null;
+
+  if (passageBox) {
+    const handleUserScroll = () => {
+      isUserScrolling = true;
+      clearTimeout(userScrollTimeout);
+      // Sau 3.5 giây không chạm chuột, tự động bật lại tính năng trượt theo audio
+      userScrollTimeout = setTimeout(() => {
+        isUserScrolling = false;
+      }, 3500);
+    };
+
+    passageBox.addEventListener('wheel', handleUserScroll, { passive: true });
+    passageBox.addEventListener('touchmove', handleUserScroll, { passive: true });
+  }
+
+  // Bấm vào bất kỳ câu nào trong transcript -> Nhảy audio đúng mili-giây đó và phát ngay
   transcriptLines.forEach(line => {
-    line.addEventListener('click', function() {
-      const timeSec = parseFloat(this.getAttribute('data-time'));
-      if (!isNaN(timeSec)) {
-        audio.currentTime = timeSec;
+    line.addEventListener('click', function(e) {
+      if (e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT' || e.target.closest('.ai-assistant-box')) return;
+      
+      const startTime = parseFloat(this.getAttribute('data-start') || this.getAttribute('data-time'));
+      if (!isNaN(startTime)) {
+        audio.currentTime = startTime;
         audio.play();
+        isUserScrolling = false; // Ưu tiên cuộn ngay khi người dùng chủ động click
       }
     });
   });
 
+  // Đồng bộ Audio Real-time
   audio.addEventListener('timeupdate', function() {
     const curTime = audio.currentTime;
     let activeLine = null;
 
     for (let i = 0; i < transcriptLines.length; i++) {
-      const lineTime = parseFloat(transcriptLines[i].getAttribute('data-time'));
-      const nextTime = i < transcriptLines.length - 1 ? parseFloat(transcriptLines[i + 1].getAttribute('data-time')) : Infinity;
+      const line = transcriptLines[i];
+      const start = parseFloat(line.getAttribute('data-start') || line.getAttribute('data-time'));
+      let end = parseFloat(line.getAttribute('data-end'));
 
-      if (curTime >= lineTime && curTime < nextTime) {
-        activeLine = transcriptLines[i];
+      if (isNaN(end)) {
+        const nextLine = transcriptLines[i + 1];
+        end = nextLine ? parseFloat(nextLine.getAttribute('data-start') || nextLine.getAttribute('data-time')) : Infinity;
+      }
+
+      // Khớp chuẩn xác theo khoảng thời gian của câu đang phát
+      if (curTime >= start && curTime < end) {
+        activeLine = line;
         break;
       }
     }
 
-    transcriptLines.forEach(l => l.classList.remove('playing-active'));
-    if (activeLine) activeLine.classList.add('playing-active');
+    // Cập nhật trạng thái Active
+    transcriptLines.forEach(l => {
+      if (l !== activeLine) l.classList.remove('playing-active');
+    });
+
+    if (activeLine && !activeLine.classList.contains('playing-active')) {
+      activeLine.classList.add('playing-active');
+
+      // Tự động trượt câu thoại vào giữa màn hình nếu transcript đang hiển thị
+      if (!isUserScrolling && passageBox && passageBox.offsetParent !== null) {
+        activeLine.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
   });
 }
 
